@@ -1,0 +1,45 @@
+
+<script src="/js/Usuario/listar.js"></script>
+<div>
+    <h1>Horas</h1>
+    <a class="btn btn-primary" href="/usuarios/cadastrar">Cadastrar Horas</a>
+
+    <table style="margin-top:10px" class="table table-stripped">
+        <thead>
+            <th>Entrada</th>
+            <th>Cafe</th>
+            <th>Cafe</th>
+            <th>Almoco</th>
+            <th>Almoco</th>
+            <th>Cafe</th>
+            <th>Cafe</th>
+            <th>Saida</th>
+        </thead>
+        <tbody>
+            <% for(let i=0; i<lista.length; i++) { %>
+
+                <tr>
+                    <td><%= lista[i].Entrada %></td>
+                    <td><%= lista[i].Cafe1 %></td>
+                    <td><%= lista[i].Cafe2 %></td>
+                    <td><%= lista[i].Almoco1 %></td>
+                    <td><%= lista[i].Almoco2 %></td>
+                    <td><%= lista[i].Cafe3 %></td>
+                    <td><%= lista[i].Cafe4 %></td>
+                    <td><%= lista[i].Saida %></td>
+                    <td>
+                        <div>
+                            <button  data-id="<%= lista[i].usuId %>" class="btn btn-primary editarBtn">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button data-id="<%= lista[i].usuId %>" class="btn btn-danger btnExclusao">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+            <% } %>
+        </tbody>
+    </table>
+</div>

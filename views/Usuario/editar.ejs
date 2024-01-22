@@ -1,0 +1,39 @@
+
+<script src="/js/Usuario/editar.js"></script>
+<div>
+    <h1>Editar um usuário</h1>
+
+    <div>
+        <input type="hidden" id="usuarioId" value="<%= userId %>">
+        <div class="form-group">
+            <label for="usuarioNome">Nome:</label>
+            <input class="form-control" type="text" id="usuarioNome" />
+        </div>
+        <div class="form-group">
+            <label for="">Email:</label>
+            <input class="form-control" type="email" id="usuarioEmail" />
+        </div>
+        <div class="form-group">
+            <label for="usuarioPerfil">Perfil:</label>
+            <select class="form-control" id="usuarioPerfil">
+                <option value="0">--Selecione--</option>
+                <option value="1">Administrador</option>
+                <option value="2">Recepcionista</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="usuarioSenha">Senha:</label>
+            <input class="form-control" type="password" id="usuarioSenha"/>
+        </div>
+        <div class="form-group">
+            <label for="usuarioAtivo">
+                <input class="form-check-label mr-2" id="usuarioAtivo" type="checkbox" /> Ativo
+            </label>
+        </div>
+
+        <div>
+            <button id="btnGravar" class="btn btn-primary">Gravar</button>
+            <a class="btn btn-secondary" href="/usuarios">Voltar</a>
+        </div>
+    </div>
+</div>
