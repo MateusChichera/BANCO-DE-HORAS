@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 data: data.value,
             }
 
-            fetch('/usuarios/cadastrar', {
+            fetch('https://banco.up.railway.app/usuarios/cadastrar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
