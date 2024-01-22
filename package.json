@@ -15,7 +15,6 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "node server.js",
-    "build": "netlify deploy --prod"
+    "start": "node server.js"
   }
 }
