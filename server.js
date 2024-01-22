@@ -27,6 +27,6 @@ const usuarioRouter = usuarioRouteInstance.getRouter();
 app.use('/', homeRouteInstance.getRouter());
 app.use('/usuarios', usuarioRouter);
 
-app.listen(5000, () => {
+app.listen(process.env.prot || 5000, () => {
     console.log("Servidor web iniciado na porta 5000");
 });
