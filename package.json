@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@ngrok/ngrok": "^0.9.1",
     "build": "^0.1.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -19,5 +20,4 @@
     "start": "node server.js",
     "build": "npm install && netlify deploy --prod"
   }
-  
 }

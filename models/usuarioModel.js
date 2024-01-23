@@ -18,6 +18,7 @@ class UsuarioModel {
     #cafe4
     #saida
     #extra
+    #dia2
 
     get extra() {
         return this.#extra;
@@ -58,6 +59,14 @@ class UsuarioModel {
 
     set dia(dia){
         this.#dia = dia;
+    }
+    //SEGUNDA DATA PARA O SELECT
+    get dia2() {
+        return this.#dia2;
+    }
+
+    set dia2(dia2){
+        this.#dia2 = dia2;
     }
     //HORA DE ENTRADA
     get entrada() {
@@ -125,7 +134,7 @@ class UsuarioModel {
     }
 
 
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra){
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2){
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -139,6 +148,7 @@ class UsuarioModel {
         this.#cafe4 = cafe4;
         this.#saida = saida;
         this.#extra = extra;
+        this.#dia2 = dia2;
         
     }
 //DEFININDO MODELO E LISTANDO 
@@ -199,6 +209,16 @@ async listarUsuarios(usuid) {
         let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenhav = ?"
 
         let rows = await conexao.ExecutaComando(sql,[usunome, ususenha])
+
+        return rows;
+        
+    }
+
+    async buscahoras(usu_id,dia,dia2)
+    {
+        let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? "
+
+        let rows = await conexão.ExecutaComando(sql,[usu_id,dia,dia2])
 
         return rows;
         

@@ -34,8 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 saida: saida.value,
                 data: data.value,
             }
+            let currentUrl = window.location.href;
 
-            fetch('https://banco.up.railway.app/usuarios/cadastrar', {
+        // Atualizando a URL para incluir o caminho da rota desejada
+        //let apiUrl = currentUrl + '/cadastrar';
+
+            fetch(currentUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
