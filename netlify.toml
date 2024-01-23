@@ -1,4 +1,4 @@
 [build]
-base = "."
+base = "hotelnode-main"
 command = "npm run build"
-publish = "views"
+publish = "hotelnode-main" 
