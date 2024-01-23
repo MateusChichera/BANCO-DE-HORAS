@@ -72,8 +72,21 @@ document.addEventListener("DOMContentLoaded", function() {
             tbody.appendChild(linha);
         }
     }
-    
-    
+    // EXPORTAR PARA EXCEL
+    document.getElementById("exportarExcelBtn").addEventListener("click", exportarParaExcel);
+
+    function exportarParaExcel() {
+        // Obtenha os dados da tabela
+        let tabela = document.querySelector("table");
+        let dados = XLSX.utils.table_to_sheet(tabela);
+
+        // Crie um objeto de trabalho Excel
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, dados, "Horas");
+
+        // Salve o arquivo Excel
+        XLSX.writeFile(wb, "horas.xlsx");
+    } 
     
     
     
