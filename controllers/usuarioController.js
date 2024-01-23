@@ -1,9 +1,44 @@
 const UsuarioModel = require("../models/usuarioModel");
 const express = require('express');
 const app = express();
+const moment = require('moment');
 
 
 class UsuarioController {
+
+ //BUSCA HORA POR DATA 
+ // UsuarioController.js
+
+ // ...
+
+async buscarHoras(req, res) {
+    try {
+        const usuId = req.query.id;
+        const diaInicio = req.query.dia;
+        const diaFim = req.query.dia2;
+
+        // Verifique se todas as informações necessárias estão presentes
+        if (usuId && diaInicio && diaFim) {
+            const usuarioModel = new UsuarioModel();
+            const resultados = await usuarioModel.buscahoras(usuId, diaInicio, diaFim);
+
+            res.send({
+                ok: true,
+                msg: "Horas encontradas com sucesso.",
+                resultados: resultados
+            });
+        } else {
+            res.send({ ok: false, msg: "Por favor, forneça todas as informações necessárias para a pesquisa." });
+        }
+    } catch (error) {
+        console.error("Erro ao buscar horas:", error);
+        res.send({ ok: false, msg: "Erro ao buscar horas no banco de dados." });
+    }
+}
+
+// ...
+
+
 
 
     async listarView(req, res) {

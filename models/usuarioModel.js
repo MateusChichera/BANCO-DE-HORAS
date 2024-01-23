@@ -218,7 +218,7 @@ async listarUsuarios(usuid) {
     {
         let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? "
 
-        let rows = await conexão.ExecutaComando(sql,[usu_id,dia,dia2])
+        let rows = await conexao.ExecutaComando(sql,[usu_id,dia,dia2])
 
         return rows;
         

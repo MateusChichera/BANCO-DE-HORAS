@@ -18,6 +18,9 @@ class UsuarioRoute {
         this.#router.get('/editar/:id', ctrl.editarView);
         this.#router.post('/editar', ctrl.editar);
         this.#router.post('/excluir', ctrl.excluir);
+        this.#router.get('/buscar', ctrl.buscarHoras);
+
+
     }
 }
 

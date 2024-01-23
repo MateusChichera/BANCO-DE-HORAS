@@ -1,5 +1,87 @@
 document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("pesquisarBtn").addEventListener("click", pesquisarHoras);
 
+    function pesquisarHoras() {
+        let idUsuario = document.getElementById("usuario").value;
+        let dataInicio = document.getElementById("dia").value;
+        let dataFim = document.getElementById("dia2").value;
+    
+        // Verifica se as datas são válidas
+        if (idUsuario && dataInicio && dataFim) {
+            let currentUrl = window.location.href;
+            
+            // Atualiza a URL para incluir o caminho da rota desejada
+            let apiUrl = currentUrl + '/buscar?id=' + idUsuario + '&dia=' + dataInicio + '&dia2=' + dataFim;
+    
+            fetch(apiUrl, {
+                method: 'GET',  // Assumindo que a rota usa o método GET para pesquisa
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(function(resposta) {
+                return resposta.json();
+            })
+            .then(function(resposta) {
+                if (resposta.ok) {
+                    // Atualiza a tabela com os resultados da busca
+                    atualizarTabela(resposta.resultados);
+                } else {
+                    alert(resposta.msg);
+                }
+            })
+            .catch(function(erro) {
+                console.error("Erro ao buscar horas:", erro);
+            });
+    
+        } else {
+            alert("Por favor, preencha todas as informações de pesquisa.");
+        }
+    }
+
+    function atualizarTabela(resultados) {
+        // Limpa o corpo da tabela
+        let tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";
+    
+        // Adiciona as linhas com os resultados da busca à tabela
+        for (let i = 0; i < resultados.length; i++) {
+            let linha = document.createElement("tr");
+    
+            linha.innerHTML = `
+                <td>${resultados[i].entrada}</td>
+                <td>${resultados[i].cafe1}</td>
+                <td>${resultados[i].cafe2}</td>
+                <td>${resultados[i].almoco1}</td>
+                <td>${resultados[i].almoco2}</td>
+                <td>${resultados[i].cafe3}</td>
+                <td>${resultados[i].cafe4}</td>
+                <td>${resultados[i].saida}</td>
+                <td>
+                    <div>
+                        <button data-id="${resultados[i].usuId}" class="btn btn-primary editarBtn">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button data-id="${resultados[i].usuId}" class="btn btn-danger btnExclusao">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+    
+            tbody.appendChild(linha);
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
     let botoes = document.querySelectorAll(".btnExclusao");
 
