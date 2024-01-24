@@ -4,6 +4,24 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("btnGravar").addEventListener('click', gravarUsuario);
 
 
+    //CALCULA HORAS EXTRAS
+    function calcularHorasExtras(entrada, saida) {
+        const entradaObj = new Date(`2000-01-01T${entrada}:00`);
+        const saidaObj = new Date(`2000-01-01T${saida}:00`);
+        const jornadaPadrao = 8 * 60; // 8 horas em minutos
+
+        // Convertendo para minutos
+        const minutosTrabalhados = (saidaObj - entradaObj) / (60 * 1000);
+
+        // Calculando as horas extras
+        const horasExtras = Math.max(minutosTrabalhados - jornadaPadrao, 0);
+
+        // Convertendo minutos de volta para horas e minutos
+        const horasExtrasHoras = Math.floor(horasExtras / 60);
+        const horasExtrasMinutos = horasExtras % 60;
+
+        return { horas: horasExtrasHoras, minutos: horasExtrasMinutos };
+    }
     
 
     function gravarUsuario() {
@@ -20,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
         let usu =  document.getElementById("usuario");
 
         console.log(usu);
-
+// calculando horas extras antes de enviar ao banco
+const horasExtras = calcularHorasExtras(entrada, saida)
            
             var usuario = {
                 usu: usu.value,
@@ -33,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 cafe4: cafe4.value,
                 saida: saida.value,
                 data: data.value,
+                horasExtras: horasExtras,
             }
             let currentUrl = window.location.href;
 

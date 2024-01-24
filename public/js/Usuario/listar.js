@@ -38,6 +38,14 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("Por favor, preencha todas as informações de pesquisa.");
         }
     }
+    //FORMATA DATA NO CORRETO
+    function formatarDataISO8601ParaDDMMYYYY(dataISO8601) {
+        const dataObj = new Date(dataISO8601);
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+        const ano = dataObj.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+    }
 
     function atualizarTabela(resultados) {
         // Limpa o corpo da tabela
@@ -49,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let linha = document.createElement("tr");
     
             linha.innerHTML = `
+                <td>${formatarDataISO8601ParaDDMMYYYY(resultados[i].dia)}</td>
                 <td>${resultados[i].entrada}</td>
                 <td>${resultados[i].cafe1}</td>
                 <td>${resultados[i].cafe2}</td>
