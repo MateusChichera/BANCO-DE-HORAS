@@ -5,24 +5,53 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     //CALCULA HORAS EXTRAS
-    function calcularHorasExtras(entrada, saida) {
-        const entradaObj = new Date(`2000-01-01T${entrada}:00`);
-        const saidaObj = new Date(`2000-01-01T${saida}:00`);
-        const jornadaPadrao = 8 * 60; // 8 horas em minutos
+   
 
-        // Convertendo para minutos
-        const minutosTrabalhados = (saidaObj - entradaObj) / (60 * 1000);
-
+    function calcularHorasExtras(entrada, saida, jornadaPadrao) {
+        // Certifique-se de que entrada e saida são strings
+        entrada = String(entrada);
+        saida = String(saida);
+    
+        // Verifique se os formatos são HH:mm
+        const entradaMatch = entrada.match(/^(\d{1,2}):(\d{2})$/);
+        const saidaMatch = saida.match(/^(\d{1,2}):(\d{2})$/);
+    
+        if (!entradaMatch || !saidaMatch) {
+            throw new Error('Formato de entrada ou saída inválido. Use HH:mm.');
+        }
+    
+        const entradaHoras = parseInt(entradaMatch[1], 10);
+        const entradaMinutos = parseInt(entradaMatch[2], 10);
+    
+        const saidaHoras = parseInt(saidaMatch[1], 10);
+        const saidaMinutos = parseInt(saidaMatch[2], 10);
+    
+        const minutosEntrada = entradaHoras * 60 + entradaMinutos;
+        const minutosSaida = saidaHoras * 60 + saidaMinutos;
+    
         // Calculando as horas extras
-        const horasExtras = Math.max(minutosTrabalhados - jornadaPadrao, 0);
-
-        // Convertendo minutos de volta para horas e minutos
-        const horasExtrasHoras = Math.floor(horasExtras / 60);
-        const horasExtrasMinutos = horasExtras % 60;
-
-        return { horas: horasExtrasHoras, minutos: horasExtrasMinutos };
+        const minutosTrabalhados = Math.max(minutosSaida - minutosEntrada, 0);
+        const minutosExtras = Math.max(minutosTrabalhados - jornadaPadrao, 0);
+    
+        // Convertendo minutos para o formato 'HH:mm'
+        const horasExtras = Math.floor(minutosExtras / 60);
+        const minutosExtrasFormatados = minutosExtras % 60;
+    
+        // Formatando para o formato 'HH:mm'
+        const horasExtrasFormatadas = `${String(horasExtras).padStart(2, '0')}:${String(minutosExtrasFormatados).padStart(2, '0')}`;
+    
+        return horasExtrasFormatadas;
     }
     
+    // Exemplo de uso
+    const entrada = '06:42';
+    const saida = '20:03';
+    const jornadaPadrao = 8 * 60; // 8 horas em minutos
+    
+    const resultado = calcularHorasExtras(entrada, saida, jornadaPadrao);
+    console.log(resultado);
+    
+
 
     function gravarUsuario() {
 
@@ -39,7 +68,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         console.log(usu);
 // calculando horas extras antes de enviar ao banco
-const horasExtras = calcularHorasExtras(entrada, saida)
+const jornadaPadrao = 8 * 60;
+console.log('Entrada:', entrada.value);
+console.log('Saida:', saida.value);
+
+const horasExtras = calcularHorasExtras(entrada.value, saida.value, jornadaPadrao);
+console.log('Horas Extras:', horasExtras);
            
             var usuario = {
                 usu: usu.value,

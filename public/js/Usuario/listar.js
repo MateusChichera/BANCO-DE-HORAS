@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <td>${resultados[i].cafe3}</td>
                 <td>${resultados[i].cafe4}</td>
                 <td>${resultados[i].saida}</td>
+                <td>${resultados[i].extra}</td>
                 <td>
                     <div>
                         <button data-id="${resultados[i].usuId}" class="btn btn-primary editarBtn">

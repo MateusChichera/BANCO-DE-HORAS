@@ -184,10 +184,10 @@ async listarUsuarios(usuid) {
 
 
     //ADCIONAR HORAS
-    async adcUsuarios(usuid, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, dia) {
-        let sql = "INSERT INTO Horas (dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    async adcUsuarios(usuid, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, dia,extra) {
+        let sql = "INSERT INTO Horas (dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid,extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     
-        let rows = await conexao.ExecutaComando(sql, [dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid]);
+        let rows = await conexao.ExecutaComando(sql, [dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid,extra]);
     }
     
     //NAO EXCLUIR POR ENQUANTO

@@ -104,10 +104,12 @@ async buscarHoras(req, res) {
                 cafe4: req.body.cafe4,
                 saida: req.body.saida,
                 data: req.body.data,
+                horasExtras: req.body.horasExtras,
             }
 
-            
-   adc.adcUsuarios(newuser.usu, newuser.entrada, newuser.cafe1, newuser.cafe2, newuser.almoco1, newuser.almoco2, newuser.cafe3, newuser.cafe4,newuser.saida,newuser.data);
+
+
+   adc.adcUsuarios(newuser.usu, newuser.entrada, newuser.cafe1, newuser.cafe2, newuser.almoco1, newuser.almoco2, newuser.cafe3, newuser.cafe4,newuser.saida,newuser.data,newuser.horasExtras);
            
             res.send({ok: true, msg: "Horas Cadastradas"})
         
