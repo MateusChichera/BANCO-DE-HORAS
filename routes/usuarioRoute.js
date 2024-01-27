@@ -15,16 +15,12 @@ class UsuarioRoute {
         this.#router.get('/', ctrl.listarView);
         this.#router.get('/cadastrar', ctrl.cadastrarView);
         this.#router.post('/cadastrar', ctrl.cadastrar);
+
+        // A rota /editar/:id deve ser adicionada apenas uma vez
         this.#router.get('/editar/:id', ctrl.editarView);
-        this.#router.post('/editar', ctrl.editar);
+        this.#router.post('/editar/:id', ctrl.editar);
         this.#router.post('/excluir', ctrl.excluir);
         this.#router.get('/buscar', ctrl.buscarHoras);
-        // Adicione esta parte para configurar a rota /usuarios/editar/:id
-this.#router.get('/editar/:id', (req, res) => {
-    res.render('usuario/editar', { userId: req.params.id });
-});
-
-
     }
 }
 

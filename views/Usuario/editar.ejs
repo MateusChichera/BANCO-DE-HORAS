@@ -1,9 +1,8 @@
 
 <script src="/js/Usuario/editar.js"></script>
-<script>
-    var detalhes = JSON.parse('<%- JSON.stringify(detalhes) %>');
-    console.log(<%- JSON.stringify(detalhes) %>);
-</script>
+<script src="/js/Usuario/editar.js"></script>
+<script src="/js/Usuario/editar.js"></script>
+
 <div>
     <h1>EDITAR HORAS</h1>
 
@@ -19,7 +18,7 @@
         </div>
         <div class="form-group">
             <label for="usuarioNome">Entrada</label>
-            <input class="form-control" type="time" name="entrada" min="00:00" max="23:59" required id="entrada" value="<%= detalhes.entrada %>" />
+            <input class="form-control" type="time" name="entrada" min="00:00" max="23:59" required id="entrada" />
         </div>
         <div class="form-group">
             <label for="usuarioNome">Cafe</label>

@@ -53,6 +53,12 @@ console.log(resultado);
 
     function gravarUsuario() {
 
+        var currentUrl = new URL(window.location.href);
+
+        // Obter o valor do parâmetro 'idhora' da URL
+        var idhora = currentUrl.searchParams.get("idhora");
+    
+
         let entrada = document.getElementById("entrada");
         let cafe1 = document.getElementById("cafe1");
         let cafe2 = document.getElementById("cafe2");
@@ -63,6 +69,7 @@ console.log(resultado);
         let saida = document.getElementById("saida");
         let data = document.getElementById("dia");
         let usu =  document.getElementById("usuario");
+
 
         console.log(usu);
 // calculando horas extras antes de enviar ao banco
@@ -85,11 +92,12 @@ console.log('Horas Extras:', horasExtras);
                 saida: saida.value,
                 data: data.value,
                 horasExtras: horasExtras,
+                idhora : idhora,
             }
-            let currentUrl = window.location.href;
+
 
         // Atualizando a URL para incluir o caminho da rota desejada
-        //let apiUrl = currentUrl + '/cadastrar';
+       // let apiUrl = currentUrl + '/usuario/editar';
 
             fetch(currentUrl, {
                 method: 'POST',
@@ -104,15 +112,7 @@ console.log('Horas Extras:', horasExtras);
             .then(function(resposta2) {
                 if(resposta2.ok) {
                     alert(resposta2.msg);
-                    entrada.value = null;
-                    cafe1.value = null;
-                    cafe2.value = null;
-                    almoco1.value = null;
-                    almoco2.value = null;
-                    cafe3.value = null;
-                    cafe4.value = null;
-                    saida.value = null;
-                    data.value =null;
+                   window.location.href = '/';
                                    
                 }
                 else{

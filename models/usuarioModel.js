@@ -221,11 +221,13 @@ async listarUsuarios(usuid) {
     }
     
     // NAO EDITAR POR ENQUANTO
-    async edtUsuarios(id, nome, email, ativo, senha, per_id) {
-        let sql = "UPDATE tb_usuario SET usu_nome = ?, usu_email = ?, usu_ativo = ?, usu_senha = ?, per_id = ? WHERE usu_id = ?";
-      
-        let rows = await conexao.ExecutaComando(sql, [nome, email, ativo, senha, per_id, id]);
-      }
+    async edtUsuarios(usuid, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, dia, extra, idhora) {
+        console.log('Edição em progresso...');
+        let sql = "UPDATE Horas SET dia = ?, entrada = ?, cafe1 = ?, cafe2 = ?, almoco1 = ?, almoco2 = ?, cafe3 = ?, cafe4 = ?, saida = ?, usuid = ?, extra = ? WHERE idhora = ?";
+        let rows = await conexao.ExecutaComando(sql, [dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid, extra, idhora]);
+        console.log('Edição concluída!');
+        return rows; // Certifique-se de que sua função retorna a promessa
+    }
       async autenticar(usunome,ususenha) {
     
         let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenhav = ?"

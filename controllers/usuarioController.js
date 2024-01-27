@@ -74,29 +74,30 @@ async buscarHoras(req, res) {
     
     editar(req, res) {
         let adc = new UsuarioModel();
-          const newuser={
-        
-                usu: req.body.usu,
-                entrada:req.body.entrada,
-                cafe1:req.body.cafe1,
-                cafe2:req.body.cafe2,
-                almoco1: req.body.almoco1,
-                almoco2: req.body.almoco2,
-                cafe3: req.body.cafe3,
-                cafe4: req.body.cafe4,
-                saida: req.body.saida,
-                data: req.body.data,
-                horasExtras: req.body.horasExtras,
-            }
-
-
-
-   adc.adcUsuarios(newuser.usu, newuser.entrada, newuser.cafe1, newuser.cafe2, newuser.almoco1, newuser.almoco2, newuser.cafe3, newuser.cafe4,newuser.saida,newuser.data,newuser.horasExtras);
-           
-            res.send({ok: true, msg: "Horas Cadastradas"})
-        
+        const newuser = {
+            usu: req.body.usu,
+            entrada: req.body.entrada,
+            cafe1: req.body.cafe1,
+            cafe2: req.body.cafe2,
+            almoco1: req.body.almoco1,
+            almoco2: req.body.almoco2,
+            cafe3: req.body.cafe3,
+            cafe4: req.body.cafe4,
+            saida: req.body.saida,
+            data: req.body.data,
+            horasExtras: req.body.horasExtras,
+            idhora: req.body.idhora,
+        };
+    
+        adc.edtUsuarios(newuser.usu, newuser.entrada, newuser.cafe1, newuser.cafe2, newuser.almoco1, newuser.almoco2, newuser.cafe3, newuser.cafe4, newuser.saida, newuser.data, newuser.horasExtras, newuser.idhora)
+            .then(() => {
+                res.send({ ok: true, msg: "Horas Editadas" });
+            })
+            .catch(error => {
+                console.error(error);
+                res.status(500).send({ ok: false, msg: "Erro ao cadastrar horas" });
+            });
     }
-
 
     excluir(req, res) {
         const exc = new UsuarioModel();
