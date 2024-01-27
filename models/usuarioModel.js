@@ -19,7 +19,8 @@ class UsuarioModel {
     #saida
     #extra
     #dia2
-
+    #idhora
+     // ARMAZENA HORA EXTRA
     get extra() {
         return this.#extra;
     }
@@ -27,6 +28,15 @@ class UsuarioModel {
     set extra(extra){
         this.#extra = extra;
     }
+    //ID DA HORA
+    get idhora() {
+        return this.#idhora;
+    }
+
+    set idhora(idhora){
+        this.#idhora = idhora;
+    }
+
 
     //ID USUARIO
     get usuId() {
@@ -134,7 +144,7 @@ class UsuarioModel {
     }
 
 
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2){
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora){
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -149,6 +159,7 @@ class UsuarioModel {
         this.#saida = saida;
         this.#extra = extra;
         this.#dia2 = dia2;
+        this.#idhora = idhora
         
     }
 //DEFININDO MODELO E LISTANDO 
@@ -198,6 +209,17 @@ async listarUsuarios(usuid) {
         let rows = await conexao.ExecutaComando(sql, [id])
         
     }
+    // SELECT PELO ID DA HORA
+    async buscaid(idhora) {
+    
+        let sql = "SELECT * FROM Horas WHERE idhora = ? "
+
+        let rows = await conexao.ExecutaComando(sql,[idhora])
+
+        return rows;
+        
+    }
+    
     // NAO EDITAR POR ENQUANTO
     async edtUsuarios(id, nome, email, ativo, senha, per_id) {
         let sql = "UPDATE tb_usuario SET usu_nome = ?, usu_email = ?, usu_ativo = ?, usu_senha = ?, per_id = ? WHERE usu_id = ?";

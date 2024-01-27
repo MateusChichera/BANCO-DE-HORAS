@@ -11,8 +11,37 @@
   <link rel="stylesheet" href="/css/fontawesome/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/template/adminlte.min.css">
+   <!-- Estilos customizados para o tema dark -->
+   <style>
+    /* Adicionado para definir a cor da barra superior e do rodapé */
+    .main-header, .main-footer {
+      background-color: #343a40 !important; /* Defina a cor desejada */
+    }
+
+    /* Adicionado para ajustar a cor da barra lateral */
+    .main-sidebar {
+      background-color:  #343a40 !important; /* Mantenha a cor da barra lateral */
+    }
+
+    /* Adicionado para corrigir a cor do rodapé (footer) */
+    .content-wrapper {
+      background-color: #2c3b41; /* Cor de fundo da página principal */
+      padding-top: 20px; /* Ajuste de margem superior */
+    }
+
+    /* Adicionado para corrigir a cor do rodapé (footer) */
+    .card {
+      background-color: #2c3b41; /* Cor de fundo dos cards */
+    }
+
+    /* Adicionado para corrigir a cor do rodapé (footer) */
+    .card-body {
+      background-color: #ffffff; /* Cor de fundo do conteúdo dentro do card */
+    }
+  </style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed dark-mode">
+<!--<body class="hold-transition sidebar-mini layout-fixed">-->
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -79,7 +108,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div style="background-color: white;" class="content-wrapper">
+  <div style="background-colorr: rgb(255, 255, 255);" class="content-wrapper">
     <!-- /.content -->
     <div style="margin:20px;" class="card card-body">
         <%- body %>
@@ -88,7 +117,7 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2023 Mateus Chichera</a>.</strong>
+    <strong>Copyright &copy; 2024 Mateus Chichera</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0

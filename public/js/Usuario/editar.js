@@ -3,29 +3,95 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("btnGravar").addEventListener('click', gravarUsuario);
 
+//CALCULA HORAS EXTRAS
+   
 
+function calcularHorasExtras(entrada, saida, jornadaPadrao) {
+    // Certifique-se de que entrada e saida são strings
+    entrada = String(entrada);
+    saida = String(saida);
+
+    // Verifique se os formatos são HH:mm
+    const entradaMatch = entrada.match(/^(\d{1,2}):(\d{2})$/);
+    const saidaMatch = saida.match(/^(\d{1,2}):(\d{2})$/);
+
+    if (!entradaMatch || !saidaMatch) {
+        throw new Error('Formato de entrada ou saída inválido. Use HH:mm.');
+    }
+
+    const entradaHoras = parseInt(entradaMatch[1], 10);
+    const entradaMinutos = parseInt(entradaMatch[2], 10);
+
+    const saidaHoras = parseInt(saidaMatch[1], 10);
+    const saidaMinutos = parseInt(saidaMatch[2], 10);
+
+    const minutosEntrada = entradaHoras * 60 + entradaMinutos;
+    const minutosSaida = saidaHoras * 60 + saidaMinutos;
+
+    // Calculando as horas extras
+    const minutosTrabalhados = Math.max(minutosSaida - minutosEntrada, 0);
+    const minutosExtras = Math.max(minutosTrabalhados - jornadaPadrao, 0);
+
+    // Convertendo minutos para o formato 'HH:mm'
+    const horasExtras = Math.floor(minutosExtras / 60);
+    const minutosExtrasFormatados = minutosExtras % 60;
+
+    // Formatando para o formato 'HH:mm'
+    const horasExtrasFormatadas = `${String(horasExtras).padStart(2, '0')}:${String(minutosExtrasFormatados).padStart(2, '0')}`;
+
+    return horasExtrasFormatadas;
+}
+
+// Exemplo de uso
+const entrada = '06:42';
+const saida = '20:03';
+const jornadaPadrao = 8 * 60; // 8 horas em minutos
+
+const resultado = calcularHorasExtras(entrada, saida, jornadaPadrao);
+console.log(resultado);
     
 
     function gravarUsuario() {
-        let id = document.getElementById("usuarioId");
-        let nome = document.getElementById("usuarioNome");
-        let email = document.getElementById("usuarioEmail");
-        let perfil = document.getElementById("usuarioPerfil");
-        let senha = document.getElementById("usuarioSenha");
-        let ativo = document.getElementById("usuarioAtivo");
 
-        if(validarCampos(nome, email, perfil, senha)) {
+        let entrada = document.getElementById("entrada");
+        let cafe1 = document.getElementById("cafe1");
+        let cafe2 = document.getElementById("cafe2");
+        let almoco1 = document.getElementById("almoco1");
+        let almoco2 = document.getElementById("almoco2");
+        let cafe3 = document.getElementById("cafe3");
+        let cafe4 = document.getElementById("cafe4");
+        let saida = document.getElementById("saida");
+        let data = document.getElementById("dia");
+        let usu =  document.getElementById("usuario");
+
+        console.log(usu);
+// calculando horas extras antes de enviar ao banco
+const jornadaPadrao = 8 * 60;
+console.log('Entrada:', entrada.value);
+console.log('Saida:', saida.value);
+
+const horasExtras = calcularHorasExtras(entrada.value, saida.value, jornadaPadrao);
+console.log('Horas Extras:', horasExtras);
            
             var usuario = {
-                id: id.value,
-                nome: nome.value,
-                email: email.value,
-                perfil: perfil.value,
-                senha: senha.value,
-                ativo: ativo.checked
+                usu: usu.value,
+                entrada: entrada.value,
+                cafe1: cafe1.value,
+                cafe2: cafe2.value,
+                almoco1: almoco1.value,
+                almoco2: almoco2.value,
+                cafe3: cafe3.value,
+                cafe4: cafe4.value,
+                saida: saida.value,
+                data: data.value,
+                horasExtras: horasExtras,
             }
+            let currentUrl = window.location.href;
 
-            fetch('/usuarios/editar', {
+        // Atualizando a URL para incluir o caminho da rota desejada
+        //let apiUrl = currentUrl + '/cadastrar';
+
+            fetch(currentUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,54 +104,21 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(function(resposta2) {
                 if(resposta2.ok) {
                     alert(resposta2.msg);
-                    nome.value = "";
-                    email.value = "";
-                    perfil.value = 0;
-                    senha.value = "";
-                    ativo.checked = false;                
+                    entrada.value = null;
+                    cafe1.value = null;
+                    cafe2.value = null;
+                    almoco1.value = null;
+                    almoco2.value = null;
+                    cafe3.value = null;
+                    cafe4.value = null;
+                    saida.value = null;
+                    data.value =null;
+                                   
                 }
                 else{
                     alert(resposta2.msg);
                 }
             })
         }
-        else{
-            alert("Preencha os campos destacados corretamente!");
-        }
-    }
 
-    function validarCampos(nome, email, perfil, senha) {
-
-        //limpa a estilização antes
-        nome.style["border-color"] = "unset";
-        email.style["border-color"] = "unset";
-        perfil.style["border-color"] = "unset";
-        senha.style["border-color"] = "unset";
-
-        let erros = [];
-        if(nome.value == "")
-            erros.push(nome);
-        if(email.value == "")
-            erros.push(email);
-        if(perfil.value == 0)
-            erros.push(perfil);
-        if(senha.value == "")
-            erros.push(senha);
-
-        if(erros.length > 0) {
-            for(let i = 0; i<erros.length; i++){
-                erros[i].style["border-color"] = "red";
-            }
-
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
-    function limparCampos() {
-
-    }
 })

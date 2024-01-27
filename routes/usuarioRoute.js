@@ -19,6 +19,10 @@ class UsuarioRoute {
         this.#router.post('/editar', ctrl.editar);
         this.#router.post('/excluir', ctrl.excluir);
         this.#router.get('/buscar', ctrl.buscarHoras);
+        // Adicione esta parte para configurar a rota /usuarios/editar/:id
+this.#router.get('/editar/:id', (req, res) => {
+    res.render('usuario/editar', { userId: req.params.id });
+});
 
 
     }

@@ -1,11 +1,26 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM completamente carregado");
     document.getElementById("pesquisarBtn").addEventListener("click", pesquisarHoras);
+
+ // Função para converter horas no formato hh:mm:ss para minutos
+function converterParaMinutos(hora) {
+    const [horas, minutos, segundos] = hora.split(":");
+    return parseInt(horas) * 60 + parseInt(minutos) + parseInt(segundos) / 60;
+}
+
+// Função para converter minutos para o formato hh:mm
+function converterParaFormatoHora(minutos) {
+    const horas = Math.floor(minutos / 60);
+    const minutosRestantes = minutos % 60;
+    return `${String(horas).padStart(2, '0')}:${String(minutosRestantes).padStart(2, '0')}`;
+}
+
 
     function pesquisarHoras() {
         let idUsuario = document.getElementById("usuario").value;
         let dataInicio = document.getElementById("dia").value;
         let dataFim = document.getElementById("dia2").value;
-    
+        
         // Verifica se as datas são válidas
         if (idUsuario && dataInicio && dataFim) {
             let currentUrl = window.location.href;
@@ -51,37 +66,48 @@ document.addEventListener("DOMContentLoaded", function() {
         // Limpa o corpo da tabela
         let tbody = document.querySelector("tbody");
         tbody.innerHTML = "";
-    
+        let totalHorasExtras = 0;
+        let totalMinutosExtras = 0;
         // Adiciona as linhas com os resultados da busca à tabela
         for (let i = 0; i < resultados.length; i++) {
             let linha = document.createElement("tr");
-    
+            const minutosExtras = converterParaMinutos(resultados[i].extra);
+           
             linha.innerHTML = `
-                <td>${formatarDataISO8601ParaDDMMYYYY(resultados[i].dia)}</td>
-                <td>${resultados[i].entrada}</td>
-                <td>${resultados[i].cafe1}</td>
-                <td>${resultados[i].cafe2}</td>
-                <td>${resultados[i].almoco1}</td>
-                <td>${resultados[i].almoco2}</td>
-                <td>${resultados[i].cafe3}</td>
-                <td>${resultados[i].cafe4}</td>
-                <td>${resultados[i].saida}</td>
-                <td>${resultados[i].extra}</td>
-                <td>
-                    <div>
-                        <button data-id="${resultados[i].usuId}" class="btn btn-primary editarBtn">
-                            <i class="fas fa-pen"></i>
-                        </button>
-                        <button data-id="${resultados[i].usuId}" class="btn btn-danger btnExclusao">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            `;
-    
+    <td>${formatarDataISO8601ParaDDMMYYYY(resultados[i].dia)}</td>
+    <td>${resultados[i].entrada}</td>
+    <td>${resultados[i].cafe1}</td>
+    <td>${resultados[i].cafe2}</td>
+    <td>${resultados[i].almoco1}</td>
+    <td>${resultados[i].almoco2}</td>
+    <td>${resultados[i].cafe3}</td>
+    <td>${resultados[i].cafe4}</td>
+    <td>${resultados[i].saida}</td>
+    <td class="extra-column">${resultados[i].extra}</td>
+    <td>
+        <div>
+            <button data-id="${resultados[i].idhora}" class="btn btn-primary editarBtn">
+                <i class="fas fa-pen"></i>
+            </button>
+            <button data-id="${resultados[i].idhora}" class="btn btn-danger btnExclusao">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </td>
+`;
+            totalMinutosExtras += minutosExtras;
             tbody.appendChild(linha);
         }
-    }
+        const totalHorasExtrasFormatado = converterParaFormatoHora(totalMinutosExtras);
+
+    // Exiba o total de horas extras no final da tabela
+    let linhaTotalExtras = document.createElement("tr");
+    linhaTotalExtras.innerHTML = `
+        <td class="extra-column">Total de Horas Extras:</td>
+        <td class="extra-column">${totalHorasExtrasFormatado}</td>
+        <td></td>`;
+    tbody.appendChild(linhaTotalExtras);
+}
     // EXPORTAR PARA EXCEL
     document.getElementById("exportarExcelBtn").addEventListener("click", exportarParaExcel);
 
@@ -141,20 +167,26 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     
-    // Selecione todos os botões de edição com uma classe comum, por exemplo, "editarBtn"
-const botoesEditar = document.querySelectorAll(".editarBtn");
+    
+    console.log("Antes de adicionar o evento de clique");
 
-// Adicione um evento de clique a cada botão de edição
-botoesEditar.forEach(function(botao) {
-    botao.addEventListener("click", function() {
-        let idEdicao = this.dataset.id;
-        if (idEdicao) {
-            // Redirecione o usuário para a página de edição com o ID do usuário
-            window.location.href = `/usuarios/editar/${idEdicao}`;
-        } else {
-            alert("ID de usuário inválido!");
+    document.addEventListener("click", function(event) {
+        const botaoClicado = event.target.closest(".editarBtn");
+    
+        if (botaoClicado) {
+            console.log("Botão clicado");
+            let idEdicao = botaoClicado.dataset.id;
+    
+            if (idEdicao) {
+                // Obtém a parte da URL antes da rota atual
+                let baseUrl = window.location.href.split('/').slice(0, -1).join('/');
+                // Redireciona para a rota de edição concatenada com /usuario
+                window.location.assign(`${baseUrl}/usuarios/editar/${idEdicao}`);
+            } else {
+                alert("ID de usuário inválido!");
+            }
         }
+
     });
 });
     
-})

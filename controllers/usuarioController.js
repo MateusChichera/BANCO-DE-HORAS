@@ -51,29 +51,50 @@ async buscarHoras(req, res) {
         res.render('usuario/cadastrar');
     }
     editarView(req, res) {
-        // Passe o ID do usuário para a página de edição como um parâmetro
+        console.log("Método editarView chamado.");
         const userId = req.params.id;
-        res.render('usuario/editar', { userId });
+    
+        // Chame a função do modelo para buscar detalhes com base no ID
+        const usuarioModel = new UsuarioModel();
+        usuarioModel.buscaid(userId)
+            .then(detalhes => {
+                // Renderize a view e envie os detalhes para o front-end
+                console.log("Detalhes recuperados:", detalhes);
+                res.render('usuario/editar', { userId, detalhes });
+            })
+            .catch(error => {
+                console.error("Erro ao buscar detalhes do usuário:", error);
+                res.send({ ok: false, msg: "Erro ao buscar detalhes do usuário no banco de dados." });
+            });
+        
+        console.log("Método editarView concluído.");
     }
+    
+    
     
     editar(req, res) {
         let adc = new UsuarioModel();
-        if(req.body.id != ''  ) {
           const newuser={
-                id: req.body.id,
-                nome: req.body.nome,
-                email:req.body.email,
-                ativo:req.body.ativo,
-                senha:req.body.senha,
-                perfil: req.body.perfil
+        
+                usu: req.body.usu,
+                entrada:req.body.entrada,
+                cafe1:req.body.cafe1,
+                cafe2:req.body.cafe2,
+                almoco1: req.body.almoco1,
+                almoco2: req.body.almoco2,
+                cafe3: req.body.cafe3,
+                cafe4: req.body.cafe4,
+                saida: req.body.saida,
+                data: req.body.data,
+                horasExtras: req.body.horasExtras,
             }
-   adc.edtUsuarios(newuser.id,newuser.nome, newuser.email, newuser.ativo, newuser.senha, newuser.perfil);
+
+
+
+   adc.adcUsuarios(newuser.usu, newuser.entrada, newuser.cafe1, newuser.cafe2, newuser.almoco1, newuser.almoco2, newuser.cafe3, newuser.cafe4,newuser.saida,newuser.data,newuser.horasExtras);
            
-            res.send({ok: true, msg: "Usuário alterado"})
-        }
-        else{
-            res.send({ok: false, msg: "Dados inválidos"})
-        }
+            res.send({ok: true, msg: "Horas Cadastradas"})
+        
     }
 
 
