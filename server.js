@@ -40,5 +40,5 @@ app.use('/', homeRouteInstance.getRouter());
 app.use('/usuarios', usuarioRouter);
 
 app.listen(process.env.port || 80, () => {
-    console.log("Servidor web iniciado na porta 5000");
+    console.log("Servidor web iniciado na porta 80");
 });
