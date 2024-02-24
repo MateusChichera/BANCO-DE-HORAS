@@ -7,31 +7,37 @@ document.addEventListener("DOMContentLoaded", function() {
     //CALCULA HORAS EXTRAS
    
 
-    function calcularHorasExtras(entrada, saida, jornadaPadrao) {
-        // Certifique-se de que entrada e saida são strings
+    function calcularHorasExtras(entrada, saida, almoco1, almoco2, jornadaPadrao) {
+        // Certifique-se de que entrada, saida, almoco1 e almoco2 são strings
         entrada = String(entrada);
         saida = String(saida);
+        almoco1 = String(almoco1);
+        almoco2 = String(almoco2);
     
         // Verifique se os formatos são HH:mm
         const entradaMatch = entrada.match(/^(\d{1,2}):(\d{2})$/);
         const saidaMatch = saida.match(/^(\d{1,2}):(\d{2})$/);
+        const almoco1Match = almoco1.match(/^(\d{1,2}):(\d{2})$/);
+        const almoco2Match = almoco2.match(/^(\d{1,2}):(\d{2})$/);
     
-        if (!entradaMatch || !saidaMatch) {
-            throw new Error('Formato de entrada ou saída inválido. Use HH:mm.');
+        if (!entradaMatch || !saidaMatch || !almoco1Match || !almoco2Match) {
+            throw new Error('Formato de entrada, saída, almoço1 ou almoço2 inválido. Use HH:mm.');
         }
     
-        const entradaHoras = parseInt(entradaMatch[1], 10);
-        const entradaMinutos = parseInt(entradaMatch[2], 10);
+        // Convertendo para minutos
+        const entradaMinutos = parseInt(entradaMatch[1], 10) * 60 + parseInt(entradaMatch[2], 10);
+        const saidaMinutos = parseInt(saidaMatch[1], 10) * 60 + parseInt(saidaMatch[2], 10);
+        const almoco1Minutos = parseInt(almoco1Match[1], 10) * 60 + parseInt(almoco1Match[2], 10);
+        const almoco2Minutos = parseInt(almoco2Match[1], 10) * 60 + parseInt(almoco2Match[2], 10);
     
-        const saidaHoras = parseInt(saidaMatch[1], 10);
-        const saidaMinutos = parseInt(saidaMatch[2], 10);
+        // Calculando o tempo total do almoço em minutos
+        const tempoAlmocoMinutos = almoco2Minutos - almoco1Minutos;
     
-        const minutosEntrada = entradaHoras * 60 + entradaMinutos;
-        const minutosSaida = saidaHoras * 60 + saidaMinutos;
+        // Calculando o tempo trabalhado, descontando o tempo do almoço
+        const tempoTrabalhadoMinutos = Math.max(saidaMinutos - entradaMinutos - tempoAlmocoMinutos, 0);
     
-        // Calculando as horas extras
-        const minutosTrabalhados = Math.max(minutosSaida - minutosEntrada, 0);
-        const minutosExtras = Math.max(minutosTrabalhados - jornadaPadrao, 0);
+        // Calculando as horas extras, descontando o tempo do almoço
+        const minutosExtras = Math.max(tempoTrabalhadoMinutos - jornadaPadrao, 0);
     
         // Convertendo minutos para o formato 'HH:mm'
         const horasExtras = Math.floor(minutosExtras / 60);
@@ -44,11 +50,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     // Exemplo de uso
-    const entrada = '06:42';
-    const saida = '20:03';
-    const jornadaPadrao = 8 * 60; // 8 horas em minutos
-    
-    const resultado = calcularHorasExtras(entrada, saida, jornadaPadrao);
+    const jornadaPadrao = 460; // 7 horas e 40 minutos de jornada DESCONTANDO OS CAFÉS
+    const entrada = '08:00';
+    const saida = '17:00';
+    const almoco1 = '12:00'; // Saída para o almoço
+    const almoco2 = '13:00'; // Retorno do almoço
+    const resultado = calcularHorasExtras(entrada, saida, almoco1, almoco2, jornadaPadrao);
     console.log(resultado);
     
 
@@ -72,7 +79,7 @@ const jornadaPadrao = 8 * 60;
 console.log('Entrada:', entrada.value);
 console.log('Saida:', saida.value);
 
-const horasExtras = calcularHorasExtras(entrada.value, saida.value, jornadaPadrao);
+const horasExtras = calcularHorasExtras(entrada.value, saida.value, almoco1.value, almoco2.value,jornadaPadrao);
 console.log('Horas Extras:', horasExtras);
            
             var usuario = {

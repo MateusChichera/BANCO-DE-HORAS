@@ -220,7 +220,7 @@ async listarUsuarios(usuid) {
         
     }
     
-    // NAO EDITAR POR ENQUANTO
+    // NAO FUNCIONANDO
     async edtUsuarios(usuid, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, dia, extra, idhora) {
         console.log('Edição em progresso...');
         let sql = "UPDATE Horas SET dia = ?, entrada = ?, cafe1 = ?, cafe2 = ?, almoco1 = ?, almoco2 = ?, cafe3 = ?, cafe4 = ?, saida = ?, usuid = ?, extra = ? WHERE idhora = ?";
@@ -228,6 +228,7 @@ async listarUsuarios(usuid) {
         console.log('Edição concluída!');
         return rows; // Certifique-se de que sua função retorna a promessa
     }
+    // autentica o usuario e senha no banc
       async autenticar(usunome,ususenha) {
     
         let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenhav = ?"
@@ -237,7 +238,7 @@ async listarUsuarios(usuid) {
         return rows;
         
     }
-
+    // BUSCA AS HORAS COM DATAS DE INICIO E FIM
     async buscahoras(usu_id,dia,dia2)
     {
         let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? "
