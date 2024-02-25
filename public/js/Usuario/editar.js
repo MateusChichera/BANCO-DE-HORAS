@@ -62,10 +62,10 @@ console.log(resultado);
 
     function gravarUsuario() {
 
-        var currentUrl = new URL(window.location.href);
+        //var currentUrl = new URL(window.location.href);
 
         // Obter o valor do parâmetro 'idhora' da URL
-        var idhora = currentUrl.searchParams.get("idhora");
+       // var idhora = currentUrl.searchParams.get("idhora");
     
 
         let entrada = document.getElementById("entrada");
@@ -88,6 +88,24 @@ console.log('Saida:', saida.value);
 
 const horasExtras = calcularHorasExtras(entrada.value, saida.value,almoco1.value,almoco2.value,jornadaPadrao);
 console.log('Horas Extras:', horasExtras);
+
+var currentUrl = new URL(window.location.href);
+// Obtém o caminho da URL
+const path = window.location.pathname;
+console.log(path);
+// Divide o caminho em partes usando '/' como separador
+const pathArray = path.split('/');
+// Obtém o último elemento do array, que deve ser o ID da hora
+const idhora = pathArray[pathArray.length - 1];
+
+// Certifique-se de que o ID da hora existe
+if (idhora) {
+    // Use o ID da hora conforme necessário
+    console.log('ID da hora:', idhora);
+} else {
+    console.log('ID da hora não encontrado');
+}
+
            
             var usuario = {
                 usu: usu.value,

@@ -201,10 +201,10 @@ async listarUsuarios(usuid) {
         let rows = await conexao.ExecutaComando(sql, [dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid,extra]);
     }
     
-    //NAO EXCLUIR POR ENQUANTO
+    //EM TESTE
     async excUsuarios(id) {
     
-        let sql = "delete from tb_usuario where usu_id = ?"
+        let sql = "delete from Horas where idhora = ?"
 
         let rows = await conexao.ExecutaComando(sql, [id])
         
@@ -220,7 +220,7 @@ async listarUsuarios(usuid) {
         
     }
     
-    // NAO FUNCIONANDO
+    //FUNCIONANDO 
     async edtUsuarios(usuid, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, dia, extra, idhora) {
         console.log('Edição em progresso...');
         let sql = "UPDATE Horas SET dia = ?, entrada = ?, cafe1 = ?, cafe2 = ?, almoco1 = ?, almoco2 = ?, cafe3 = ?, cafe4 = ?, saida = ?, usuid = ?, extra = ? WHERE idhora = ?";

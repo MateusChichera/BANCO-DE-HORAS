@@ -108,6 +108,9 @@ function converterParaFormatoHora(minutos) {
         <td></td>`;
     tbody.appendChild(linhaTotalExtras);
 }
+
+
+
     // EXPORTAR PARA EXCEL
     document.getElementById("exportarExcelBtn").addEventListener("click", exportarParaExcel);
 
@@ -140,30 +143,37 @@ function converterParaFormatoHora(minutos) {
 
     function excluirUsuario() {
         let idExclusao = this.dataset.id;
-        if(idExclusao != undefined && idExclusao != ""){
-
-            fetch('/usuarios/excluir', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: idExclusao})
-            })
-            .then(function(r) {
-                return r.json();
-            })
-            .then(function(r) {
-                if(r.ok){
-                    alert(r.msg);
-                    window.location.reload();
-                }
-                else{
-                    alert(r.msg);
-                }
-            })
-        }
-        else{
-            alert("Dados inválidos!")
+        if (idExclusao != undefined && idExclusao != "") {
+            // Exibe um diálogo de confirmação antes de excluir
+            if (confirm("Tem certeza que deseja excluir este item?")) {
+                var currentUrl = new URL(window.location.href);
+                fetch(currentUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: idExclusao })
+                })
+                    .then(function (r) {
+                        return r.json();
+                    })
+                    .then(function (r) {
+                        if (r.ok) {
+                            alert(r.msg);
+                            window.location.reload();
+                        } else {
+                            alert(r.msg);
+                        }
+                    })
+                    .catch(function (erro) {
+                        console.error("Erro ao excluir item:", erro);
+                    });
+            } else {
+                // Se o usuário cancelar a exclusão, não faz nada
+                console.log("Exclusão cancelada pelo usuário.");
+            }
+        } else {
+            alert("Dados inválidos!");
         }
     }
     
@@ -182,11 +192,15 @@ function converterParaFormatoHora(minutos) {
                 let baseUrl = window.location.href.split('/').slice(0, -1).join('/');
                 // Redireciona para a rota de edição concatenada com /usuario
                 window.location.assign(`${baseUrl}/usuarios/editar/${idEdicao}`);
+                localStorage.setItem('idhora', idEdicao);
+                
             } else {
                 alert("ID de usuário inválido!");
             }
         }
 
     });
+
+    
 });
     

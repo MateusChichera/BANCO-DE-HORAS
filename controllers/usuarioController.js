@@ -95,7 +95,7 @@ async buscarHoras(req, res) {
             })
             .catch(error => {
                 console.error(error);
-                res.status(500).send({ ok: false, msg: "Erro ao cadastrar horas" });
+                res.status(500).send({ ok: false, msg: "Erro ao editar horas verificar log" });
             });
     }
 
