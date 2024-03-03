@@ -1,5 +1,7 @@
 const Database = require('../utils/database')
 const UsuarioController = require('../controllers/usuarioController');
+const bcrypt = require('bcrypt');
+
 
 const conexao = new Database();
 
@@ -228,15 +230,16 @@ async listarUsuarios(usuid) {
         console.log('Edição concluída!');
         return rows; // Certifique-se de que sua função retorna a promessa
     }
-    // autentica o usuario e senha no banc
-      async autenticar(usunome,ususenha) {
-    
-        let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenhav = ?"
-
-        let rows = await conexao.ExecutaComando(sql,[usunome, ususenha])
-
-        return rows;
+    // autentica o usuario e senha no banco
+    async autenticar(email, senha) {
+        let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenha = ?";
+        let rows = await conexao.ExecutaComando(sql, [email, senha]);
         
+        if (rows.length > 0) {
+            return rows[0]; // Retorna o usuário encontrado
+        } else {
+            return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
+        }
     }
     // BUSCA AS HORAS COM DATAS DE INICIO E FIM
     async buscahoras(usu_id,dia,dia2)

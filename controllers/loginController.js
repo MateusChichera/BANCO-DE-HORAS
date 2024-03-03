@@ -1,25 +1,29 @@
+const UsuarioModel = require("../models/usuarioModel");
+
 class LoginController {
 
     indexView(req, res){
         res.render('login/index', {layout: 'login/index'})
     }
 
-    autenticar(req, res){
+    autenticar(req, res) {
         const usuarioModel = new UsuarioModel();
-        usuarioModel.autenticar(login,senha)
-        if(req.body.email != undefined && req.body.senha != undefined){
-            if(req.body.email == "fulvio@unoeste.br" && req.body.senha == "12345"){
-                res.send({status: true, msg: "Autenticação realizada com sucesso"})
-            }
-            else{
-                res.send({status: false, msg: "Credenciais inválidas"})
-            }
-        }
-        else{
-            res.send({status: false, msg: "Credenciais inválidas"})
-        }
+        const email = req.body.email;
+        const senha = req.body.senha;
+    
+        usuarioModel.autenticar(email, senha)
+            .then(user => {
+                if (user) {
+                    res.send({ status: true, msg: "Autenticação realizada com sucesso" });
+                } else {
+                    res.send({ status: false, msg: "Credenciais inválidas" });
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao autenticar:", error);
+                res.send({ status: false, msg: "Erro ao autenticar" });
+            });
     }
-
 }
 
 module.exports = LoginController
