@@ -1,18 +1,6 @@
 const express = require('express');
 const ejsLayout = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
-const http = require('http');
-const ngrok = require('@ngrok/ngrok');
-
-// Create webserver
-//http.createServer((req, res) => {
- // res.writeHead(200, { 'Content-Type': 'text/html' });
-///  res.end('Congrats you have created an ngrok web server');
-//}).listen(8080, () => console.log('Node.js web server at 8080 is running...'));
-
-// Get your endpoint online
-//ngrok.connect({ addr: 8080, authtoken_from_env: true })
-  //.then(listener => console.log(`Ingress established at: ${listener.url()}`));
 
 const app = express();
 
@@ -29,13 +17,21 @@ app.use(cookieParser());
 // Rotas separadas
 const HomeRoute = require('./routes/homeRoute');
 const UsuarioRoute = require('./routes/usuarioRoute');
+const LoginRoute = require('./routes/loginRoute');
 
+//Iniciando a rota de login
+const loginRouteInstance = new LoginRoute();
+const loginRouter = loginRouteInstance.getRouter();
+
+// Iniciando a rota da home
 const homeRouteInstance = new HomeRoute();
 homeRouteInstance.initialize();
 
+// Iniciando a rota dos usuários
 const usuarioRouteInstance = new UsuarioRoute();
 const usuarioRouter = usuarioRouteInstance.getRouter();
 
+app.use('/login', loginRouter); // Corrigido aqui para usar loginRouter em vez de LoginRouter
 app.use('/', homeRouteInstance.getRouter());
 app.use('/usuarios', usuarioRouter);
 

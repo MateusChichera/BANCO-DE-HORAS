@@ -107,6 +107,11 @@ function converterParaFormatoHora(minutos) {
         <td class="extra-column">${totalHorasExtrasFormatado}</td>
         <td></td>`;
     tbody.appendChild(linhaTotalExtras);
+
+    let botoesExclusao = document.querySelectorAll(".btnExclusao");
+    for (let i = 0; i < botoesExclusao.length; i++) {
+        botoesExclusao[i].addEventListener("click", excluirUsuario);
+    }
 }
 
 
@@ -135,19 +140,23 @@ function converterParaFormatoHora(minutos) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    let botoes = document.querySelectorAll(".btnExclusao");
+//let botoes = document.querySelectorAll(".btnExclusao");
 
-    for(let i = 0; i<botoes.length; i++){
-        botoes[i].onclick = excluirUsuario;
-    }
+//for (let i = 0; i < botoes.length; i++) {
+ //   botoes[i].addEventListener("click", excluirUsuario);
+//}
 
-    function excluirUsuario() {
+    function excluirUsuario(event) {
+       
+         // Impede o comportamento padrão do botão (se houver)
+         event.preventDefault();
         let idExclusao = this.dataset.id;
+        console.log(idExclusao);
         if (idExclusao != undefined && idExclusao != "") {
             // Exibe um diálogo de confirmação antes de excluir
             if (confirm("Tem certeza que deseja excluir este item?")) {
                 var currentUrl = new URL(window.location.href);
-                fetch(currentUrl, {
+                fetch('${currentUrl.origin}/usuarios/excluir', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
