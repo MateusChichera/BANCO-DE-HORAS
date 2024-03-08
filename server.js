@@ -1,8 +1,11 @@
 const express = require('express');
 const ejsLayout = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
+const session =require ("express-session");
+const path = require('path');
 
 const app = express();
+
 
 app.set('views', './views');
 app.set('view engine', 'ejs');

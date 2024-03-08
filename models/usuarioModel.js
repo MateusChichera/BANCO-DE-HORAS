@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 const conexao = new Database();
 
 class UsuarioModel {
-
     #usuId;
     #usuNome;
     #usuSenha;
@@ -241,15 +240,13 @@ async listarUsuarios(usuid) {
             return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
         }
     }
-    // BUSCA AS HORAS COM DATAS DE INICIO E FIM
-    async buscahoras(usu_id,dia,dia2)
-    {
-        let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? "
-
-        let rows = await conexao.ExecutaComando(sql,[usu_id,dia,dia2])
-
+    // BUSCA AS HORAS COM DATAS DE INICIO E FIM ORDENADO
+    async buscahoras(usu_id, dia, dia2) {
+        let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? ORDER BY dia";
+    
+        let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
+    
         return rows;
-        
     }
       
     
