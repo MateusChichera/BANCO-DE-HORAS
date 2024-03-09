@@ -134,8 +134,17 @@ function converterParaFormatoHora(minutos) {
 </td>
 `;
     document.getElementById("tabelaImplantacoes").appendChild(linha);
+    var cont =0 
+    cont++;
     }
-    
+    //TOTAL DE IMPLANTAÇÕES
+    cont = parseInt(cont);
+let linhaTotalimp = document.createElement("tr");
+linhaTotalimp.innerHTML = `
+    <td class="extra-column">Total de Implantações:</td>
+    <td class="extra-column">${cont+1}</td>
+    <td></td>`;
+document.getElementById("tabelaImplantacoes").appendChild(linhaTotalimp);
 
     let botoesExclusao = document.querySelectorAll(".btnExclusao");
     for (let i = 0; i < botoesExclusao.length; i++) {
@@ -147,6 +156,7 @@ function converterParaFormatoHora(minutos) {
 
     // EXPORTAR PARA EXCEL
     document.getElementById("exportarExcelBtn").addEventListener("click", exportarParaExcel);
+    document.getElementById("exportarExcelBtn1").addEventListener("click", exportarParaExcel1);
 
     function exportarParaExcel() {
         // Obtenha os dados da tabela
@@ -159,6 +169,18 @@ function converterParaFormatoHora(minutos) {
 
         // Salve o arquivo Excel
         XLSX.writeFile(wb, "horas.xlsx");
+    } 
+    function exportarParaExcel1() {
+        // Obtenha os dados da tabela
+        let tabela = document.getElementById("tabelaImplantacoes");
+        let dados = XLSX.utils.table_to_sheet(tabela);
+
+        // Crie um objeto de trabalho Excel
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, dados, "Implantações");
+
+        // Salve o arquivo Excel
+        XLSX.writeFile(wb, "Implantações.xlsx");
     } 
     
     
