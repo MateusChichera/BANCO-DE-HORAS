@@ -21,6 +21,58 @@ class UsuarioModel {
     #extra
     #dia2
     #idhora
+    #cidade
+    #tipo
+    #data
+    #estado
+    #obs
+    #cliente
+
+    //cidade
+    get cidade(){
+        return this.#cidade;
+    }
+    set cidade(cidade){
+        return this.#cidade = cidade;
+    }
+    //TIPO
+    get tipo(){
+        return this.#tipo;
+    }
+    set tipo(tipo){
+        return this.#tipo = tipo;
+    }
+    //DATA
+    get data(){
+        return this.#data;
+    }
+    set data(data){
+        return this.#data=data;
+    }
+    //estado
+    get estado(){
+        return this.#estado;
+    }
+    set estado(estado){
+        return this.#estado=estado;
+    }
+    //OBSERVAÇÕES
+    get obs(){
+        return this.#obs;
+    }
+    set obs(obs){
+        return this.#obs=obs;
+    }
+    //cliente
+    get cliente(){
+        return this.#cliente;
+    }
+    set cliente(cliente){
+        return this.#cliente=cliente;
+    }
+
+
+
      // ARMAZENA HORA EXTRA
     get extra() {
         return this.#extra;
@@ -145,7 +197,7 @@ class UsuarioModel {
     }
 
 
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora){
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora,obs,cidade,tipo,estado,cliente,data){
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -160,7 +212,13 @@ class UsuarioModel {
         this.#saida = saida;
         this.#extra = extra;
         this.#dia2 = dia2;
-        this.#idhora = idhora
+        this.#idhora = idhora;
+        this.#cidade = cidade;
+        this.#tipo = tipo;
+        this.#estado = estado;
+        this.#obs = obs;
+        this.#cliente = cliente;
+        this.#data = data;
         
     }
 //DEFININDO MODELO E LISTANDO 
@@ -200,6 +258,15 @@ async listarUsuarios(usuid) {
         let sql = "INSERT INTO Horas (dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid,extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     
         let rows = await conexao.ExecutaComando(sql, [dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, usuid,extra]);
+    }
+
+    // ADCIONAR IMPLANTAÇÃO
+    async adcImplantacao(usuid,tipo,cliente,data,estado,cidade,obs){
+
+        let sql = "INSERT INTO implantacoes (usuid, imp_nome, imp_cidade, imp_estado, imp_dia, imp_tipo, imp_obs) VALUES (?,?,?,?,?,?,?)"
+
+        let rows = await conexao.ExecutaComando(sql, [usuid,cliente,cidade,estado,data,tipo,obs]);
+
     }
     
     //EM TESTE
@@ -246,6 +313,13 @@ async listarUsuarios(usuid) {
     
         let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
     
+        return rows;
+    }
+    // busca implantacoes
+    async buscaimplantacoes(usu_id,dia,dia2){
+        let sql = "SELECT * FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
+    
+        let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
         return rows;
     }
       

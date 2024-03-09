@@ -15,6 +15,8 @@ class UsuarioRoute {
         this.#router.get('/', ctrl.listarView);
         this.#router.get('/cadastrar', ctrl.cadastrarView);
         this.#router.post('/cadastrar', ctrl.cadastrar);
+        this.#router.get('/implantacoes',ctrl.implantacoesView);
+        this.#router.post('/implantacoes',ctrl.implantacoes);
 
         // A rota /editar/:id deve ser adicionada apenas uma vez
         this.#router.get('/editar/:id', ctrl.editarView);

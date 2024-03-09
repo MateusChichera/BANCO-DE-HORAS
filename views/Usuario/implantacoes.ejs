@@ -1,0 +1,75 @@
+<script src="/js/Usuario/implantacoes.js"></script>
+<style>
+    .form-group {
+        margin-bottom: 15px; /* Adiciona margem na parte inferior do grupo de formulário */
+    }
+
+    /* Adiciona margem na parte inferior do select */
+    select.form-control {
+        margin-bottom: 5px;
+    }
+</style>
+<div>
+    <h1>Cadastrar implantações</h1>
+
+    <div>
+        <div class="form-group">
+            <label for="usuario">Usuario:</label>
+            <select class="form-control" id="usuario">
+                <option value="0">--Selecione--</option>
+                <option value="1">Mateus</option>
+                <option value="2">Guilherme Leite</option>
+                <option value="3">Vinicius</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Tipo:</label>
+            <select class="form-control" id="tipo">
+                <option value="">--Selecione--</option>
+                <option value="implantacao">Implantacao</option>
+                <option value="conversao">Conversão</option>
+                <option value="Visita">Visita</option>
+                <option value="Online">Online</option>
+        </div>
+
+        <div class="form-group">
+            <label for="cliente">Nome do Cliente:</label>
+            <input type="text" class="form-control" id="cliente" placeholder="Nome do Cliente">
+        </div>
+
+        <div class="form-group">
+            <label for="data">Data:</label>
+            <input type="date" class="form-control" id="data">
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select class="form-control" id="estado">
+                <option value="">--Selecione--</option>
+                <option value="SP">São Paulo</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="PR">Paraná</option>
+                <!-- adicione os outros estados aqui -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="cidade">Cidade:</label>
+            <select class="form-control" id="cidade">
+                <option value="">--Selecione um estado primeiro--</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="observacoes">Observações:</label>
+            <textarea class="form-control" id="observacoes" rows="3"></textarea>
+        </div>
+
+        <div>
+            <button id="btnGravar" class="btn btn-primary">Gravar</button>
+            <a class="btn btn-secondary" href="/usuarios">Voltar</a>
+        </div>
+    </div>
+</div>

@@ -40,7 +40,7 @@ function converterParaFormatoHora(minutos) {
             .then(function(resposta) {
                 if (resposta.ok) {
                     // Atualiza a tabela com os resultados da busca
-                    atualizarTabela(resposta.resultados);
+                    atualizarTabela(resposta.resultados,resposta.implantacoes);
                 } else {
                     alert(resposta.msg);
                 }
@@ -62,7 +62,9 @@ function converterParaFormatoHora(minutos) {
         return `${dia}/${mes}/${ano}`;
     }
 
-    function atualizarTabela(resultados) {
+    function atualizarTabela(resultados,implantacoes) {
+
+        
         // Limpa o corpo da tabela
         let tbody = document.querySelector("tbody");
         tbody.innerHTML = "";
@@ -98,6 +100,7 @@ function converterParaFormatoHora(minutos) {
             totalMinutosExtras += minutosExtras;
             tbody.appendChild(linha);
         }
+        
         const totalHorasExtrasFormatado = converterParaFormatoHora(totalMinutosExtras);
 
     // Exiba o total de horas extras no final da tabela
@@ -107,6 +110,32 @@ function converterParaFormatoHora(minutos) {
         <td class="extra-column">${totalHorasExtrasFormatado}</td>
         <td></td>`;
     tbody.appendChild(linhaTotalExtras);
+
+    // -------------------------------------------------------------TABELA IMPLANTAÇÃO--------------------------------------------------------------------------
+    for (let i = 0; i < implantacoes.length; i++) {
+        let linha = document.createElement("tr");
+        linha.innerHTML = `
+
+<td>${implantacoes[i].imp_nome}</td>
+<td>${implantacoes[i].imp_cidade}</td>
+<td>${implantacoes[i].imp_estado}</td>
+<td>${formatarDataISO8601ParaDDMMYYYY(implantacoes[i].imp_dia)}</td>
+<td>${implantacoes[i].imp_tipo}</td>
+<td>${implantacoes[i].imp_obs}</td>
+<td>
+    <div>
+        <button data-id="${implantacoes[i].imp_id}" class="btn btn-primary editarBtn">
+            <i class="fas fa-pen"></i>
+        </button>
+        <button data-id="${implantacoes[i].imp_id}" class="btn btn-danger btnExclusao">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</td>
+`;
+    document.getElementById("tabelaImplantacoes").appendChild(linha);
+    }
+    
 
     let botoesExclusao = document.querySelectorAll(".btnExclusao");
     for (let i = 0; i < botoesExclusao.length; i++) {

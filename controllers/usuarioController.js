@@ -21,11 +21,14 @@ async buscarHoras(req, res) {
         if (usuId && diaInicio && diaFim) {
             const usuarioModel = new UsuarioModel();
             const resultados = await usuarioModel.buscahoras(usuId, diaInicio, diaFim);
+            const implantacoes = await usuarioModel.buscaimplantacoes(usuId,diaInicio,diaFim);
+
 
             res.send({
                 ok: true,
                 msg: "Horas encontradas com sucesso.",
-                resultados: resultados
+                resultados: resultados,
+                implantacoes: implantacoes
             });
         } else {
             res.send({ ok: false, msg: "Por favor, forneça todas as informações necessárias para a pesquisa." });
@@ -45,6 +48,10 @@ async buscarHoras(req, res) {
         let usu = new UsuarioModel();
         let listaUsuarios = await usu.listarUsuarios();
         res.render('usuario/listar', {lista: listaUsuarios});
+    }
+
+    implantacoesView(req, res) {
+        res.render('usuario/implantacoes');
     }
 
     cadastrarView(req, res) {
@@ -71,7 +78,7 @@ async buscarHoras(req, res) {
     }
     
     
-    
+    // FUNCIONANDO
     editar(req, res) {
         let adc = new UsuarioModel();
         const newuser = {
@@ -98,7 +105,7 @@ async buscarHoras(req, res) {
                 res.status(500).send({ ok: false, msg: "Erro ao editar horas verificar log" });
             });
     }
-
+   //NAO FUNCIONANDO
     excluir(req, res) {
         const exc = new UsuarioModel();
         
@@ -134,6 +141,26 @@ async buscarHoras(req, res) {
    adc.adcUsuarios(newuser.usu, newuser.entrada, newuser.cafe1, newuser.cafe2, newuser.almoco1, newuser.almoco2, newuser.cafe3, newuser.cafe4,newuser.saida,newuser.data,newuser.horasExtras);
            
             res.send({ok: true, msg: "Horas Cadastradas"})
+        
+    }
+    implantacoes(req, res) {
+        let adc = new UsuarioModel();
+          const newuser={
+        
+                usu: req.body.usu,
+                tipo: req.body.tipo,
+                cliente: req.body.cliente,
+                data: req.body.data,
+                estado: req.body.estado,
+                cidade: req.body.cidade,
+                obs: req.body.obs,
+            }
+
+
+
+   adc.adcImplantacao(newuser.usu, newuser.tipo, newuser.cliente, newuser.data, newuser.estado, newuser.cidade, newuser.obs);
+           
+            res.send({ok: true, msg: "Implantação cadastrada"})
         
     }
 }
