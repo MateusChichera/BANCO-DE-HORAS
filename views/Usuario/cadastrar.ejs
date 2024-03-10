@@ -1,23 +1,36 @@
 
 <script src="/js/Usuario/cadastrar.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-     // Obtendo o nome do usuário dos cookies
+document.addEventListener('DOMContentLoaded', function () {
+    // Obtendo o ID do usuário dos cookies
+    const userId = getCookie('userId');
 
-     function getCookie(name) {
-     const cookies = document.cookie.split(';');
-     for (let i = 0; i < cookies.length; i++) {
-       const cookie = cookies[i].trim();
-       // Verifica se o cookie começa com o nome desejado
-       if (cookie.startsWith(name + '=')) {
-         // Retorna o valor do cookie sem o nome
-         return cookie.substring(name.length + 1);
-       }
-     }
-     return ''; // Retorna uma string vazia se o cookie não for encontrado
-   };});
-   const userName = getCookie('Nome');
-   const userid = getCookie('userId');
+    // Selecionando o elemento do select
+    const selectUsuario = document.getElementById('usuario');
+
+    // Verificando se o ID do usuário foi encontrado nos cookies
+    if (userId) {
+        // Definindo o valor do select com base no ID do usuário
+        selectUsuario.value = userId;
+
+        // Desabilitando o select para impedir alterações
+        selectUsuario.disabled = true;
+    }
+});
+
+// Função para obter o valor de um cookie pelo nome
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Verifica se o cookie começa com o nome desejado
+        if (cookie.startsWith(name + '=')) {
+            // Retorna o valor do cookie sem o nome
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return ''; // Retorna uma string vazia se o cookie não for encontrado
+}
 </script>
 <div>
     <h1>Cadastrar Horas</h1>

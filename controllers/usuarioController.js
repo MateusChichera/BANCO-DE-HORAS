@@ -45,9 +45,7 @@ async buscarHoras(req, res) {
 
 
     async listarView(req, res) {
-        let usu = new UsuarioModel();
-        let listaUsuarios = await usu.listarUsuarios();
-        res.render('usuario/listar', {lista: listaUsuarios});
+        res.render('usuario/listar');
     }
 
     implantacoesView(req, res) {

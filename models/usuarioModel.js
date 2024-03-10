@@ -1,7 +1,4 @@
 const Database = require('../utils/database')
-const UsuarioController = require('../controllers/usuarioController');
-const bcrypt = require('bcrypt');
-
 
 const conexao = new Database();
 
@@ -197,7 +194,7 @@ class UsuarioModel {
     }
 
 
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora,obs,cidade,tipo,estado,cliente,data){
+    /*constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora,obs,cidade,tipo,estado,cliente,data){
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -221,6 +218,7 @@ class UsuarioModel {
         this.#data = data;
         
     }
+    */
 //DEFININDO MODELO E LISTANDO 
 async listarUsuarios(usuid) {
     let lista = [];

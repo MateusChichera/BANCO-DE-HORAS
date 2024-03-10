@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (data.status) {
                     msgRetorno.innerHTML = `<div class="alert alert-success">${data.msg}</div>`;
+                    window.location.href = '/';
                     
                 } else {
                     msgRetorno.innerHTML = `<div class="alert alert-danger">${data.msg}</div>`;
