@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const emailInput = document.querySelector("#email");
-    const senhaInput = document.querySelector("#senha");
+    const emailInput = document.getElementById("email");
+    const senhaInput = document.getElementById("senha");
     const msgRetorno = document.getElementById("msgRetorno");
     const btnEntrar = document.getElementById("btnEntrar");
 
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (data.status) {
                     msgRetorno.innerHTML = `<div class="alert alert-success">${data.msg}</div>`;
+                    
                 } else {
                     msgRetorno.innerHTML = `<div class="alert alert-danger">${data.msg}</div>`;
                 }

@@ -39,6 +39,34 @@
       background-color: #ffffff; /* Cor de fundo do conteúdo dentro do card */
     }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Obtendo o nome do usuário dos cookies
+
+      function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Verifica se o cookie começa com o nome desejado
+        if (cookie.startsWith(name + '=')) {
+          // Retorna o valor do cookie sem o nome
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return ''; // Retorna uma string vazia se o cookie não for encontrado
+    }
+    const userName = getCookie('Nome');
+    // Seleciona o elemento span com o ID 'nome'
+    const nomeSpan = document.getElementById('nome');
+
+    // Atualiza o texto do elemento span com o nome do usuário
+    if (userName) {
+      nomeSpan.textContent += userName + '!';
+    } else {
+      nomeSpan.textContent += '!';
+    }
+    });
+  </script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
 <!--<body class="hold-transition sidebar-mini layout-fixed">-->
@@ -61,6 +89,10 @@
     <a style="text-align: center;" href="/" class="brand-link">
       <span  class="brand-text font-weight-light">BANCO DE HORAS</span>
     </a>
+    <a style="text-align: center;" href="/" class="brand-link">
+      <span id="nome" class="brand-text font-weight-light">Usuario logado, </span>
+    </a>
+
 
     <!-- Sidebar -->
     <div class="sidebar">

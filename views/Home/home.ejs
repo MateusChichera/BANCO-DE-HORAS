@@ -1,1 +1,28 @@
-<h1>Bem vindo ao banco de horas!</h1>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Obtendo o nome do usuário dos cookies
+
+      function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Verifica se o cookie começa com o nome desejado
+        if (cookie.startsWith(name + '=')) {
+          // Retorna o valor do cookie sem o nome
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return ''; // Retorna uma string vazia se o cookie não for encontrado
+    }
+    const userName = getCookie('Nome');
+
+      // Verificando se o nome do usuário foi encontrado nos cookies
+      if (userName) {
+        // Exibindo a mensagem de boas-vindas com o nome do usuário
+        document.querySelector('.card').innerHTML = '<h2>Bem-vindo, ' + userName + '!</h2>';
+      } else {
+        // Caso o nome do usuário não seja encontrado nos cookies
+        document.querySelector('.card').innerHTML = '<h2>Bem-vindo!</h2><p>Não foi possível encontrar seu nome nos cookies.</p>';
+      }
+    });
+  </script>
