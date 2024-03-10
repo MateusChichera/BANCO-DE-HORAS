@@ -65,6 +65,38 @@
     } else {
       nomeSpan.textContent += '!';
     }
+    //---------------------------------------------------- deslogar-------------------------------------------------------
+     // Função para limpar os cookies
+     function limparCookies() {
+      // Define a data de expiração dos cookies para uma data no passado
+      const dataExpiracao = new Date();
+      dataExpiracao.setFullYear(dataExpiracao.getFullYear() - 1);
+
+      // Obtém todos os cookies
+      const cookies = document.cookie.split(';');
+      
+      // Limpa cada cookie
+      cookies.forEach(cookie => {
+        const partes = cookie.split('=');
+        const nomeCookie = partes.shift().trim();
+        document.cookie = `${nomeCookie}=; expires=${dataExpiracao.toUTCString()}; path=/`;
+      });
+    }
+
+    // Obtendo o botão de deslogar
+    const btnDeslogar = document.getElementById('btnDeslogar');
+
+    // Adicionando um ouvinte de evento para o clique no botão de deslogar
+    btnDeslogar.addEventListener('click', function (event) {
+      // Previne o comportamento padrão do link
+      event.preventDefault();
+
+      // Chama a função para limpar os cookies
+      limparCookies();
+
+      // Redireciona para a página de login (substitua '/login' pela URL correta)
+      window.location.href = '/login';
+    });
     });
   </script>
 </head>
@@ -92,7 +124,10 @@
     <a style="text-align: center;" href="/" class="brand-link">
       <span id="nome" class="brand-text font-weight-light">Usuario logado, </span>
     </a>
-
+    <a href="#" id="btnDeslogar" class="nav-link" style="text-align: center;">
+      <i class="fas fa-sign-out-alt"></i>
+      <span class="brand-text font-weight-light">Deslogar</span>
+    </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
