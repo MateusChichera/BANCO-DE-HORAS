@@ -1,35 +1,59 @@
-<script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+</head>
+<style>
+  /* Estilo temporário para garantir que os elementos H1 sejam exibidos */
+  .body-container h1 {
+    display: block;
+  }
+</style>
+<body>
+  <!-- Elemento .card para exibir a mensagem de boas-vindas -->
+  <div class="card"></div>
+
+  <!-- Container para colocar o conteúdo do body -->
+  <div class="body-container">
+    <h1 href="/usuarios/cadastrar">Cadastre suas horas</h1>
+    <h1 href="/usuarios/implantacoes">Cadastre suas implantações</h1>
+    <h1 href="/usuarios">Veja suas horas e implantações</h1>
+  </div>
+
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Obtendo o nome do usuário dos cookies
-
       function getCookie(name) {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        // Verifica se o cookie começa com o nome desejado
-        if (cookie.startsWith(name + '=')) {
-          // Retorna o valor do cookie sem o nome
-          return cookie.substring(name.length + 1);
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Verifica se o cookie começa com o nome desejado
+          if (cookie.startsWith(name + '=')) {
+            // Retorna o valor do cookie sem o nome
+            return cookie.substring(name.length + 1);
+          }
         }
+        return ''; // Retorna uma string vazia se o cookie não for encontrado
       }
-      return ''; // Retorna uma string vazia se o cookie não for encontrado
-    }
-    const userName = getCookie('Nome');
+      const userName = getCookie('Nome');
 
       // Verificando se o nome do usuário foi encontrado nos cookies
       if (userName) {
         // Exibindo a mensagem de boas-vindas com o nome do usuário
-        document.querySelector('.card').innerHTML = '<h2>Bem-vindo, ' + userName + '!</h2>';
+        const cardElement = document.querySelector('.card');
+        if (cardElement) {
+          cardElement.innerHTML = '<h2>Bem-vindo, ' + userName + '!</h2>';
+        }
       } else {
         // Caso o nome do usuário não seja encontrado nos cookies
-        document.querySelector('.card').innerHTML = '<h2>Bem-vindo!</h2><p>Não foi possível encontrar seu nome nos cookies.</p>';
+        const cardElement = document.querySelector('.card');
+        if (cardElement) {
+          cardElement.innerHTML = '<h2>Bem-vindo!</h2><p>Não foi possível encontrar seu nome nos cookies.</p>';
+        }
       }
     });
   </script>
-
-<body>
-  <h1 href="/usuarios/cadastrar">Cadastre suas horas</h1>
-  <h1 href="/usuarios/implantacoes">Cadastre suas implantações</h1>
-  <h1 href="/usuarios">Veja suas horas e implantações</h1>
-  <h2>teste</h2>
 </body>
+</html>

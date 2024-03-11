@@ -134,15 +134,14 @@ function converterParaFormatoHora(minutos) {
 </td>
 `;
     document.getElementById("tabelaImplantacoes").appendChild(linha);
-    var cont =0 
-    cont++;
+    var cont =parseInt(implantacoes.length)
+    
     }
     //TOTAL DE IMPLANTAÇÕES
-    cont = parseInt(cont);
 let linhaTotalimp = document.createElement("tr");
 linhaTotalimp.innerHTML = `
     <td class="extra-column">Total de Implantações:</td>
-    <td class="extra-column">${cont+1}</td>
+    <td class="extra-column">${cont}</td>
     <td></td>`;
 document.getElementById("tabelaImplantacoes").appendChild(linhaTotalimp);
 
