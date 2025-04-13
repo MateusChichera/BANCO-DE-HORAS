@@ -20,9 +20,10 @@ app.use(session({
     }
 }))
 
-app.set('views', './views');
+// Defina o caminho absoluto para as views
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.set('layout', './layout');
+app.set('layout', 'layout'); 
 
 
 //LAYOUT E CSS
@@ -57,6 +58,6 @@ app.use('/login', loginRouter); // Corrigido aqui para usar loginRouter em vez d
 app.use('/',autenticacaoMiddleware, homeRouteInstance.getRouter());
 app.use('/usuarios',autenticacaoMiddleware , usuarioRouter);
 
-app.listen(process.env.port || 80, () => {
-    console.log("Servidor web iniciado na porta 80");
+app.listen(process.env.port || 3000, () => {
+    console.log("Servidor web iniciado na porta 3000");
 });

@@ -6,9 +6,7 @@ class HomeController {
         // Suponhamos que você tenha uma lista de carros do usuário (ou de onde quer que venha)
        // const carrosUsuario = req.usuario ? req.usuario.carros : ["Corolla", "Uno", "Landau", "Marea Turbo", "206"];
 
-        res.render('home/home', {
-            //nome: nomeUsuario,
-           // carros: carrosUsuario
+        res.render('Home/home', {
         });
     }
 }

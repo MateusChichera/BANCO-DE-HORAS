@@ -194,7 +194,7 @@ class UsuarioModel {
     }
 
 
-    /*constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora,obs,cidade,tipo,estado,cliente,data){
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora,obs,cidade,tipo,estado,cliente,data){
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -218,7 +218,7 @@ class UsuarioModel {
         this.#data = data;
         
     }
-    */
+    
 //DEFININDO MODELO E LISTANDO 
 async listarUsuarios(usuid) {
     let lista = [];
@@ -298,13 +298,17 @@ async listarUsuarios(usuid) {
     async autenticar(email, senha) {
         let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenha = ?";
         let rows = await conexao.ExecutaComando(sql, [email, senha]);
-        
-        if (rows.length > 0) {
-            return rows[0]; // Retorna o usuário encontrado
+        console.log("Resultado da query:", rows);
+    
+        if (rows && rows.length > 0) {
+            console.log("Usuário encontrado:", rows[0]);
+            return rows[0];
         } else {
-            return null; // Retorna null se o usuário não for encontrado ou a senha estiver incorreta
+            console.log("Nenhum usuário encontrado");
+            return null;
         }
     }
+    
     // BUSCA AS HORAS COM DATAS DE INICIO E FIM ORDENADO
     async buscahoras(usu_id, dia, dia2) {
         let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? ORDER BY dia";

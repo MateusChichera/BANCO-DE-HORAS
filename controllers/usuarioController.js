@@ -45,15 +45,15 @@ async buscarHoras(req, res) {
 
 
     async listarView(req, res) {
-        res.render('usuario/listar');
+        res.render('Usuario/listar');
     }
 
     implantacoesView(req, res) {
-        res.render('usuario/implantacoes');
+        res.render('Usuario/implantacoes');
     }
 
     cadastrarView(req, res) {
-        res.render('usuario/cadastrar');
+        res.render('Usuario/cadastrar');
     }
     editarView(req, res) {
         console.log("Método editarView chamado.");
@@ -65,7 +65,7 @@ async buscarHoras(req, res) {
             .then(detalhes => {
                 // Renderize a view e envie os detalhes para o front-end
                 console.log("Detalhes recuperados:", detalhes);
-                res.render('usuario/editar', { userId, detalhes });
+                res.render('Usuario/editar', { userId, detalhes });
             })
             .catch(error => {
                 console.error("Erro ao buscar detalhes do usuário:", error);

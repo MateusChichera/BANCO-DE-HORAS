@@ -2,9 +2,10 @@ const UsuarioModel = require("../models/usuarioModel");
 
 class LoginController {
 
-    indexView(req, res,){
-        res.render('login/index', {layout: 'login/index'})
+    indexView(req, res) {
+        res.render('Login/index', { layout: false });
     }
+    
 
     autenticar(req, res) {
         const usuarioModel = new UsuarioModel();
@@ -16,10 +17,11 @@ class LoginController {
             .then(user => {
                 if (user) {
                     //AUTENTICAÇÃO COM COOKIES FUNCIONANDO 
-                    res.cookie('userId', user.usuId);
-                    res.cookie('Nome', user.usuNome);
+                    console.log("Usuário retornado pela autenticação:", user);
+                    res.cookie('userId', user.usuid);
+                    res.cookie('Nome', user.usunome);
                     res.send({ status: true, msg: "Autenticação realizada com sucesso" , user});
-                    console.log("DENTRO DA CONTROLLER ID DO USUARIO LOGADO:",user.usuId);
+                    console.log("DENTRO DA CONTROLLER ID DO USUARIO LOGADO:",user.usuid);
                 } else {
                     res.send({ status: false, msg: "Credenciais inválidas" });
                 }
