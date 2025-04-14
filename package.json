@@ -2,6 +2,7 @@
   "homepage": "https://mateuschichera.github.io/BANCO-DE-HORAS",
   "dependencies": {
     "@ngrok/ngrok": "^0.9.1",
+    "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "build": "^0.1.4",
     "cookie-parser": "^1.4.6",

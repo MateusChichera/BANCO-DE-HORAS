@@ -10,7 +10,7 @@
     }
 </style>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     // Obtendo o ID do usuário dos cookies
     const userId = getCookie('userId');
 
@@ -22,8 +22,11 @@
         // Definindo o valor do select com base no ID do usuário
         selectUsuario.value = userId;
 
-        // Desabilitando o select para impedir alterações
-        selectUsuario.disabled = true;
+        // Se o userId for 4, permite alterar o select, caso contrário, desabilita
+        if (userId != '4') {
+            // Desabilitando o select para impedir alterações
+            selectUsuario.disabled = true;
+        }
     }
 });
 
@@ -40,6 +43,7 @@ function getCookie(name) {
     }
     return ''; // Retorna uma string vazia se o cookie não for encontrado
 }
+
 </script>
 <div>
     <h1>Cadastrar implantações</h1>
@@ -50,7 +54,7 @@ function getCookie(name) {
             <select class="form-control" id="usuario">
                 <option value="0">--Selecione--</option>
                 <option value="1">Mateus</option>
-                <option value="2">Guilherme Leite</option>
+                <option value="2">Carlos Muller</option>
                 <option value="3">Vinicius</option>
             </select>
         </div>

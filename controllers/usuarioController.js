@@ -2,9 +2,81 @@ const UsuarioModel = require("../models/usuarioModel");
 const express = require('express');
 const app = express();
 const moment = require('moment');
+const Database = require('../utils/database')
+const { calcularDistancia } = require('./calculardistancia.js'); 
+const axios = require('axios');
+
+const conexao = new Database();
 
 
 class UsuarioController {
+//RELATORIO DE DISTANCIAS KM
+async relatorioViagens(req, res) {
+    try {
+        console.log('Chegou na função relatorioViagens');
+        
+        // Captura os valores da URL
+        const usuid = req.query.id;
+        const diaInicio = req.query.dia.trim();
+        const diaFim = req.query.dia2.trim();
+        
+        console.log("usuid:", usuid);
+        console.log("diaInicio:", diaInicio);
+        console.log("diaFim:", diaFim);
+
+        if (!usuid || !diaInicio || !diaFim) {
+            return res.send({ ok: false, msg: "Dados insuficientes para gerar o relatório." });
+        }
+
+        const cidadeOrigem = "Presidente Prudente, SP";
+
+        const sql = `
+            SELECT imp_cidade, imp_estado 
+            FROM implantacoes 
+            WHERE usuid = ? AND imp_dia BETWEEN ? AND ?
+        `;
+        const rows = await conexao.ExecutaComando(sql, [usuid, diaInicio, diaFim]);
+        console.log('Rows retornadas:', rows);
+
+        let totalKm = 0;
+        let cidadesVisitadas = [];
+
+        let cacheDistancia = {};
+
+        for (let row of rows) {
+            const destino = `${row.imp_cidade}, ${row.imp_estado}`;
+            cidadesVisitadas.push(destino);
+        
+            if (!cacheDistancia[destino]) {
+                // Chama a função calcularDistancia diretamente
+                const distanciaKm = await calcularDistancia(cidadeOrigem, destino);
+                cacheDistancia[destino] = distanciaKm;
+            }
+        
+            totalKm += (cacheDistancia[destino] * 2); // ida e volta
+        }
+        
+
+        res.send({
+            ok: true,
+            debug: {
+                usuid,
+                diaInicio,
+                diaFim,
+                rows
+            },
+            cidadesVisitadas,
+            totalKm: Math.round(totalKm)
+        });
+    } catch (err) {
+        res.send({
+            ok: false,
+            msg: "Erro ao gerar relatório de viagens.",
+            erro: err.message,
+            stack: err.stack
+        });
+    }
+}
 
  //BUSCA HORA POR DATA 
  // UsuarioController.js

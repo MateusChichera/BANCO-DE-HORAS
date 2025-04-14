@@ -6,6 +6,7 @@ const session =require ("express-session");
 const path = require('path');
 const LoginController = require("./controllers/loginController");
 const autenticacaoMiddleware = require('./public/js/Login/Mid');
+const cors = require('cors');
 
 
 const app = express();
@@ -32,6 +33,10 @@ app.use(ejsLayout);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    origin: 'http://152.67.45.250:3000', // ✅ origem exata do frontend
+    credentials: true // ✅ permite enviar cookies
+}));
 
 
 // Rotas separadas
