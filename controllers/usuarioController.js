@@ -81,7 +81,22 @@ async relatorioViagens(req, res) {
  //BUSCA HORA POR DATA 
  // UsuarioController.js
 
- // ...
+     //------------------------- REL VIAGEM MENSAGEM
+
+  async relVIagem(req,res){
+        try{
+        const dia = req.body.dia
+        const dia1 = req.body.dia1
+        if(dia && dia1){
+            const usuarioModel = new UsuarioModel();
+            const resultado = await usuarioModel.relViagem(dia,dia1);
+        }       
+
+        }catch(error){
+            console.error("Erro ao buscar viagens:", error);
+            res.send({ ok: false, msg: "Erro ao buscar viagens no banco de dados." })
+        }
+     }
 
 async buscarHoras(req, res) {
     try {
@@ -213,26 +228,75 @@ async buscarHoras(req, res) {
             res.send({ok: true, msg: "Horas Cadastradas"})
         
     }
-    implantacoes(req, res) {
-        let adc = new UsuarioModel();
-          const newuser={
-        
-                usu: req.body.usu,
-                tipo: req.body.tipo,
-                cliente: req.body.cliente,
-                data: req.body.data,
-                estado: req.body.estado,
-                cidade: req.body.cidade,
-                obs: req.body.obs,
-            }
+    async implantacoes(req, res) {
+        const adc = new UsuarioModel();
+        const newuser = {
+          usu: req.body.usu,
+          tipo: req.body.tipo,
+          cliente: req.body.cliente,
+          data: req.body.data,
+          estado: req.body.estado,
+          cidade: req.body.cidade,
+          obs: req.body.obs,
+          imp_contato: req.body.contato,
+          imp_tel: req.body.tel,
+          imp_tel1: req.body.tel1,
+          imp_sis: req.body.sistema,
+          imp_dtvenc: req.body.datavencimento,
+          imp_mensalidade: req.body.mensalidade,
+          imp_tel2: req.body.tel2,
+          imp_tel3: req.body.tel3
+        };
+      
+        try {
+          // 1. Grava a implantação
+          await adc.adcImplantacao(
+            newuser.usu,
+            newuser.tipo,
+            newuser.cliente,
+            newuser.data,
+            newuser.estado,
+            newuser.cidade,
+            newuser.obs,
+            newuser.imp_contato,
+            newuser.imp_tel,
+            newuser.imp_tel1,
+            newuser.imp_sis,
+            newuser.imp_dtvenc,
+            newuser.imp_mensalidade,
+            newuser.imp_tel2,
+            newuser.imp_tel3
+          );
+      
+          // 2. Busca o telefone do usuário responsável
+          const telefone = await adc.buscarTelefonePorId(newuser.usu);
+      
+          // 3. Monta a mensagem
+          const mensagem = `
+      Olá, você tem uma nova implantação!
+      
+      📋 Cliente: ${newuser.cliente}
+      📅 Data: ${newuser.data}
+      🔧 Tipo: ${newuser.tipo}
+      📍 Local: ${newuser.cidade}, ${newuser.estado}
+      👤 Nome: ${newuser.imp_contato}
+      📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}
+      💻 Sistema: ${newuser.imp_sis}
+      📝 Observações: ${newuser.obs || 'Nenhuma'}
+      `;
+      
+          // 4. Envia a mensagem no WhatsApp
+          const whatsappService = require('../services/whatsappService.js'); // ajuste o caminho se necessário
+          await whatsappService.enviarMensagem(telefone, mensagem);
+      
+          res.send({ ok: true, msg: 'Implantação cadastrada e mensagem enviada com sucesso!' });
+        } catch (erro) {
+          console.error(erro);
+          res.status(500).send({ erro: 'Erro ao cadastrar implantação ou enviar mensagem' });
+        }
+      }
+      
 
-
-
-   adc.adcImplantacao(newuser.usu, newuser.tipo, newuser.cliente, newuser.data, newuser.estado, newuser.cidade, newuser.obs);
-           
-            res.send({ok: true, msg: "Implantação cadastrada"})
-        
-    }
 }
 
 module.exports = UsuarioController

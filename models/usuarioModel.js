@@ -24,6 +24,66 @@ class UsuarioModel {
     #estado
     #obs
     #cliente
+    #imp_contato
+    #imp_tel
+    #imp_tel1
+    #imp_sis
+    #imp_dtvenc
+    #imp_datapag
+    #imp_mensalidade
+    #imp_tel2
+    #imp_tel3
+
+    // IMPLANTAÇÃO
+
+    get imp_contato() { // Nome do contato
+        return this.#imp_contato;
+    }
+    set imp_contato(imp_contato) {
+        this.#imp_contato = imp_contato;
+    }
+
+    get imp_tel() { // Telefone principal
+        return this.#imp_tel;
+    }
+    set imp_tel(imp_tel) {
+        this.#imp_tel = imp_tel;
+    }
+
+    get imp_tel1() { // Telefone secundário
+        return this.#imp_tel1;
+    }
+    set imp_tel1(imp_tel1) {
+        this.#imp_tel1 = imp_tel1;
+    }
+
+    get imp_sis() { // Nome do sistema
+        return this.#imp_sis;
+    }
+    set imp_sis(imp_sis) {
+        this.#imp_sis = imp_sis;
+    }
+
+    get imp_dtvenc() { // Data de vencimento
+        return this.#imp_dtvenc;
+    }
+    set imp_dtvenc(imp_dtvenc) {
+        this.#imp_dtvenc = imp_dtvenc;
+    }
+
+    get imp_datapag() { // Data de pagamento
+        return this.#imp_datapag;
+    }
+    set imp_datapag(imp_datapag) {
+        this.#imp_datapag = imp_datapag;
+    }
+
+    get imp_mensalidade() { // Valor da mensalidade
+        return this.#imp_mensalidade;
+    }
+    set imp_mensalidade(imp_mensalidade) {
+        this.#imp_mensalidade = imp_mensalidade;
+    }
 
     //cidade
     get cidade(){
@@ -192,9 +252,20 @@ class UsuarioModel {
     set saida(saida) {
         this.#saida = saida;
     }
+    get imp_tel2(){
+        return this.#imp_tel2
+    }
+    set imp_tel2(imp_tel2){
+        this.#imp_tel2 = imp_tel2
+    }
+    get imp_tel3(){
+        return this.#imp_tel3
+    }
+    set imp_tel3(imp_tel3){
+        this.#imp_tel3 = imp_tel3
+    }
 
-
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra,dia2,idhora,obs,cidade,tipo,estado,cliente,data){
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra, dia2, idhora, obs, cidade, tipo, estado, cliente, data, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_datapag, imp_mensalidade,imp_tel2,imp_tel3) {
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -216,8 +287,19 @@ class UsuarioModel {
         this.#obs = obs;
         this.#cliente = cliente;
         this.#data = data;
-        
+    
+        // Campos de implantação
+        this.#imp_contato = imp_contato;
+        this.#imp_tel = imp_tel;
+        this.#imp_tel1 = imp_tel1;
+        this.#imp_sis = imp_sis;
+        this.#imp_dtvenc = imp_dtvenc;
+        this.#imp_datapag = imp_datapag;
+        this.#imp_mensalidade = imp_mensalidade;
+        this.#imp_tel2 = imp_tel2;
+        this.#imp_tel3 = imp_tel3;
     }
+    
     
 //DEFININDO MODELO E LISTANDO 
 async listarUsuarios(usuid) {
@@ -259,15 +341,24 @@ async listarUsuarios(usuid) {
     }
 
     // ADCIONAR IMPLANTAÇÃO
-    async adcImplantacao(usuid,tipo,cliente,data,estado,cidade,obs){
-
-        let sql = "INSERT INTO implantacoes (usuid, imp_nome, imp_cidade, imp_estado, imp_dia, imp_tipo, imp_obs) VALUES (?,?,?,?,?,?,?)"
-
-        let rows = await conexao.ExecutaComando(sql, [usuid,cliente,cidade,estado,data,tipo,obs]);
-
+    async adcImplantacao(usuid, tipo, cliente, data, estado, cidade, obs, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc,imp_mensalidade,imp_tel2,imp_tel3) {
+        let sql = `
+            INSERT INTO implantacoes (
+                usuid, imp_nome, imp_cidade, imp_estado, imp_dia, imp_tipo, imp_obs,
+                imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade,imp_tel2,imp_tel3
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
+        `;
+    
+        let rows = await conexao.ExecutaComando(sql, [
+            usuid, cliente, cidade, estado, data, tipo, obs,
+            imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade, imp_tel2,imp_tel3
+        ]);
+    
+        return rows;
     }
     
-    //EM TESTE
+    
+    //funcionando
     async excUsuarios(id) {
     
         let sql = "delete from Horas where idhora = ?"
@@ -319,13 +410,42 @@ async listarUsuarios(usuid) {
     }
     // busca implantacoes
     async buscaimplantacoes(usu_id,dia,dia2){
-        let sql = "SELECT * FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
+        let sql = "SELECT imp_nome,imp_cidade,imp_estado,imp_dia,imp_tipo,imp_obs FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
     
         let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
         return rows;
     }
-      
     
+    async relViagem(dia,di2){
+
+        let sql =`
+                    SELECT i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel FROM implantacoes i
+                    INNER JOIN Usuario u ON i.usuid = u.usuid
+                    where i.imp_dia between ? and ?`
+        let rows = await conexao.ExecutaComando(sql,[dia,dia2]);
+        return rows;    
+                        }
+
+    // BUSCA TELEFONE POR ID PARA ENVIAR MENSAGEM NO WHATSAPP
+    buscarTelefonePorId(usuid) {
+        return new Promise((resolve, reject) => {
+          conexao.query(
+            'SELECT usu_tel FROM Usuario WHERE usuid = ?',
+            [usuid],
+            (erro, resultados) => {
+              if (erro) {
+                return reject(erro);
+              }
+              if (resultados.length === 0) {
+                return reject(new Error('Usuário não encontrado'));
+              }
+              resolve(resultados[0].telefone);
+            }
+          );
+        });
+      }
+      
+                    
 }
 
 

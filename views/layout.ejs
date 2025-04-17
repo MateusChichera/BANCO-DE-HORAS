@@ -98,8 +98,60 @@
       window.location.href = '/login';
     });
     });
+    document.addEventListener("DOMContentLoaded", function () {
+    const openBtn = document.getElementById("openWhatsappModal");
+    const qrImage = document.getElementById("whatsappQrCode");
+    const modalEl = document.getElementById("whatsappModal");
+
+    if (openBtn && qrImage && modalEl) {
+      openBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        
+        // Fazer a requisição para pegar o QR Code
+        fetch("http://152.67.45.250:3000/whatsapp/qrcode-img", {
+          method: "GET",
+          credentials: "include"  // Isso vai garantir que os cookies sejam enviados com a requisição
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao carregar o QR Code');
+          }
+          return response.blob(); // A resposta será um blob (imagem)
+        })
+        .then(blob => {
+          const imgUrl = URL.createObjectURL(blob); // Cria uma URL temporária para a imagem
+          qrImage.src = imgUrl; // Atualiza a imagem no modal
+          
+          // Exibe o modal do WhatsApp
+          const modal = new bootstrap.Modal(modalEl);
+          modal.show();
+        })
+        .catch(error => {
+          console.error('Erro ao carregar o QR Code:', error);
+        });
+      });
+    } else {
+      console.warn("Algum dos elementos do modal do WhatsApp não foi encontrado no DOM.");
+    }
+  });
+
   </script>
 </head>
+<!-- Modal do WhatsApp -->
+<div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+      <div class="modal-header">
+        <h5 class="modal-title" id="whatsappModalLabel">Conecte-se ao WhatsApp</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <img id="whatsappQrCode" src="" alt="QR Code do WhatsApp" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+</div>
+
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
 <!--<body class="hold-transition sidebar-mini layout-fixed">-->
 <div class="wrapper">
@@ -162,7 +214,7 @@
             <a href="/usuarios/implantacoes" class="nav-link">
               <i class="fas fa-user-plus"></i>
               <p>
-                Cadastrar Implantações
+                Agendamento
               </p>
             </a>
           </li>
@@ -196,6 +248,9 @@
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
+      <a href="#" id="openWhatsappModal" title="Abrir WhatsApp" style="margin-left: 15px; color: #25D366;">
+        <i class="fab fa-whatsapp fa-lg"></i>
+      </a>
     </div>
   </footer>
 

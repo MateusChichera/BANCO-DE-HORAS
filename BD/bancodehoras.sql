@@ -34,3 +34,19 @@ CREATE TABLE IF NOT EXISTS implantacoes (
     imp_obs TEXT,
     FOREIGN KEY (usuid) REFERENCES Usuarios(usuid)
 );
+
+
+//* APOS INSERIR FAÇA AS ALTERAÇÕES*/
+ALTER TABLE implantacoes  
+ADD COLUMN imp_contato VARCHAR(255),  
+ADD COLUMN imp_tel VARCHAR(255),  
+ADD COLUMN imp_tel1 VARCHAR(255),  
+ADD COLUMN imp_sis VARCHAR(255),  
+ADD COLUMN imp_dtvenc DATE,  
+ADD COLUMN imp_mensalidade DECIMAL(10,2);
+ADD COLUMN imp_tel2 VARCHAR(255),
+ADD COLUMN imp_tel3 VARCHAR(255)
+
+
+alter table Usuario
+ADD COLUMN usu_tel VARCHAR(255)

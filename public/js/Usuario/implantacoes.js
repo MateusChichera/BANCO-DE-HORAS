@@ -26,8 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
         let estado = document.getElementById("estado");
         let cidade = document.getElementById("cidade");
         let obs = document.getElementById("observacoes");
+        let contato = document.getElementById("contato");
+        let tel = document.getElementById("tel");
+        let tel1 = document.getElementById("tel1");
+        let sistema = document.getElementById("sistema");
+        let datavencimento = document.getElementById("datavencimento");
+        let mensalidade = document.getElementById("mensalidade");
+        //let datapag = document.getElementById("datapag")
+        let tel2 = document.getElementById('tel2');
+        let tel3 = document.getElementById('tel3');
 
-        console.log("ENVIADO PARA O BANCO",usu,tipo,cliente,data,estado,cidade,obs);
+
+        console.log("ENVIADO PARA O BANCO",usu,tipo,cliente,data,estado,cidade,obs,contato,tel,tel1,sistema,datavencimento,mensalidade,tel2,tel3);
 
         var usuario = {
             usu: usu.value,
@@ -37,6 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
             estado: estado.value,
             cidade: cidade.value,
             obs: obs.value,
+            contato: contato.value,
+            tel: tel.value,
+            tel1: tel1.value,
+            sistema: sistema.value,
+            datavencimento: datavencimento.value,
+            mensalidade: mensalidade.value,
+            tel2: tel2.value,
+            tel3: tel3.value
         }
         let currentUrl = window.location.href;
 
@@ -63,6 +81,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 estado.value = null;
                 cidade.value = null;
                 obs.value = null;
+                contato.value = null;
+                tel.value = null;
+                tel1.value = null;
+                sistema.value = null;
+                datavencimento.value = null;
+                mensalidade.value = null;
+                tel2.value = null
+                tel3.value = null
                                
             }
             else{

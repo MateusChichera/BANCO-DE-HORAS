@@ -206,7 +206,7 @@ document.getElementById("tabelaImplantacoes").appendChild(linhaTotalimp);
             // Exibe um diálogo de confirmação antes de excluir
             if (confirm("Tem certeza que deseja excluir este item?")) {
                 var currentUrl = new URL(window.location.href);
-                fetch('${currentUrl.origin}/usuarios/excluir', {
+                fetch('http://152.67.45.250:3000/usuarios/excluir', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
