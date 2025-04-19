@@ -1,0 +1,112 @@
+<script src="/js/Usuario/listarViagem.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+<style>
+    body {
+        background-color: #36393f;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    table, th, td {
+        border: 1px solid #2c2f33;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #202225;
+        color: white;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #2c2f33;
+    }
+
+    tr:hover {
+        background-color: #4f5459;
+    }
+
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .extra-column {
+        font-weight: bold;
+        color: #43b581; /* cor verde (pode ajustar conforme necessário) */
+    }
+
+    /* Adicione a regra abaixo para garantir que o texto seja branco */
+    body {
+        color: white;
+    }
+  </style>
+  <script>
+// Função para obter o valor de um cookie pelo nome
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Verifica se o cookie começa com o nome desejado
+        if (cookie.startsWith(name + '=')) {
+            // Retorna o valor do cookie sem o nome
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return ''; // Retorna uma string vazia se o cookie não for encontrado
+}
+
+    </script>
+<div>
+    <h1>Viagens</h1>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="dia">Data Inicio:</label>
+            <input class="form-control" type="date" id="dia" />
+        </div>
+        <div class="form-group col-md-4">
+            <label for="dia2">Data Fim:</label>
+            <input class="form-control" type="date" id="dia2" />
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mb-3">
+        <a id="pesquisarBtn" class="btn btn-primary">Pesquisar</a>
+    </div>
+    <div class="table-responsive">
+        <table id="tabelaImplantacoes">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Sistema</th>
+                    <th>Vencimento</th>
+                    <th>Mensalidade</th>
+                    <th>Técnico</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As linhas da tabela de implantações serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+        <!-- Botão Exportar Implantações -->
+        <div class="d-flex justify-content-end mb-3">
+            <button id="exportarExcelBtn1" class="btn btn-success">Exportar viagens para Excel</button>
+        </div>
+    </div>
+    
+</div>

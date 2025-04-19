@@ -1,5 +1,5 @@
-2025/04/17-16:22:07.850 19cd Recovering log #15
-2025/04/17-16:22:07.851 19cd Level-0 table #18: started
-2025/04/17-16:22:07.855 19cd Level-0 table #18: 321 bytes OK
-2025/04/17-16:22:07.939 19cd Delete type=3 #13
-2025/04/17-16:22:07.939 19cd Delete type=0 #15
+2025/04/19-18:39:42.038 99db Recovering log #93
+2025/04/19-18:39:42.039 99db Level-0 table #96: started
+2025/04/19-18:39:42.146 99db Level-0 table #96: 324 bytes OK
+2025/04/19-18:39:42.642 99db Delete type=0 #93
+2025/04/19-18:39:42.642 99db Delete type=3 #91

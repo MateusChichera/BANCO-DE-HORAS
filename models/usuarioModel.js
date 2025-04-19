@@ -416,34 +416,89 @@ async listarUsuarios(usuid) {
         return rows;
     }
     
-    async relViagem(dia,di2){
+    async relViagem(dia,dia2){
 
         let sql =`
-                    SELECT i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel FROM implantacoes i
+                    SELECT i.idimplantacao,i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel,i.imp_mensalidade,imp_dtvenc FROM implantacoes i
                     INNER JOIN Usuario u ON i.usuid = u.usuid
                     where i.imp_dia between ? and ?`
         let rows = await conexao.ExecutaComando(sql,[dia,dia2]);
         return rows;    
                         }
 
-    // BUSCA TELEFONE POR ID PARA ENVIAR MENSAGEM NO WHATSAPP
-    buscarTelefonePorId(usuid) {
-        return new Promise((resolve, reject) => {
-          conexao.query(
-            'SELECT usu_tel FROM Usuario WHERE usuid = ?',
-            [usuid],
-            (erro, resultados) => {
-              if (erro) {
-                return reject(erro);
-              }
-              if (resultados.length === 0) {
+        // Função para buscar telefone do usuário pelo ID PARA ENVIO NO WHATSAPP
+       async buscarTelefonePorId(usuid) {
+            const sql = 'SELECT usu_tel FROM Usuario WHERE usuid = ?';
+            
+          
+                const resultados = await conexao.ExecutaComando(sql, [usuid]);
+                
+                if (resultados.length === 0) {
                 return reject(new Error('Usuário não encontrado'));
-              }
-              resolve(resultados[0].telefone);
+                }
+                
+                // Retorna o telefone do usuário
+                return (resultados[0].usu_tel);
             }
-          );
-        });
-      }
+          
+
+            async atualizarImplantacao(id, dados) {
+                const sql = `UPDATE implantacoes SET 
+                    usuid = ?, 
+                    imp_nome = ?, 
+                    imp_cidade = ?, 
+                    imp_estado = ?, 
+                    imp_dia = ?, 
+                    imp_tipo = ?, 
+                    imp_obs = ?, 
+                    imp_contato = ?, 
+                    imp_tel = ?, 
+                    imp_tel1 = ?, 
+                    imp_sis = ?, 
+                    imp_dtvenc = ?, 
+                    imp_mensalidade = ?, 
+                    imp_tel2 = ?, 
+                    imp_tel3 = ?
+                    WHERE idimplantacao = ?`;
+            
+                const valores = [
+                    dados.usu,         // usuid
+                    dados.cliente,     // imp_nome
+                    dados.cidade,      // imp_cidade
+                    dados.estado,      // imp_estado
+                    dados.data,        // imp_dia
+                    dados.tipo,        // imp_tipo
+                    dados.obs,         // imp_obs
+                    dados.imp_contato, // imp_contato
+                    dados.imp_tel,     // imp_tel
+                    dados.imp_tel1,    // imp_tel1
+                    dados.imp_sis,     // imp_sis
+                    dados.imp_dtvenc,  // imp_dtvenc
+                    dados.imp_mensalidade, // imp_mensalidade
+                    dados.imp_tel2,    // imp_tel2
+                    dados.imp_tel3,    // imp_tel3
+                    id                 // idimplantacao
+                ];
+            
+                return await conexao.ExecutaComando(sql, valores);
+            }
+            
+            
+            async deletarImplantacao(id) {
+                const sql = `DELETE FROM implantacoes WHERE idimplantacao = ?`;
+                return await conexao.ExecutaComando(sql, [id]);
+            }
+  
+            async buscaidImp(idimplantacao) {
+    
+                let sql = "SELECT * FROM implantacoes WHERE idimplantacao = ? "
+        
+                let rows = await conexao.ExecutaComando(sql,[idimplantacao])
+        
+                return rows;
+                
+            }
+  
       
                     
 }

@@ -1,0 +1,143 @@
+<script src="/js/Usuario/editarimplantacao.js"></script>
+<style>
+    .form-group {
+        margin-bottom: 15px; /* Adiciona margem na parte inferior do grupo de formulário */
+    }
+
+    /* Adiciona margem na parte inferior do select */
+    select.form-control {
+        margin-bottom: 5px;
+    }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Obtendo o ID do usuário dos cookies
+    const userId = getCookie('userId');
+
+    // Selecionando o elemento do select
+    const selectUsuario = document.getElementById('usuario');
+
+    // Verificando se o ID do usuário foi encontrado nos cookies
+    if (userId) {
+        // Definindo o valor do select com base no ID do usuário
+        selectUsuario.value = userId;
+
+        // Se o userId for 4, permite alterar o select, caso contrário, desabilita
+        if (userId != '4') {
+            // Desabilitando o select para impedir alterações
+            selectUsuario.disabled = true;
+        }
+    }
+});
+
+// Função para obter o valor de um cookie pelo nome
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Verifica se o cookie começa com o nome desejado
+        if (cookie.startsWith(name + '=')) {
+            // Retorna o valor do cookie sem o nome
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return ''; // Retorna uma string vazia se o cookie não for encontrado
+}
+
+</script>
+<div>
+    <h1>Cadastrar implantações</h1>
+
+    <div>
+        <div class="form-group">
+            <label for="usuario">Tecnico:</label>
+            <select class="form-control" id="usuario">
+                <option value="0">--Selecione--</option>
+                <option value="1">Mateus</option>
+                <option value="2">Carlos Muller</option>
+                <option value="3">Vinicius</option>
+                <option value="5">Guilherme Sousa</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Tipo:</label>
+            <select class="form-control" id="tipo">
+                <option value="">--Selecione--</option>
+                <option value="Implantação">Implantacao</option>
+                <option value="Conversão">Conversão</option>
+                <option value="Visita">Visita</option>
+                <option value="Online">Online</option>
+        </div>
+
+        <div class="form-group">
+            <label for="cliente">Nome da Farmacia:</label>
+            <input type="text" class="form-control" id="cliente" placeholder="Nome da Farmacia">
+        </div>
+        <div class="form-group">
+            <label for="contato">Nome do cliente:</label>
+            <input type="text" class="form-control" id="contato" placeholder="Nome do cliente">
+        </div>
+        <div class="form-group">
+            <label for="tel">Telefone:</label>
+            <input type="text" class="form-control" id="tel" placeholder="Telefone do cliente">
+        </div>
+        <div class="form-group">
+            <label for="tel1">Telefone 2:</label>
+            <input type="text" class="form-control" id="tel1" placeholder="Telefone do cliente 2 ">
+        </div>
+        <div class="form-group">
+            <label for="tel2">Telefone 3:</label>
+            <input type="text" class="form-control" id="tel2" placeholder="Telefone do cliente 3">
+        </div>
+        <div class="form-group">
+            <label for="tel3">Telefone 4:</label>
+            <input type="text" class="form-control" id="tel3" placeholder="Telefone do cliente 4">
+        </div>
+        <div class="form-group">
+            <label for="sistema">Sistema Convertido:</label>
+            <input type="text" class="form-control" id="sistema" placeholder="Sistema convertido">
+        </div>
+        <div class="form-group">
+            <label for="datavencimento">Data vencimento:</label>
+            <input type="date" class="form-control" id="datavencimento">
+        </div>
+        <div class="form-group">
+            <label for="mensalidade">Valor da mensalidade:</label>
+            <input type="number" min="0" class="form-control" placeholder="0.00" id="mensalidade">
+        </div>
+        <div class="form-group">
+            <label for="data">Data da implantação:</label>
+            <input type="date" class="form-control" id="data">
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select class="form-control" id="estado">
+                <option value="">--Selecione--</option>
+                <option value="SP">São Paulo</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="PR">Paraná</option>
+                <!-- adicione os outros estados aqui -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="cidade">Cidade:</label>
+            <select class="form-control" id="cidade">
+                <option value="">--Selecione um estado primeiro--</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="observacoes">Observações:</label>
+            <textarea class="form-control" id="observacoes" rows="3"></textarea>
+        </div>
+
+        <div>
+            <button id="btnGravar" class="btn btn-primary">Gravar</button>
+            <a class="btn btn-secondary" href="/usuarios">Voltar</a>
+        </div>
+    </div>
+</div>

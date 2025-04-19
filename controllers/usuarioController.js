@@ -10,6 +10,8 @@ const conexao = new Database();
 
 
 class UsuarioController {
+
+    
 //RELATORIO DE DISTANCIAS KM
 async relatorioViagens(req, res) {
     try {
@@ -130,7 +132,9 @@ async buscarHoras(req, res) {
 
 
 
-
+    async listarViagens(req,res){
+        res.render('Usuario/viagens')
+    }
     async listarView(req, res) {
         res.render('Usuario/listar');
     }
@@ -161,7 +165,30 @@ async buscarHoras(req, res) {
         
         console.log("Método editarView concluído.");
     }
+
+    editarimplantacaoView(req, res) {
+        res.render('Usuario/editarImplantacoes');
+    }
     
+    editarImpView(req, res) {
+        console.log("Método editarImpView chamado.");
+        const userId = req.params.id;
+    
+        // Chame a função do modelo para buscar detalhes com base no ID
+        const usuarioModel = new UsuarioModel();
+        usuarioModel.buscaidImp(userId)
+            .then(detalhes => {
+                // Renderize a view e envie os detalhes para o front-end
+                console.log("Detalhes recuperados:", detalhes);
+                res.json({ userId, detalhes });  // Aqui retornamos JSON
+            })
+            .catch(error => {
+                console.error("Erro ao buscar detalhes do usuário:", error);
+                res.send({ ok: false, msg: "Erro ao buscar detalhes do usuário no banco de dados." });
+            });
+        
+        console.log("Método editarView concluído.");
+    }
     
     // FUNCIONANDO
     editar(req, res) {
@@ -228,6 +255,9 @@ async buscarHoras(req, res) {
             res.send({ok: true, msg: "Horas Cadastradas"})
         
     }
+
+    //CADASTRO DE IMPLANTAÇÃO E ENVIO DE MENSAGEM
+
     async implantacoes(req, res) {
         const adc = new UsuarioModel();
         const newuser = {
@@ -267,35 +297,149 @@ async buscarHoras(req, res) {
             newuser.imp_tel2,
             newuser.imp_tel3
           );
-      
-          // 2. Busca o telefone do usuário responsável
+          let dataFormatada = (() => {
+            const dataObj = new Date(newuser.data);
+            const dia = String(dataObj.getDate()).padStart(2, '0');
+            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+            const ano = dataObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+          })();
           const telefone = await adc.buscarTelefonePorId(newuser.usu);
-      
+          console.log("telefone a enviar mensagem no cadastro de implantacao",telefone)
           // 3. Monta a mensagem
-          const mensagem = `
-      Olá, você tem uma nova implantação!
-      
-      📋 Cliente: ${newuser.cliente}
-      📅 Data: ${newuser.data}
-      🔧 Tipo: ${newuser.tipo}
-      📍 Local: ${newuser.cidade}, ${newuser.estado}
-      👤 Nome: ${newuser.imp_contato}
-      📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}
-      💻 Sistema: ${newuser.imp_sis}
-      📝 Observações: ${newuser.obs || 'Nenhuma'}
+          const mensagem = `Olá, você tem uma nova implantação!\n\n📋 Cliente: ${newuser.cliente}
+        📅 Data: ${dataFormatada}
+        🔧 Tipo: ${newuser.tipo}
+        📍 Local: ${newuser.cidade}, ${newuser.estado}
+        👤 Nome: ${newuser.imp_contato}
+        📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}
+        💻 Conversão: ${newuser.imp_sis}
+        📝 Observações: ${newuser.obs || 'Nenhuma'}
       `;
       
           // 4. Envia a mensagem no WhatsApp
           const whatsappService = require('../services/whatsappService.js'); // ajuste o caminho se necessário
           await whatsappService.enviarMensagem(telefone, mensagem);
-      
+          
           res.send({ ok: true, msg: 'Implantação cadastrada e mensagem enviada com sucesso!' });
         } catch (erro) {
           console.error(erro);
           res.status(500).send({ erro: 'Erro ao cadastrar implantação ou enviar mensagem' });
         }
+        
+      }
+      //RELATORIO VIAGENS
+
+    async Viagens(req,res){
+        try {
+            const diaInicio = req.query.dia;
+            const diaFim = req.query.dia2;
+    
+            // Verifique se todas as informações necessárias estão presentes
+            if (diaInicio && diaFim) {
+                const usuarioModel = new UsuarioModel();
+                const implantacao = await usuarioModel.relViagem(diaInicio, diaFim);
+    
+                res.json({
+                    ok: true,
+                    msg: "Agendamentos encontrados com sucesso.",
+                    implantacao: implantacao,
+                });
+            } else {
+                res.send({ ok: false, msg: "Por favor, forneça todas as informações necessárias para a pesquisa." });
+            }
+        } catch (error) {
+            console.error("Erro ao buscar horas:", error);
+            res.send({ ok: false, msg: "Erro ao buscar agendamentos no banco de dados." });
+        }
+    }
+
+    // ATUALIZAR IMPLANTAÇÃO 
+
+    async atualizarImplantacao(req, res) {
+        console.log("atualizando implantação na controller");
+    
+        const adc = new UsuarioModel();
+        const id = req.params.id;
+      
+        const dadosAtualizados = {
+          usu: req.body.usu,
+          tipo: req.body.tipo,
+          cliente: req.body.cliente,
+          data: req.body.data,
+          estado: req.body.estado,
+          cidade: req.body.cidade,
+          obs: req.body.obs,
+          imp_contato: req.body.contato,
+          imp_tel: req.body.tel,
+          imp_tel1: req.body.tel1,
+          imp_sis: req.body.sistema,
+          imp_dtvenc: req.body.datavencimento,
+          imp_mensalidade: req.body.mensalidade,
+          imp_tel2: req.body.tel2,
+          imp_tel3: req.body.tel3
+        };
+      
+        try {
+            const resultado = await adc.atualizarImplantacao(id, dadosAtualizados);
+          
+            if (resultado.affectedRows === 0) {
+              return res.status(404).send({ erro: 'Implantação não encontrada' });
+            }
+          
+            const telefone = await adc.buscarTelefonePorId(dadosAtualizados.usu);
+            let dataFormatadaT = (() => {
+                const dataObj = new Date(dadosAtualizados.data);
+                const dia = String(dataObj.getDate()).padStart(2, '0');
+                const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                const ano = dataObj.getFullYear();
+                return `${dia}/${mes}/${ano}`;
+              })();
+            //console.log("telefone a enviar mensagem da alteração",telefone);
+           // console.log("Data formatada",dataFormatadaT)
+            const mensagem = `🚨 Alteração em Implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
+          📅 Data: ${dataFormatadaT}
+          🔧 Tipo: ${dadosAtualizados.tipo}
+          📍 Local: ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
+          👤 Nome: ${dadosAtualizados.imp_contato}
+          📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
+          💻 Conversão: ${dadosAtualizados.imp_sis}
+          📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
+          `;
+
+            
+            const whatsappService = require('../services/whatsappService.js');
+            await whatsappService.enviarMensagem(telefone, mensagem);
+          
+            return res.send({ ok: true, msg: 'Implantação atualizada e mensagem enviada com sucesso!' });
+          
+          } catch (erro) {
+            console.error("Erro no processo de atualização ou envio de mensagem:", erro);
+          
+            if (!res.headersSent) {
+              res.status(500).send({ erro: 'Erro ao atualizar implantação ou enviar mensagem' });
+            }
+          }
+          
+      }
+
+       deletarImp(req, res) {
+        console.log("Chamando a funçao de deletar")
+            const exc = new UsuarioModel();
+            
+            if(req.body.id != ""){
+                exc.deletarImplantacao(req.body.id)
+    
+                res.send({ok: true, msg: "Implantacao excluída!"})
+            }
+            else{
+                res.send({ok: false, msg: "Dados inválidos!"})
+            }
+      
       }
       
+      
+
 
 }
 

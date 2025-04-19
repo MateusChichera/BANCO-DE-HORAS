@@ -14,15 +14,21 @@ class UsuarioRoute {
         let ctrl = new UsuarioController();
         this.#router.get('/', ctrl.listarView);
         this.#router.get('/cadastrar', ctrl.cadastrarView);
+        this.#router.get('/viagem', ctrl.listarViagens);
         this.#router.post('/cadastrar', ctrl.cadastrar);
         this.#router.get('/implantacoes', ctrl.implantacoesView);
         this.#router.post('/implantacoes', ctrl.implantacoes);
         this.#router.get('/relatorios', ctrl.relatorioViagens);
 
+        this.#router.post('/deletar', ctrl.deletarImp);
+        this.#router.get('/editar/viagem', ctrl.editarimplantacaoView);
+        this.#router.get('/editar/viagem/:id', ctrl.editarImpView);
+        this.#router.post('/edt/viagem/:id', ctrl.atualizarImplantacao);
         this.#router.get('/editar/:id', ctrl.editarView);
         this.#router.post('/editar/:id', ctrl.editar);
         this.#router.post('/excluir', ctrl.excluir);
         this.#router.get('/buscar', ctrl.buscarHoras);
+        this.#router.get('/agendamentos', ctrl.Viagens);
     }
 }
 

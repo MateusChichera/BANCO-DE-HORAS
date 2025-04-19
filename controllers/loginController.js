@@ -17,7 +17,6 @@ class LoginController {
             .then(user => {
                 if (user) {
                     //AUTENTICAÇÃO COM COOKIES FUNCIONANDO 
-                    console.log("Usuário retornado pela autenticação:", user);
                     res.cookie('userId', user.usuid);
                     res.cookie('Nome', user.usunome);
                     res.send({ status: true, msg: "Autenticação realizada com sucesso" , user});

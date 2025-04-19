@@ -1,2 +1,5 @@
-2025/04/17-16:29:07.949 1a58 Creating DB /home/ubuntu/projetohoras/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata since it was missing.
-2025/04/17-16:29:07.962 1a58 Delete type=3 #1
+2025/04/19-17:30:17.240 91d1 Recovering log #6
+2025/04/19-17:30:17.241 91d1 Level-0 table #8: started
+2025/04/19-17:30:17.243 91d1 Level-0 table #8: 124 bytes OK
+2025/04/19-17:30:17.248 91d1 Delete type=3 #4
+2025/04/19-17:30:17.248 91d1 Delete type=0 #6
