@@ -421,7 +421,7 @@ async listarUsuarios(usuid) {
         let sql =`
                     SELECT i.idimplantacao,i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel,i.imp_mensalidade,imp_dtvenc FROM implantacoes i
                     INNER JOIN Usuario u ON i.usuid = u.usuid
-                    where i.imp_dia between ? and ?`
+                    where i.imp_dia between ? and ? ORDER BY i.imp_dia ASC`
         let rows = await conexao.ExecutaComando(sql,[dia,dia2]);
         return rows;    
                         }

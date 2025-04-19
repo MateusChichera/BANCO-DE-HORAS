@@ -144,6 +144,14 @@ linhaTotalimp.innerHTML = `
     <td class="extra-column">${cont}</td>
     <td></td>`;
 document.getElementById("tabelaImplantacoes").appendChild(linhaTotalimp);
+let userId = getCookie("userId");
+
+if (userId == "6") {
+    let botoesEditar = document.querySelectorAll(".editarBtn");
+    let botoesExclusao = document.querySelectorAll(".btnExclusao");
+    botoesEditar.forEach(button => button.style.display = 'none');
+    botoesExclusao.forEach(button => button.style.display = 'none');
+}
 
     let botoesExclusao = document.querySelectorAll(".btnExclusao");
     for (let i = 0; i < botoesExclusao.length; i++) {
@@ -260,6 +268,7 @@ document.getElementById("tabelaImplantacoes").appendChild(linhaTotalimp);
 
     });
 
+    
     
 });
     

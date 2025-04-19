@@ -64,10 +64,10 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let i = 0; i < implantacao.length; i++) {
             let linha = document.createElement("tr");
             linha.innerHTML = `
+                <td>${formatarDataISO8601ParaDDMMYYYY(implantacao[i].imp_dia)}</td>
                 <td>${implantacao[i].imp_nome}</td>
                 <td>${implantacao[i].imp_cidade}</td>
                 <td>${implantacao[i].imp_estado}</td>
-                <td>${formatarDataISO8601ParaDDMMYYYY(implantacao[i].imp_dia)}</td>
                 <td>${implantacao[i].imp_tipo}</td>
                 <td>${implantacao[i].imp_sis}</td>
                 <td>${formatarDataISO8601ParaDDMMYYYY(implantacao[i].imp_dtvenc)}</td>

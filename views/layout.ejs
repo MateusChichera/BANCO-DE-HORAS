@@ -170,9 +170,12 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a style="text-align: center;" href="/" class="brand-link">
-      <span  class="brand-text font-weight-light">BANCO DE HORAS</span>
+    <a href="/" class="brand-link" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <span class="brand-text font-weight-light">BANCO DE HORAS</span>
+      <img src="/images/logosemfundo.png" alt="Logo Infomaster" style="width: 80px; margin-top: 5px;">
     </a>
+    
+    
     <a style="text-align: center;" href="/" class="brand-link">
       <span id="nome" class="brand-text font-weight-light">Usuario logado, </span>
     </a>
@@ -250,12 +253,12 @@
     </div>
     
   </div>
-  <!-- /.content-wrapper -->
+  <!--4.2.5 FUNCIONANDO AS MENSAGEM NO WHATSAPP, PARTE DO FERNANDO DE VIAGENS COMPLETO- FALTANDO O FRONT COM FORMATAÇÕES E BOTÃO PARA IMPRIMIR, HORAS SEM DATA PRE DEFINIDA -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2024 Mateus Chichera</a>.</strong>
+    <strong>Copyright &copy; 2025 Mateus Chichera</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.2.0
+      <b>Version</b> 4.2.5
       <a href="#" id="openWhatsappModal" title="Abrir WhatsApp" style="margin-left: 15px; color: #25D366;">
         <i class="fab fa-whatsapp fa-lg"></i>
       </a>
@@ -275,6 +278,85 @@
 <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="/js/template/adminlte.min.js"></script>
 </body>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Função para obter o valor de um cookie pelo nome
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return ''; // Retorna uma string vazia se o cookie não for encontrado
+    }
+
+    // Obtém o userId do cookie
+    const userId = getCookie('userId');
+
+    // Função para ocultar ou exibir os links do menu com base no userId
+    function verificarPermissoes() {
+      // Verifica as permissões baseadas no userId
+      const menuItems = document.querySelectorAll('.nav-item');
+
+      menuItems.forEach(item => {
+        // Verifica o href do link dentro da li
+        const link = item.querySelector('a').getAttribute('href');
+        
+        if (userId == 1 || userId == 2 || userId == 3 || userId == 5) {
+          // Pode visualizar 'Início', 'Cadastrar Horas' e 'Horas e Implantações'
+          if (link === '/' || link === '/usuarios/cadastrar' || link === '/usuarios') {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        } else if (userId == 6) {
+          // Pode visualizar apenas 'Início' e 'Horas e Implantações'
+          if (link === '/' || link === '/usuarios') {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        } else if (userId == 4) {
+          // Pode visualizar 'Início', 'Agendamento' e 'Viagens'
+          if (link === '/' || link === '/usuarios/implantacoes' || link === '/usuarios/viagem') {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        } else {
+          item.style.display = 'none';
+        }
+
+      });
+    }
+
+    // Executa a função de verificação de permissões
+    verificarPermissoes();
+
+    //---------------------------------------------------- deslogar-------------------------------------------------------
+    function limparCookies() {
+      const dataExpiracao = new Date();
+      dataExpiracao.setFullYear(dataExpiracao.getFullYear() - 1);
+      const cookies = document.cookie.split(';');
+      cookies.forEach(cookie => {
+        const partes = cookie.split('=');
+        const nomeCookie = partes.shift().trim();
+        document.cookie = `${nomeCookie}=; expires=${dataExpiracao.toUTCString()}; path=/`;
+      });
+    }
+
+    const btnDeslogar = document.getElementById('btnDeslogar');
+    btnDeslogar.addEventListener('click', function (event) {
+      event.preventDefault();
+      limparCookies();
+      window.location.href = '/login';
+    });
+  });
+</script>
+
+
 </html>
 
 

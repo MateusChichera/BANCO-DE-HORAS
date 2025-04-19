@@ -52,6 +52,27 @@
     body {
         color: white;
     }
+    .table-horas td, .table-horas th {
+        padding: 5px;
+        font-size: 13px;
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printArea, #printArea * {
+            visibility: visible;
+        }
+
+        #printArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+    }
   </style>
   <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -61,13 +82,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Selecionando o elemento do select
     const selectUsuario = document.getElementById('usuario');
 
+
     // Verificando se o ID do usuário foi encontrado nos cookies
     if (userId) {
+        
         // Definindo o valor do select com base no ID do usuário
         selectUsuario.value = userId;
 
         // Se o userId for 4, permite alterar o select, caso contrário, desabilita
-        if (userId != '4') {
+        if (userId != '4' && userId !=6) {
             // Desabilitando o select para impedir alterações
             selectUsuario.disabled = true;
         }
@@ -86,7 +109,7 @@ function getCookie(name) {
         }
     }
     return ''; // Retorna uma string vazia se o cookie não for encontrado
-}
+}   
 
     </script>
 <div>
@@ -162,6 +185,162 @@ function getCookie(name) {
         <div class="d-flex justify-content-end mb-3">
             <button id="exportarExcelBtn1" class="btn btn-success">Exportar Implantações para Excel</button>
         </div>
+
+        <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-info me-2" onclick="imprimirHoras()">Imprimir Horas</button>
+            <button class="btn btn-info" onclick="imprimirImplantacoes()">Imprimir Implantações</button>
+          </div>
     </div>
-    
+    <!-- Área oculta para impressão -->
+<div id="printArea" style="display: none; background: white; color: black; padding: 20px; font-family: Arial;"></div>
+
 </div>
+<script>
+        //PERIODOS DEFINIDOS
+    // Função para calcular o período baseado no fechamento
+    function calcularPeriodo() {
+        // Obtendo a data atual
+        const hoje = new Date();
+        let dataInicio, dataFim;
+
+        // Verifica se a data atual é antes ou depois do dia 21
+        if (hoje.getDate() < 21) {
+            // Se for antes do dia 21, o período vai de 21 do mês anterior até 20 do mês atual
+            hoje.setMonth(hoje.getMonth() - 1);  // Muda o mês para o anterior
+            dataInicio = new Date(hoje.getFullYear(), hoje.getMonth(), 21); // Dia 21 do mês anterior
+            hoje.setMonth(hoje.getMonth() + 1);  // Volta para o mês atual
+            dataFim = new Date(hoje.getFullYear(), hoje.getMonth(), 20); // Dia 20 do mês atual
+        } else {
+            // Se for depois do dia 21, o período vai de 21 do mês atual até 20 do próximo mês
+            dataInicio = new Date(hoje.getFullYear(), hoje.getMonth(), 21); // Dia 21 do mês atual
+            hoje.setMonth(hoje.getMonth() + 1);  // Muda para o próximo mês
+            dataFim = new Date(hoje.getFullYear(), hoje.getMonth(), 20); // Dia 20 do próximo mês
+        }
+
+        // Formatação para o formato "YYYY-MM-DD"
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        // Preenche os campos de data no formulário com as datas calculadas
+        document.getElementById('dia').value = formatDate(dataInicio);
+        document.getElementById('dia2').value = formatDate(dataFim);
+    }
+
+    // Chama a função para calcular o período assim que a página carregar
+    calcularPeriodo();
+
+    const printButton = document.createElement('button');
+    printButton.textContent = 'Imprimir';
+    printButton.classList.add('btn', 'btn-info');
+    document.body.appendChild(printButton);
+
+    printButton.addEventListener('click', function () {
+        // Obtendo o conteúdo das duas tabelas
+        const tabelaHoras = document.querySelector('table.table');
+        const tabelaImplantacoes = document.getElementById('tabelaImplantacoes');
+
+        // Criando um conteúdo HTML para impressão
+        let printContent = `
+            <h1>Relatório de Horas e Implantações</h1>
+            <h2>Horas</h2>
+            ${tabelaHoras.outerHTML}
+            <h2>Implantações</h2>
+            ${tabelaImplantacoes.outerHTML}
+        `;
+
+        // Criando uma nova janela para impressão
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Impressão</title>');
+        printWindow.document.write('<style>body { font-family: Arial, sans-serif; color: black; } table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } table, th, td { border: 1px solid #000; } th, td { padding: 10px; text-align: center; } th { background-color: #f2f2f2; font-weight: bold; } tr:nth-child(even) { background-color: #f9f9f9; } tr:hover { background-color: #e0e0e0; } </style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+
+        // Aguardando o conteúdo ser carregado e, em seguida, disparando a impressão
+        printWindow.document.close();
+        printWindow.print();
+    });
+    function getUsuarioNome() {
+    const select = document.getElementById('usuario');
+    return select.options[select.selectedIndex].text;
+}
+
+function imprimirHoras() {
+    const usuarioNome = getUsuarioNome();
+
+    const horasTable = document.querySelector('.table.table-stripped').outerHTML;
+            // Criação de um objeto Date para pegar a data e hora atuais
+            const data = new Date();
+
+            // Formatar data e hora no formato desejado (ex: "dd/mm/yyyy hh:mm:ss")
+            const dataehora = `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}/${data.getFullYear()} ${String(data.getHours()).padStart(2, '0')}:${String(data.getMinutes()).padStart(2, '0')}:${String(data.getSeconds()).padStart(2, '0')}`;
+
+    const printContent = `
+        <h2 style="text-align:center;">Horas de ${usuarioNome}</h2>
+        ${horasTable}
+        <p style="text-align:center;">Impresso ${dataehora}</p>
+    `;
+
+    mostrarEImprimir(printContent);
+}
+
+function imprimirImplantacoes() {
+    const usuarioNome = getUsuarioNome();
+
+    const implantacoesTable = document.getElementById('tabelaImplantacoes').outerHTML;
+        // Criação de um objeto Date para pegar a data e hora atuais
+        const data = new Date();
+
+        // Formatar data e hora no formato desejado (ex: "dd/mm/yyyy hh:mm:ss")
+        const dataehora = `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}/${data.getFullYear()} ${String(data.getHours()).padStart(2, '0')}:${String(data.getMinutes()).padStart(2, '0')}:${String(data.getSeconds()).padStart(2, '0')}`;
+
+    const printContent = `
+        <h2 style="text-align:center;">Implantacões de ${usuarioNome}</h2>
+        ${implantacoesTable}
+        <p style="text-align:center;">Impresso ${dataehora}</p>
+    `;
+
+    mostrarEImprimir(printContent);
+}
+
+function mostrarEImprimir(html) {
+    const printArea = document.getElementById('printArea');
+    printArea.innerHTML = html;
+    printArea.style.display = 'block';
+
+    window.print();
+
+    printArea.innerHTML = '';
+    printArea.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const userId = getCookie('userId');
+    
+    // Oculta os botões de ação se o userId for 6
+    if (userId === '6') {
+        // Esconde todas as colunas e botões com base na classe 'btn-acao'
+        document.querySelectorAll('.btn-acao').forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        // Opcional: Esconde o cabeçalho da coluna "Ações" também
+        const acoesHeader = document.querySelector('#tabelaImplantacoes th:nth-child(7)');
+        if (acoesHeader) {
+            acoesHeader.style.display = 'none';
+        }
+
+        // Esconde as células da coluna "Ações" nas linhas
+        document.querySelectorAll('#tabelaImplantacoes tbody tr').forEach(row => {
+            const cell = row.cells[6];
+            if (cell) {
+                cell.style.display = 'none';
+            }
+        });
+    }
+});
+</script>

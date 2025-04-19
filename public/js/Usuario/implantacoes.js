@@ -152,4 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Chamar a função inicialmente para preencher o select de cidades com base no estado selecionado inicialmente
     preencherCidades();
+
+
+    //IMPRESSÃO
+    
 });
