@@ -280,7 +280,8 @@ function imprimirHoras() {
             const dataehora = `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}/${data.getFullYear()} ${String(data.getHours()).padStart(2, '0')}:${String(data.getMinutes()).padStart(2, '0')}:${String(data.getSeconds()).padStart(2, '0')}`;
 
     const printContent = `
-        <h2 style="text-align:center;">Horas de ${usuarioNome}</h2>
+        <h2 style="text-align:center;">Banco de horas</h2>
+        <h2 style ="text-align:center;">Colaborador:${usuarioNome}</>
         ${horasTable}
         <p style="text-align:center;">Impresso ${dataehora}</p>
     `;
@@ -299,7 +300,8 @@ function imprimirImplantacoes() {
         const dataehora = `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}/${data.getFullYear()} ${String(data.getHours()).padStart(2, '0')}:${String(data.getMinutes()).padStart(2, '0')}:${String(data.getSeconds()).padStart(2, '0')}`;
 
     const printContent = `
-        <h2 style="text-align:center;">Implantacões de ${usuarioNome}</h2>
+        <h2 style="text-align:center;">Implantações</h2>
+        <h2 style ="text-align:center;">Colaborador:${usuarioNome}</>
         ${implantacoesTable}
         <p style="text-align:center;">Impresso ${dataehora}</p>
     `;
