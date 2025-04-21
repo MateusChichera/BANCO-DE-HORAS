@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${formatarDataISO8601ParaDDMMYYYY(implantacao[i].imp_dtvenc)}</td>
                 <td>${formatarParaReais(implantacao[i].imp_mensalidade)}</td>
                 <td>${implantacao[i].usunome}</td>
+                <td>${implantacao[i].imp_carro}</td>
                 <td>
                     <div>
                         <button data-id="${implantacao[i].idimplantacao}" class="btn btn-primary editarBtn">

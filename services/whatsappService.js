@@ -1,18 +1,18 @@
 // services/whatsappService.js
 const qrcode = require('qrcode');
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth } = require('whatsapp-web.js'); // <- essa linha TEM que vir antes
 
 let qrCodeData = null;
+let clientReady = false; // nova flag
 
 const client = new Client({
-  authStrategy: new LocalAuth(), // Salva a sessão automaticamente
+  authStrategy: new LocalAuth(),
   puppeteer: {
     headless: true,
     args: ['--no-sandbox']
   }
 });
 
-// Evento que captura o QR Code gerado
 client.on('qr', (qr) => {
   qrcode.toDataURL(qr, (err, url) => {
     if (err) {
@@ -23,17 +23,39 @@ client.on('qr', (qr) => {
   });
 });
 
-// Evento quando o cliente do WhatsApp Web está pronto
 client.on('ready', () => {
   console.log('✅ WhatsApp conectado');
+  clientReady = true;
 });
 
-// Inicializa o cliente
 client.initialize();
 
-// Função que retorna o QR Code
+// Espera até o cliente estar pronto
+function esperarClientePronto() {
+  if (clientReady) return Promise.resolve();
+  return new Promise((resolve) => {
+    const intervalo = setInterval(() => {
+      if (clientReady) {
+        clearInterval(intervalo);
+        resolve();
+      }
+    }, 500);
+  });
+}
+
+// Envia a mensagem com garantia de que o cliente está pronto
+async function enviarMensagem(numero, mensagem) {
+  await esperarClientePronto();
+  const numeroComDDD = `${numero}@c.us`;
+  try {
+    return await client.sendMessage(numeroComDDD, mensagem);
+  } catch (erro) {
+    console.error('Erro ao enviar mensagem:', erro);
+    throw erro;
+  }
+}
+
 async function getQRCode() {
-  // Aguarda até que o QR Code esteja disponível
   if (!qrCodeData) {
     return new Promise((resolve, reject) => {
       const interval = setInterval(() => {
@@ -41,16 +63,10 @@ async function getQRCode() {
           clearInterval(interval);
           resolve(qrCodeData);
         }
-      }, 500); // Verifica a cada 500ms se o QR Code está pronto
+      }, 500);
     });
   }
   return qrCodeData;
-}
-
-// Função para enviar mensagem
-async function enviarMensagem(numero, mensagem) {
-  const numeroComDDD = `${numero}@c.us`;
-  return client.sendMessage(numeroComDDD, mensagem);
 }
 
 module.exports = {

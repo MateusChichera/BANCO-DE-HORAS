@@ -50,3 +50,7 @@ ADD COLUMN imp_tel3 VARCHAR(255)
 
 alter table Usuario
 ADD COLUMN usu_tel VARCHAR(255)
+
+
+ALTER TABLE implantacoes  
+ADD COLUMN imp_carro VARCHAR(50)

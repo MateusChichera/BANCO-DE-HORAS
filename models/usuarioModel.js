@@ -33,8 +33,16 @@ class UsuarioModel {
     #imp_mensalidade
     #imp_tel2
     #imp_tel3
+    #imp_carro
 
     // IMPLANTAÇÃO
+
+    get imp_carro() { // Nome do contato
+        return this.#imp_carro;
+    }
+    set imp_carro(imp_carro) {
+        this.#imp_carro = imp_carro;
+    }
 
     get imp_contato() { // Nome do contato
         return this.#imp_contato;
@@ -265,7 +273,7 @@ class UsuarioModel {
         this.#imp_tel3 = imp_tel3
     }
 
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra, dia2, idhora, obs, cidade, tipo, estado, cliente, data, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_datapag, imp_mensalidade,imp_tel2,imp_tel3) {
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra, dia2, idhora, obs, cidade, tipo, estado, cliente, data, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_datapag, imp_mensalidade,imp_tel2,imp_tel3,imp_carro) {
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -298,6 +306,7 @@ class UsuarioModel {
         this.#imp_mensalidade = imp_mensalidade;
         this.#imp_tel2 = imp_tel2;
         this.#imp_tel3 = imp_tel3;
+        this.#imp_carro = imp_carro
     }
     
     
@@ -341,17 +350,17 @@ async listarUsuarios(usuid) {
     }
 
     // ADCIONAR IMPLANTAÇÃO
-    async adcImplantacao(usuid, tipo, cliente, data, estado, cidade, obs, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc,imp_mensalidade,imp_tel2,imp_tel3) {
+    async adcImplantacao(usuid, tipo, cliente, data, estado, cidade, obs, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc,imp_mensalidade,imp_tel2,imp_tel3,imp_carro) {
         let sql = `
             INSERT INTO implantacoes (
                 usuid, imp_nome, imp_cidade, imp_estado, imp_dia, imp_tipo, imp_obs,
-                imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade,imp_tel2,imp_tel3
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)
+                imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade,imp_tel2,imp_tel3,imp_carro
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)
         `;
     
         let rows = await conexao.ExecutaComando(sql, [
             usuid, cliente, cidade, estado, data, tipo, obs,
-            imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade, imp_tel2,imp_tel3
+            imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade, imp_tel2,imp_tel3,imp_carro
         ]);
     
         return rows;
@@ -415,11 +424,35 @@ async listarUsuarios(usuid) {
         let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
         return rows;
     }
+
+    async buscacalendario(dia, dia2) {
+        let sql = `
+            SELECT 
+                i.imp_nome,
+                i.imp_cidade,
+                i.imp_estado,
+                i.imp_dia,
+                i.imp_tipo,
+                i.imp_obs,
+                u.usunome
+            FROM 
+                implantacoes i
+            INNER JOIN 
+                Usuario u ON i.usuid = u.usuid
+            WHERE 
+                i.imp_dia BETWEEN ? AND ? 
+            ORDER BY 
+                i.imp_dia
+        `;
+    
+        let rows = await conexao.ExecutaComando(sql, [dia, dia2]);
+        return rows;
+    }
     
     async relViagem(dia,dia2){
 
         let sql =`
-                    SELECT i.idimplantacao,i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel,i.imp_mensalidade,imp_dtvenc FROM implantacoes i
+                    SELECT i.idimplantacao,i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel,i.imp_mensalidade,i.imp_dtvenc,i.imp_carro FROM implantacoes i
                     INNER JOIN Usuario u ON i.usuid = u.usuid
                     where i.imp_dia between ? and ? ORDER BY i.imp_dia ASC`
         let rows = await conexao.ExecutaComando(sql,[dia,dia2]);
@@ -458,7 +491,8 @@ async listarUsuarios(usuid) {
                     imp_dtvenc = ?, 
                     imp_mensalidade = ?, 
                     imp_tel2 = ?, 
-                    imp_tel3 = ?
+                    imp_tel3 = ?,
+                    imp_carro = ?
                     WHERE idimplantacao = ?`;
             
                 const valores = [
@@ -476,7 +510,8 @@ async listarUsuarios(usuid) {
                     dados.imp_dtvenc,  // imp_dtvenc
                     dados.imp_mensalidade, // imp_mensalidade
                     dados.imp_tel2,    // imp_tel2
-                    dados.imp_tel3,    // imp_tel3
+                    dados.imp_tel3,    // imp_tel3     
+                    dados.carro,       // carro
                     id                 // idimplantacao
                 ];
             

@@ -17,9 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para gravar o valor no banco de dados
     function gravarimplantacao() {
+        document.getElementById("loadingOverlay").style.display = "flex";
 
             //  PEGANDO OS VALORES DO EJS
         let usu = document.getElementById("usuario");
+        let carro = document.getElementById("carro");
         let tipo = document.getElementById("tipo");
         let cliente = document.getElementById("cliente");
         let data = document.getElementById("data");
@@ -37,10 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
         let tel3 = document.getElementById('tel3');
 
 
-        console.log("ENVIADO PARA O BANCO",usu,tipo,cliente,data,estado,cidade,obs,contato,tel,tel1,sistema,datavencimento,mensalidade,tel2,tel3);
+        console.log("ENVIADO PARA O BANCO",usu,carro,tipo,cliente,data,estado,cidade,obs,contato,tel,tel1,sistema,datavencimento,mensalidade,tel2,tel3);
 
         var usuario = {
             usu: usu.value,
+            carro: carro.value,
             tipo: tipo.value,
             cliente: cliente.value,
             data: data.value,
@@ -60,41 +63,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Atualizando a URL para incluir o caminho da rota desejada
     //let apiUrl = currentUrl + '/cadastrar';
+    document.getElementById('loadingOverlay').style.display = 'flex';
 //FETCH ENVIANDO PARA A CONTROLADORA 
-        fetch(currentUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(usuario)
-        })
-        .then(function(resposta1) {
-            return resposta1.json()
-        })
-        .then(function(resposta2) {
-            if(resposta2.ok) {
-                alert(resposta2.msg);
-                usu.value = null;
-                tipo.value = null;
-                cliente.value = null;
-                data.value = null;
-                estado.value = null;
-                cidade.value = null;
-                obs.value = null;
-                contato.value = null;
-                tel.value = null;
-                tel1.value = null;
-                sistema.value = null;
-                datavencimento.value = null;
-                mensalidade.value = null;
-                tel2.value = null
-                tel3.value = null
-                               
-            }
-            else{
-                alert(resposta2.msg);
-            }
-        })
+fetch(currentUrl, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(usuario)
+})
+.then(function(resposta1) {
+    return resposta1.json()
+})
+.then(function(resposta2) {
+    if(resposta2.ok) {
+        alert(resposta2.msg);
+        usu.value = null;
+        carro.value= null;
+        tipo.value = null;
+        cliente.value = null;
+        data.value = null;
+        estado.value = null;
+        cidade.value = null;
+        obs.value = null;
+        contato.value = null;
+        tel.value = null;
+        tel1.value = null;
+        sistema.value = null;
+        datavencimento.value = null;
+        mensalidade.value = null;
+        tel2.value = null
+        tel3.value = null
+    }
+    else{
+        alert(resposta2.msg);
+    }
+})
+.finally(function() {
+    document.getElementById("loadingOverlay").style.display = "none"; // 👈 Esconde o overlay
+});
+
+
+
     }
     
 

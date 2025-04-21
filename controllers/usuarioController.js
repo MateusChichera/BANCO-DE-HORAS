@@ -11,7 +11,33 @@ const conexao = new Database();
 
 class UsuarioController {
 
-    
+    //CALENDARIO
+    // Busca implantações para exibição em calendário
+
+
+async buscarCalendario(req, res) {
+    try {
+        const diaInicio = req.query.dia;
+        const diaFim = req.query.dia2;
+
+        if (diaInicio && diaFim) {
+            const usuarioModel = new UsuarioModel();
+            const resultado = await usuarioModel.buscacalendario(diaInicio, diaFim);
+
+            res.send({
+                ok: true,
+                msg: "Implantações encontradas com sucesso.",
+                calendario: resultado
+            });
+        } else {
+            res.send({ ok: false, msg: "Informe o id, dia e dia2 para buscar o calendário." });
+        }
+    } catch (error) {
+        console.error("Erro ao buscar implantações para o calendário:", error);
+        res.send({ ok: false, msg: "Erro ao buscar implantações no banco de dados." });
+    }
+}
+
 //RELATORIO DE DISTANCIAS KM
 async relatorioViagens(req, res) {
     try {
@@ -262,6 +288,7 @@ async buscarHoras(req, res) {
         const adc = new UsuarioModel();
         const newuser = {
           usu: req.body.usu,
+          carro: req.body.carro,
           tipo: req.body.tipo,
           cliente: req.body.cliente,
           data: req.body.data,
@@ -295,7 +322,8 @@ async buscarHoras(req, res) {
             newuser.imp_dtvenc,
             newuser.imp_mensalidade,
             newuser.imp_tel2,
-            newuser.imp_tel3
+            newuser.imp_tel3,
+            newuser.carro
           );
           let dataFormatada = (() => {
             const dataObj = new Date(newuser.data);
@@ -311,6 +339,7 @@ async buscarHoras(req, res) {
         📅 Data: ${dataFormatada}
         🔧 Tipo: ${newuser.tipo}
         📍 Local: ${newuser.cidade}, ${newuser.estado}
+        🚗 Carro: ${newuser.carro}
         👤 Nome: ${newuser.imp_contato}
         📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}
         💻 Conversão: ${newuser.imp_sis}
@@ -364,6 +393,7 @@ async buscarHoras(req, res) {
       
         const dadosAtualizados = {
           usu: req.body.usu,
+          carro: req.body.carro,
           tipo: req.body.tipo,
           cliente: req.body.cliente,
           data: req.body.data,
@@ -401,13 +431,14 @@ async buscarHoras(req, res) {
           📅 Data: ${dataFormatadaT}
           🔧 Tipo: ${dadosAtualizados.tipo}
           📍 Local: ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
+          🚗 Carro: ${dadosAtualizados.carro}
           👤 Nome: ${dadosAtualizados.imp_contato}
           📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
           💻 Conversão: ${dadosAtualizados.imp_sis}
           📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
           `;
 
-            
+          console.log("Mensagem a ser enviada:\n", mensagem);
             const whatsappService = require('../services/whatsappService.js');
             await whatsappService.enviarMensagem(telefone, mensagem);
           

@@ -1,59 +1,196 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-</head>
-<style>
-  /* Estilo temporário para garantir que os elementos H1 sejam exibidos */
-  .body-container h1 {
-    display: block;
-  }
-</style>
-<body>
-  <!-- Elemento .card para exibir a mensagem de boas-vindas -->
-  <div class="card"></div>
+  <title>Calendário de Implantações</title>
+  <style>
+    body {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
 
-  <!-- Container para colocar o conteúdo do body -->
-  <div class="body-container">
-    <h1 href="/usuarios/cadastrar">Cadastre suas horas</h1>
-    <h1 href="/usuarios/implantacoes">Cadastre suas implantações</h1>
-    <h1 href="/usuarios">Veja suas horas e implantações</h1>
+.calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.dia {
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  color: #fff;
+  padding: 10px;
+  min-height: 120px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.info {
+  font-size: 0.75em;
+  margin-top: 5px;
+  color: #ccc;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* <-- Aqui está o truque */
+}
+
+
+  </style>
+</head>
+<div id="modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.7); justify-content:center; align-items:center;">
+  <div style="background:#333; color:#fff; padding:20px; border-radius:10px; max-width:500px; width:90%;">
+    <h3 id="modalData"></h3>
+    <div id="modalConteudo"></div>
+    <button onclick="document.getElementById('modal').style.display='none'" style="margin-top:10px;">Fechar</button>
   </div>
+</div>
+
+<body>
+  <h2 id="tituloCalendario" style="text-align:center;"></h2>
+
+  <div class="calendario" id="calendario"></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Obtendo o nome do usuário dos cookies
-      function getCookie(name) {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          // Verifica se o cookie começa com o nome desejado
-          if (cookie.startsWith(name + '=')) {
-            // Retorna o valor do cookie sem o nome
-            return cookie.substring(name.length + 1);
+    document.addEventListener("DOMContentLoaded", () => {
+      function getCookie(nome) {
+        const valor = document.cookie
+          .split('; ')
+          .find(row => row.startsWith(nome + '='));
+        return valor ? valor.split('=')[1] : null;
+      }
+
+      function getDataInicioFimMes() {
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = hoje.getMonth(); // Janeiro = 0
+
+        const primeiroDia = new Date(ano, mes, 1).toISOString().split('T')[0];
+        const ultimoDia = new Date(ano, mes + 1, 0).toISOString().split('T')[0];
+
+        return { primeiroDia, ultimoDia };
+      }
+
+      function montarCalendario(dados) {
+  const calendario = document.getElementById("calendario");
+  if (!calendario) return;
+
+  calendario.innerHTML = "";
+
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = hoje.getMonth(); 
+  const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+
+  // Nomes dos dias da semana
+  const diasDaSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  diasDaSemana.forEach(dia => {
+    const header = document.createElement("div");
+    header.classList.add("dia");
+    header.style.backgroundColor = "#111";
+    header.style.fontWeight = "bold";
+    header.style.textAlign = "center";
+    header.innerHTML = dia;
+    calendario.appendChild(header);
+  });
+
+  // Espaços vazios antes do primeiro dia
+  const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); 
+  const offset = primeiroDiaSemana === 0 ? 6 : primeiroDiaSemana - 1;
+  for (let i = 0; i < offset; i++) {
+    const vazio = document.createElement("div");
+    vazio.classList.add("dia");
+    vazio.style.background = "transparent";
+    vazio.style.border = "none";
+    calendario.appendChild(vazio);
+  }
+
+  for (let dia = 1; dia <= diasNoMes; dia++) {
+    const dataAtual = new Date(ano, mes, dia);
+    const dataFormatada = dataAtual.toISOString().split('T')[0];
+
+    const divDia = document.createElement("div");
+    divDia.classList.add("dia");
+
+    const nomeDiaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'short' });
+    divDia.innerHTML = `<strong>${dia}</strong><br><span style="font-size:0.7em; color:#bbb;">${nomeDiaSemana}</span>`;
+
+    const eventosNoDia = dados.filter(ev => ev.imp_dia.startsWith(dataFormatada));
+    eventosNoDia.forEach(ev => {
+      const info = document.createElement("div");
+      info.classList.add("info");
+      info.innerHTML = `<b>${ev.usunome}</b><br>${ev.imp_cidade}`;
+      divDia.appendChild(info);
+    });
+
+    if (eventosNoDia.length > 0) {
+      divDia.addEventListener('click', () => {
+        const modal = document.getElementById('modal');
+        const modalData = document.getElementById('modalData');
+        const modalConteudo = document.getElementById('modalConteudo');
+
+        const diaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'long' });
+        modalData.textContent = `Eventos em ${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}`;
+
+        modalConteudo.innerHTML = eventosNoDia.map(ev => `
+          <div style="margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;">
+            <strong>${ev.usunome}</strong><br>
+            Cliente: ${ev.imp_nome}<br>
+            Tipo: ${ev.imp_tipo}<br>
+            Cidade: ${ev.imp_cidade} - ${ev.imp_estado}<br>
+            Observações: ${ev.imp_obs || 'Nenhuma'}
+          </div>
+        `).join('');
+
+        modal.style.display = 'flex';
+      });
+    }
+
+    calendario.appendChild(divDia);
+  }
+}
+
+
+      async function carregarCalendario() {
+        const userId = getCookie('userId');
+        if (userId === "4" || userId === "6") {
+          const { primeiroDia, ultimoDia } = getDataInicioFimMes();
+
+          try {
+            const url = `http://152.67.45.250:3000/usuarios/calendario?dia=${primeiroDia}&dia2=${ultimoDia}`;
+            const resposta = await fetch(url);
+            const dados = await resposta.json();
+
+            if (dados.ok) {
+              montarCalendario(dados.calendario);
+            } else {
+              alert("Erro ao buscar calendário.");
+            }
+          } catch (err) {
+            console.error("Erro no fetch:", err);
           }
         }
-        return ''; // Retorna uma string vazia se o cookie não for encontrado
       }
-      const userName = getCookie('Nome');
+      
+      carregarCalendario();
 
-      // Verificando se o nome do usuário foi encontrado nos cookies
-      if (userName) {
-        // Exibindo a mensagem de boas-vindas com o nome do usuário
-        const cardElement = document.querySelector('.card');
-        if (cardElement) {
-          cardElement.innerHTML = '<h2>Bem-vindo, ' + userName + '!</h2>';
-        }
-      } else {
-        // Caso o nome do usuário não seja encontrado nos cookies
-        const cardElement = document.querySelector('.card');
-        if (cardElement) {
-          cardElement.innerHTML = '<h2>Bem-vindo!</h2><p>Não foi possível encontrar seu nome nos cookies.</p>';
-        }
-      }
+    const hoje = new Date()    
+    const nomeMes = hoje.toLocaleString('pt-BR', { month: 'long' });
+    document.getElementById('tituloCalendario').textContent = `Implantações de ${nomeMes}`;
     });
+
+
   </script>
 </body>
 </html>

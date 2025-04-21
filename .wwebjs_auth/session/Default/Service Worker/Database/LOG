@@ -1,5 +1,5 @@
-2025/04/19-18:42:31.948 9a62 Recovering log #82
-2025/04/19-18:42:31.950 9a62 Level-0 table #84: started
-2025/04/19-18:42:32.041 9a62 Level-0 table #84: 652 bytes OK
-2025/04/19-18:42:32.156 9a62 Delete type=0 #82
-2025/04/19-18:42:32.156 9a62 Delete type=3 #81
+2025/04/21-11:28:34.547 f6f Recovering log #106
+2025/04/21-11:28:34.551 f6f Level-0 table #108: started
+2025/04/21-11:28:34.652 f6f Level-0 table #108: 651 bytes OK
+2025/04/21-11:28:34.762 f6f Delete type=3 #105
+2025/04/21-11:28:34.762 f6f Delete type=0 #106

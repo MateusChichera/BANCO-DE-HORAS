@@ -99,7 +99,7 @@ console.log('Horas Extras:', horasExtras);
 
         // Atualizando a URL para incluir o caminho da rota desejada
         //let apiUrl = currentUrl + '/cadastrar';
-
+        document.getElementById('loadingOverlay').style.display = 'flex';
             fetch(currentUrl, {
                 method: 'POST',
                 headers: {
@@ -128,6 +128,9 @@ console.log('Horas Extras:', horasExtras);
                     alert(resposta2.msg);
                 }
             })
+            .finally(function() {
+                document.getElementById("loadingOverlay").style.display = "none"; // 👈 Esconde o overlay
+            });
         }
         
     }

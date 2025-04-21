@@ -66,26 +66,19 @@ function getCookie(name) {
     }
     return ''; // Retorna uma string vazia se o cookie não for encontrado
 }
-    // Função para calcular o próximo domingo
-function getNextSunday(date) {
-    const dayOfWeek = date.getDay();
-    const daysUntilSunday = (7 - dayOfWeek) % 7; // dias até o próximo domingo
-    date.setDate(date.getDate() + daysUntilSunday); // adiciona os dias até o próximo domingo
-    return date;
-}
-
-// Função para calcular o próximo domingo da semana seguinte
-function getNextSundayNextWeek(date) {
-    // Adiciona 7 dias ao próximo domingo para chegar no domingo da próxima semana
-    date.setDate(date.getDate() + 7);
-    return getNextSunday(date); // chama a função para encontrar o domingo
+   // Função para calcular o domingo da semana atual
+function getSundayThisWeek(date) {
+    const dayOfWeek = date.getDay(); // 0 = domingo
+    const sunday = new Date(date);
+    sunday.setDate(date.getDate() - dayOfWeek); // volta até o domingo da semana atual
+    return sunday;
 }
 
 // Função para formatar a data no formato "YYYY-MM-DD"
 function formatDate(date) {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // mês começa do 0, então somamos 1
-    const day = String(date.getDate()).padStart(2, '0'); // garante que o dia tenha 2 dígitos
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // mês começa do 0
+    const day = String(date.getDate()).padStart(2, '0'); // garante 2 dígitos
     return `${year}-${month}-${day}`;
 }
 
@@ -93,17 +86,19 @@ function formatDate(date) {
 function setDateFields() {
     const today = new Date(); // data de hoje
 
-    // Calcular os domingos
-    const sundayThisWeek = getNextSunday(new Date(today)); // domingo desta semana
-    const sundayNextWeek = getNextSundayNextWeek(new Date(sundayThisWeek)); // domingo da semana seguinte
+    // Calcular domingo da semana atual
+    const sundayThisWeek = getSundayThisWeek(new Date(today)); // início
+    const saturdayThisWeek = new Date(sundayThisWeek);
+    saturdayThisWeek.setDate(sundayThisWeek.getDate() + 6); // fim da semana
 
     // Preencher os campos de data
-    document.getElementById('dia').value = formatDate(sundayThisWeek); // data de início
-    document.getElementById('dia2').value = formatDate(sundayNextWeek); // data de fim
+    document.getElementById('dia').value = formatDate(sundayThisWeek); // data de início (domingo)
+    document.getElementById('dia2').value = formatDate(saturdayThisWeek); // data de fim (sábado)
 }
 
 // Chamar a função ao carregar a página
 window.onload = setDateFields;
+
 
     </script>
 <div>
@@ -134,6 +129,7 @@ window.onload = setDateFields;
                     <th>Vencimento</th>
                     <th>Mensalidade</th>
                     <th>Técnico</th>
+                    <th>Carro</th>
                     <th>Ações</th>
                 </tr>
             </thead>

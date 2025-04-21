@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Função para preencher o formulário com os dados da implantação
     async function preencherFormulario(implantacao) {
         document.getElementById('usuario').value = implantacao.usuid || '';
+        document.getElementById('carro').value = implantacao.imp_carro || '';
         document.getElementById('tipo').value = implantacao.imp_tipo || '';
         document.getElementById('cliente').value = implantacao.imp_nome || '';
         document.getElementById('data').value = implantacao.imp_dia ? new Date(implantacao.imp_dia).toISOString().split('T')[0] : '';
@@ -54,8 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Função para gravar os dados da implantação
     function gravarimplantacao() {
+        document.getElementById("loadingOverlay").style.display = "flex";
         let usuario = {
             usu: document.getElementById("usuario").value,
+            carro: document.getElementById("carro").value,
             tipo: document.getElementById("tipo").value,
             cliente: document.getElementById("cliente").value,
             data: document.getElementById("data").value,
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(usuario)
-        })
+        })  
             .then(res => res.json())
             .then(resposta => {
                 if (resposta.ok) {
@@ -93,10 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert(resposta.msg || 'Erro ao salvar');
                 }
             })
+            
             .catch(error => {
                 console.error('Erro ao gravar:', error);
                 alert('Erro ao alterar os dados');
+            })
+            .finally(() => {
+                document.getElementById("loadingOverlay").style.display = "none"; // 👈 Esconde o overlay
             });
+            
     }
 
     function resetForm() {
