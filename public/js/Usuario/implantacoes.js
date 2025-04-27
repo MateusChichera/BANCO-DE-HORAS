@@ -21,10 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             //  PEGANDO OS VALORES DO EJS
         let usu = document.getElementById("usuario");
+        let vendedor = document.getElementById("Vendedor");
         let carro = document.getElementById("carro");
         let tipo = document.getElementById("tipo");
         let cliente = document.getElementById("cliente");
         let data = document.getElementById("data");
+        let dia1 = document.getElementById("dia1");
         let estado = document.getElementById("estado");
         let cidade = document.getElementById("cidade");
         let obs = document.getElementById("observacoes");
@@ -37,16 +39,23 @@ document.addEventListener('DOMContentLoaded', function() {
         //let datapag = document.getElementById("datapag")
         let tel2 = document.getElementById('tel2');
         let tel3 = document.getElementById('tel3');
+        let taxa = document.getElementById('taxa');
 
+        let dia1Value = dia1.value === "" ? null : dia1.value;
+        let mensalidadeValue = mensalidade.value === "" ? null : mensalidade.value;
+        let datavencimentoValue = datavencimento.value === "" ? null : datavencimento.value;
+        let taxaValue = taxa.value === "" ? null : taxa.value;
 
-        console.log("ENVIADO PARA O BANCO",usu,carro,tipo,cliente,data,estado,cidade,obs,contato,tel,tel1,sistema,datavencimento,mensalidade,tel2,tel3);
+        console.log("ENVIADO PARA O BANCO",usu,carro,tipo,cliente,data,estado,cidade,obs,contato,tel,tel1,sistema,datavencimento,mensalidade,tel2,tel3,vendedor);
 
         var usuario = {
             usu: usu.value,
+            vendedor: vendedor.value,
             carro: carro.value,
             tipo: tipo.value,
             cliente: cliente.value,
             data: data.value,
+            dia1: dia1Value,
             estado: estado.value,
             cidade: cidade.value,
             obs: obs.value,
@@ -54,10 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
             tel: tel.value,
             tel1: tel1.value,
             sistema: sistema.value,
-            datavencimento: datavencimento.value,
-            mensalidade: mensalidade.value,
+            datavencimento: datavencimentoValue,
+            mensalidade: mensalidadeValue,
             tel2: tel2.value,
-            tel3: tel3.value
+            tel3: tel3.value,
+            taxa: taxaValue,
         }
         let currentUrl = window.location.href;
 
@@ -92,8 +102,11 @@ fetch(currentUrl, {
         sistema.value = null;
         datavencimento.value = null;
         mensalidade.value = null;
-        tel2.value = null
-        tel3.value = null
+        tel2.value = null;
+        tel3.value = null;
+        dia1.value = null;
+        taxa.value = null;
+        vendedor.value = null;
     }
     else{
         alert(resposta2.msg);

@@ -1,15 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     // ID da implantação, que será usado para buscar os dados
     let idimplantacao = localStorage.getItem('idimplantacao');
-    let currentUrl = `http://152.67.45.250:3000/usuarios/editar/viagem/${idimplantacao}`; // URL para buscar os dados da implantação
+    let currentUrl = `http://137.131.128.248:3000/usuarios/editar/viagem/${idimplantacao}`; // URL para buscar os dados da implantação
 
     // Função para preencher o formulário com os dados da implantação
     async function preencherFormulario(implantacao) {
         document.getElementById('usuario').value = implantacao.usuid || '';
+        document.getElementById('Vendedor').value = implantacao.imp_vendedorcod || '';
         document.getElementById('carro').value = implantacao.imp_carro || '';
         document.getElementById('tipo').value = implantacao.imp_tipo || '';
         document.getElementById('cliente').value = implantacao.imp_nome || '';
         document.getElementById('data').value = implantacao.imp_dia ? new Date(implantacao.imp_dia).toISOString().split('T')[0] : '';
+        document.getElementById('dia1').value = implantacao.imp_dia1 ? new Date(implantacao.imp_dia1).toISOString().split('T')[0] : '';
         document.getElementById('estado').value = implantacao.imp_estado || '';
 
         // Preencher cidades após o estado estar definido
@@ -24,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('sistema').value = implantacao.imp_sis || '';
         document.getElementById('datavencimento').value = implantacao.imp_dtvenc ? new Date(implantacao.imp_dtvenc).toISOString().split('T')[0] : '';
         document.getElementById('mensalidade').value = implantacao.imp_mensalidade || '';
+        document.getElementById('taxa').value = implantacao.imp_taxa || '';
         document.getElementById('observacoes').value = implantacao.imp_obs || '';
     }
 
@@ -58,10 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("loadingOverlay").style.display = "flex";
         let usuario = {
             usu: document.getElementById("usuario").value,
+            vendedor: document.getElementById("Vendedor").value,
             carro: document.getElementById("carro").value,
             tipo: document.getElementById("tipo").value,
             cliente: document.getElementById("cliente").value,
             data: document.getElementById("data").value,
+            dia1: document.getElementById("dia1").value || null,
             estado: document.getElementById("estado").value,
             cidade: document.getElementById("cidade").value,
             obs: document.getElementById("observacoes").value,
@@ -71,19 +76,21 @@ document.addEventListener('DOMContentLoaded', function () {
             tel2: document.getElementById("tel2").value,
             tel3: document.getElementById("tel3").value,
             sistema: document.getElementById("sistema").value,
-            datavencimento: document.getElementById("datavencimento").value,
-            mensalidade: document.getElementById("mensalidade").value
+            datavencimento: document.getElementById("datavencimento").value || null,
+            mensalidade: document.getElementById("mensalidade").value || null,
+            taxa: document.getElementById("taxa").value || null
         };
 
         let idimplantacao = localStorage.getItem('idimplantacao');
-        let urlGravacao = `http://152.67.45.250:3000/usuarios/edt/viagem/${idimplantacao}`;
+        let urlGravacao = `http://137.131.128.248:3000/usuarios/edt/viagem/${idimplantacao}`;
 
         fetch(urlGravacao, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(usuario)
+            body: JSON.stringify(usuario),
+            credentials: 'include'
         })  
             .then(res => res.json())
             .then(resposta => {
@@ -91,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert("Alteração feita com sucesso, mensagem enviada",resposta.msg);
                     resetForm();
                     localStorage.removeItem('idimplantacao'); 
-                    window.location.href = "http://152.67.45.250:3000/usuarios/viagem";
+                    window.location.href = "http://137.131.128.248:3000/usuarios/viagem";
                 } else {
                     alert(resposta.msg || 'Erro ao salvar');
                 }
@@ -109,6 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function resetForm() {
         document.getElementById('usuario').value = '';
+        document.getElementById('Vendedor').value = '';
+        document.getElementById('carro').value = '';
+        document.getElementById('dia1').value = '';
         document.getElementById('tipo').value = '';
         document.getElementById('cliente').value = '';
         document.getElementById('data').value = '';

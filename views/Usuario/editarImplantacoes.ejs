@@ -153,6 +153,14 @@ function getCookie(name) {
             </select>
         </div>
         <div class="form-group">
+            <label for="Vendedor">Vendedor:</label>
+            <select class="form-control" id="Vendedor">
+                <option value="0">--Selecione--</option>
+                <option value="7">Leonardo</option>
+                <option value="8">Edmilson</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="carro">Carro:</label>
             <select class="form-control" id="carro">
                 <option value="0">--Selecione--</option>
@@ -210,10 +218,16 @@ function getCookie(name) {
             <input type="number" min="0" class="form-control" placeholder="0.00" id="mensalidade">
         </div>
         <div class="form-group">
-            <label for="data">Data da implantação:</label>
-            <input type="date" class="form-control" id="data">
+            <label for="taxa">Taxa de implantação:</label>
+            <input type="number" min="0" class="form-control" placeholder="0.00" id="taxa">
         </div>
-
+        <div class="form-group">
+            <label>Período da Implantação:</label>
+            <div style="display: flex; gap: 10px; flex-wrap: nowrap;">
+                <input type="date" class="form-control" id="data" placeholder="Data de início" style="flex: 1;">
+                <input type="date" class="form-control" id="dia1" placeholder="Data de fim (opcional)" style="flex: 1;">
+            </div>
+        </div>
         <div class="form-group">
             <label for="estado">Estado:</label>
             <select class="form-control" id="estado">

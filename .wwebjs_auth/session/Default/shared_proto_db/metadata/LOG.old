@@ -1,5 +1,3 @@
-2025/04/19-17:30:17.240 91d1 Recovering log #6
-2025/04/19-17:30:17.241 91d1 Level-0 table #8: started
-2025/04/19-17:30:17.243 91d1 Level-0 table #8: 124 bytes OK
-2025/04/19-17:30:17.248 91d1 Delete type=3 #4
-2025/04/19-17:30:17.248 91d1 Delete type=0 #6
+2025/04/26-16:18:29.554 8cf9d Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata/MANIFEST-000001
+2025/04/26-16:18:29.554 8cf9d Recovering log #3
+2025/04/26-16:18:29.554 8cf9d Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata/000003.log 

@@ -94,7 +94,7 @@
   const diasNoMes = new Date(ano, mes + 1, 0).getDate();
 
   // Nomes dos dias da semana
-  const diasDaSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  /*const diasDaSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   diasDaSemana.forEach(dia => {
     const header = document.createElement("div");
     header.classList.add("dia");
@@ -103,7 +103,7 @@
     header.style.textAlign = "center";
     header.innerHTML = dia;
     calendario.appendChild(header);
-  });
+  });*/
 
   // Espaços vazios antes do primeiro dia
   const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); 
@@ -168,7 +168,7 @@
           const { primeiroDia, ultimoDia } = getDataInicioFimMes();
 
           try {
-            const url = `http://152.67.45.250:3000/usuarios/calendario?dia=${primeiroDia}&dia2=${ultimoDia}`;
+            const url = `http://137.131.128.248:3000/usuarios/calendario?dia=${primeiroDia}&dia2=${ultimoDia}`;
             const resposta = await fetch(url);
             const dados = await resposta.json();
 

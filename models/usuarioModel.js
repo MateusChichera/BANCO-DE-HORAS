@@ -34,8 +34,30 @@ class UsuarioModel {
     #imp_tel2
     #imp_tel3
     #imp_carro
+    #imp_dia1
+    #imp_vendedorcod
+    #imp_taxa
 
     // IMPLANTAÇÃO
+
+    get imp_dia1(){
+        return this.#imp_dia1
+    }
+    set imp_dia1(imp_dia1){
+        this.#imp_dia1 = imp_dia1
+    }
+    get imp_vendedorcod(){
+        return this.#imp_vendedorcod
+    }
+    set imp_vendedorcod(imp_vendedorcod){  
+        this.#imp_vendedorcod = imp_vendedorcod
+    }
+    get imp_taxa(){
+        return this.#imp_taxa
+    }
+    set imp_taxa(imp_taxa){
+        this.#imp_taxa = imp_taxa
+    }
 
     get imp_carro() { // Nome do contato
         return this.#imp_carro;
@@ -273,7 +295,7 @@ class UsuarioModel {
         this.#imp_tel3 = imp_tel3
     }
 
-    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra, dia2, idhora, obs, cidade, tipo, estado, cliente, data, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_datapag, imp_mensalidade,imp_tel2,imp_tel3,imp_carro) {
+    constructor(usuId, usuNome, usuSenha, dia, entrada, cafe1, cafe2, almoco1, almoco2, cafe3, cafe4, saida, extra, dia2, idhora, obs, cidade, tipo, estado, cliente, data, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_datapag, imp_mensalidade,imp_tel2,imp_tel3,imp_carro,imp_taxa,imp_dia1,imp_vendedorcod) {
         this.#usuId = usuId;
         this.#usuNome = usuNome;
         this.#usuSenha = usuSenha;
@@ -306,7 +328,10 @@ class UsuarioModel {
         this.#imp_mensalidade = imp_mensalidade;
         this.#imp_tel2 = imp_tel2;
         this.#imp_tel3 = imp_tel3;
-        this.#imp_carro = imp_carro
+        this.#imp_carro = imp_carro;
+        this.#imp_dia1 = imp_dia1;
+        this.#imp_vendedorcod = imp_vendedorcod; 
+        this.#imp_taxa = imp_taxa;
     }
     
     
@@ -350,17 +375,17 @@ async listarUsuarios(usuid) {
     }
 
     // ADCIONAR IMPLANTAÇÃO
-    async adcImplantacao(usuid, tipo, cliente, data, estado, cidade, obs, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc,imp_mensalidade,imp_tel2,imp_tel3,imp_carro) {
+    async adcImplantacao(usuid, tipo, cliente, data, estado, cidade, obs, imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc,imp_mensalidade,imp_tel2,imp_tel3,imp_carro,imp_vendedorcod,imp_dia1,imp_taxa) {
         let sql = `
             INSERT INTO implantacoes (
                 usuid, imp_nome, imp_cidade, imp_estado, imp_dia, imp_tipo, imp_obs,
-                imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade,imp_tel2,imp_tel3,imp_carro
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)
+                imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade,imp_tel2,imp_tel3,imp_carro,imp_vendedorcod,imp_dia1,imp_taxa
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?, ?, ?, ?)
         `;
     
         let rows = await conexao.ExecutaComando(sql, [
             usuid, cliente, cidade, estado, data, tipo, obs,
-            imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade, imp_tel2,imp_tel3,imp_carro
+            imp_contato, imp_tel, imp_tel1, imp_sis, imp_dtvenc, imp_mensalidade, imp_tel2,imp_tel3,imp_carro,imp_vendedorcod,imp_dia1,imp_taxa
         ]);
     
         return rows;
@@ -398,10 +423,10 @@ async listarUsuarios(usuid) {
     async autenticar(email, senha) {
         let sql = "SELECT * FROM Usuario WHERE usunome = ? AND ususenha = ?";
         let rows = await conexao.ExecutaComando(sql, [email, senha]);
-        console.log("Resultado da query:", rows);
+       // console.log("Resultado da query:", rows);
     
         if (rows && rows.length > 0) {
-            console.log("Usuário encontrado:", rows[0]);
+           // console.log("Usuário encontrado:", rows[0]);
             return rows[0];
         } else {
             console.log("Nenhum usuário encontrado");
@@ -452,7 +477,7 @@ async listarUsuarios(usuid) {
     async relViagem(dia,dia2){
 
         let sql =`
-                    SELECT i.idimplantacao,i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel,i.imp_mensalidade,i.imp_dtvenc,i.imp_carro FROM implantacoes i
+                    SELECT i.idimplantacao,i.imp_nome,i.imp_cidade,i.imp_estado,i.imp_dia,i.imp_dia1,i.imp_tipo,i.imp_contato,i.imp_tel,i.imp_tel1,i.imp_sis,u.usunome,u.usu_tel,i.imp_mensalidade,i.imp_dtvenc,i.imp_carro FROM implantacoes i
                     INNER JOIN Usuario u ON i.usuid = u.usuid
                     where i.imp_dia between ? and ? ORDER BY i.imp_dia ASC`
         let rows = await conexao.ExecutaComando(sql,[dia,dia2]);
@@ -461,7 +486,7 @@ async listarUsuarios(usuid) {
 
         // Função para buscar telefone do usuário pelo ID PARA ENVIO NO WHATSAPP
        async buscarTelefonePorId(usuid) {
-            const sql = 'SELECT usu_tel FROM Usuario WHERE usuid = ?';
+            const sql = 'SELECT usunome,usu_tel FROM Usuario WHERE usuid = ?';
             
           
                 const resultados = await conexao.ExecutaComando(sql, [usuid]);
@@ -470,8 +495,7 @@ async listarUsuarios(usuid) {
                 return reject(new Error('Usuário não encontrado'));
                 }
                 
-                // Retorna o telefone do usuário
-                return (resultados[0].usu_tel);
+                return resultados[0];
             }
           
 
@@ -492,7 +516,10 @@ async listarUsuarios(usuid) {
                     imp_mensalidade = ?, 
                     imp_tel2 = ?, 
                     imp_tel3 = ?,
-                    imp_carro = ?
+                    imp_carro = ?,
+                    imp_taxa = ?,
+                    imp_vendedorcod = ?,
+                    imp_dia1 = ?
                     WHERE idimplantacao = ?`;
             
                 const valores = [
@@ -511,7 +538,10 @@ async listarUsuarios(usuid) {
                     dados.imp_mensalidade, // imp_mensalidade
                     dados.imp_tel2,    // imp_tel2
                     dados.imp_tel3,    // imp_tel3     
-                    dados.carro,       // carro
+                    dados.carro,
+                    dados.taxa,
+                    dados.vendedor,
+                    dados.dia1,      // carro
                     id                 // idimplantacao
                 ];
             

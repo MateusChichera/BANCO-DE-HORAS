@@ -55,12 +55,10 @@ function converterParaFormatoHora(minutos) {
     }
     //FORMATA DATA NO CORRETO
     function formatarDataISO8601ParaDDMMYYYY(dataISO8601) {
-        const dataObj = new Date(dataISO8601);
-        const dia = String(dataObj.getDate()).padStart(2, '0');
-        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
+        const [ano, mes, dia] = dataISO8601.split('T')[0].split('-');
         return `${dia}/${mes}/${ano}`;
     }
+    
 
     function atualizarTabela(resultados,implantacoes) {
 
@@ -214,7 +212,7 @@ if (userId == "6") {
             // Exibe um diálogo de confirmação antes de excluir
             if (confirm("Tem certeza que deseja excluir este item?")) {
                 var currentUrl = new URL(window.location.href);
-                fetch('http://152.67.45.250:3000/usuarios/excluir', {
+                fetch('http://137.131.128.248:3000/usuarios/excluir', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

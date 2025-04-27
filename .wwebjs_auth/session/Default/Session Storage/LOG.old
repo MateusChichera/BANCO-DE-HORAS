@@ -1,5 +1,3 @@
-2025/04/21-11:24:00.259 c50 Recovering log #123
-2025/04/21-11:24:00.260 c50 Level-0 table #125: started
-2025/04/21-11:24:00.265 c50 Level-0 table #125: 324 bytes OK
-2025/04/21-11:24:00.367 c50 Delete type=0 #123
-2025/04/21-11:24:00.367 c50 Delete type=3 #121
+2025/04/26-16:18:29.909 8cfb3 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Session Storage/MANIFEST-000001
+2025/04/26-16:18:29.910 8cfb3 Recovering log #3
+2025/04/26-16:18:29.910 8cfb3 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Session Storage/000003.log 

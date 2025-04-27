@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let dataFim = document.getElementById("dia2").value;
 
         if (idUsuario && dataInicio && dataFim) {
-            let apiUrl = 'http://152.67.45.250/usuarios/relatorios?id=' + idUsuario + '&dia=' + dataInicio + '&dia2=' + dataFim;
+            let apiUrl = 'http://137.131.128.248:3000/usuarios/relatorios?id=' + idUsuario + '&dia=' + dataInicio + '&dia2=' + dataFim;
 
             fetch(apiUrl, {
                 method: 'GET',

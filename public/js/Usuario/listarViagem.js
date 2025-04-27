@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let diaFim = document.getElementById("dia2").value;
 
         if (diaInicio && diaFim) {
-            let apiUrl = `http://152.67.45.250:3000/usuarios/agendamentos?dia=${diaInicio}&dia2=${diaFim}`;
+            let apiUrl = `http://137.131.128.248:3000/usuarios/agendamentos?dia=${diaInicio}&dia2=${diaFim}`;
 
             fetch(apiUrl, {
                 method: 'GET',
@@ -38,12 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function formatarDataISO8601ParaDDMMYYYY(dataISO8601) {
-        const dataObj = new Date(dataISO8601);
-        const dia = String(dataObj.getDate()).padStart(2, '0');
-        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
+        const [ano, mes, dia] = dataISO8601.split('T')[0].split('-');
         return `${dia}/${mes}/${ano}`;
     }
+    
     function formatarParaReais(valor) {
         const numero = parseFloat(valor);
         if (isNaN(numero)) return "Valor inválido";
@@ -119,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (idExclusao) {
             if (confirm("Tem certeza que deseja excluir esta implantação?")) {
                 console.log(idExclusao)
-                fetch('http://152.67.45.250:3000/usuarios/deletar', {
+                fetch('http://137.131.128.248:3000/usuarios/deletar', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -153,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (idEdicao) {
                 // Monta a URL base corretamente até o domínio e adiciona o path fixo da rota
             
-                window.location.assign(`http://152.67.45.250:3000/usuarios/editar/viagem`);
+                window.location.assign(`http://137.131.128.248:3000/usuarios/editar/viagem`);
                 
                 // Salva o ID no localStorage (caso queira recuperar depois)
                 localStorage.setItem('idimplantacao', idEdicao);

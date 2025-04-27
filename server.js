@@ -7,8 +7,17 @@ const path = require('path');
 const LoginController = require("./controllers/loginController");
 const autenticacaoMiddleware = require('./public/js/Login/Mid');
 const cors = require('cors');
+const statusMonitor = require('express-status-monitor');
+
+// Habilita o monitor
+
 
 const app = express();
+
+
+app.use(statusMonitor());
+app.use(statusMonitor({ title: 'Monitoramento do Servidor' })); // Título da página de monitoramento
+app.use(statusMonitor({ path: '/status' })); // Rota para acessar o monitoramento
 app.use(cookieParser());
 
 app.use(session({
@@ -32,8 +41,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://152.67.45.250:3000', // ✅ origem exata do frontend
-    credentials: true // ✅ permite enviar cookies
+    origin: '*', // ✅ origem exata do frontend
+    credentials: true, // ✅ permite enviar cookies
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'] // Cabeçalhos permitidos
 }));
 
 // Rotas separadas
@@ -41,6 +52,8 @@ const HomeRoute = require('./routes/homeRoute');
 const UsuarioRoute = require('./routes/usuarioRoute');
 const LoginRoute = require('./routes/loginRoute');
 const WhatsappRoute = require('./routes/whatsappRoute');
+const MonitorRoute = require('./routes/monitorRoute');
+
 
 //Iniciando a rota de login
 const loginRouteInstance = new LoginRoute();
@@ -58,7 +71,13 @@ const usuarioRouter = usuarioRouteInstance.getRouter();
 const whatsappRouteInstance = new WhatsappRoute();
 const whatsappRouter = whatsappRouteInstance.getRouter(); // Renomeado para whatsappRouter
 
+// Iniciando a rota de monitoramento
+const monitorRouteInstance = new MonitorRoute(session.store);
+const monitorRouter = monitorRouteInstance.getRouter();
+
 // LOGIN
+
+app.use('/', monitorRouter); // Corrigido para usar monitorRouter
 app.use('/login', loginRouter); // Corrigido aqui para usar loginRouter em vez de LoginRouter
 app.use('/', autenticacaoMiddleware, homeRouteInstance.getRouter());
 app.use('/usuarios', autenticacaoMiddleware, usuarioRouter);

@@ -9,6 +9,7 @@ const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
     headless: true,
+    executablePath: '/usr/bin/chromium-browser', // Caminho do Chromium no seu sistema
     args: ['--no-sandbox']
   }
 });
@@ -64,10 +65,17 @@ async function getQRCode() {
           resolve(qrCodeData);
         }
       }, 500);
+
+      // Adicionar um tempo limite para evitar espera indefinida
+      setTimeout(() => {
+        clearInterval(interval);
+        reject('Erro: QR Code não gerado no tempo esperado');
+      }, 60000); // Espera 1 minuto (60,000ms)
     });
   }
   return qrCodeData;
 }
+
 
 module.exports = {
   getQRCode,

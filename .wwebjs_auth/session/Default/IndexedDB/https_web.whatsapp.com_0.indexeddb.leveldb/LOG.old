@@ -1,26 +1,13 @@
-2025/04/21-11:24:00.084 c50 Recovering log #386
-2025/04/21-11:24:00.162 c50 Level-0 table #393: started
-2025/04/21-11:24:00.171 c50 Level-0 table #393: 119971 bytes OK
-2025/04/21-11:24:00.177 c50 Delete type=0 #386
-2025/04/21-11:24:00.177 c50 Delete type=3 #382
-2025/04/21-11:24:11.859 c7f Moved #393 to level-1 119971 bytes OK: files[ 0 1 3 0 0 0 0 ]
-2025/04/21-11:24:12.166 c82 Level-0 table #396: started
-2025/04/21-11:24:12.242 c82 Level-0 table #396: 17440 bytes OK
-2025/04/21-11:24:12.245 c82 Delete type=0 #394
-2025/04/21-11:24:12.245 c82 Manual compaction at level-0 from '\x00P\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00Q\x00\x00\x00' @ 0 : 0; will stop at '\x00P\x00\x00\x05' @ 589974 : 1
-2025/04/21-11:24:12.245 c82 Compacting 1@0 + 1@1 files
-2025/04/21-11:24:12.260 c82 Generated table #397@0: 3023 keys, 63891 bytes
-2025/04/21-11:24:12.260 c82 Compacted 1@0 + 1@1 files => 63891 bytes
-2025/04/21-11:24:12.261 c82 compacted to: files[ 0 1 3 0 0 0 0 ]
-2025/04/21-11:24:12.262 c82 Delete type=2 #396
-2025/04/21-11:24:12.262 c82 Manual compaction at level-0 from '\x00P\x00\x00\x05' @ 589974 : 1 .. '\x00Q\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/04/21-11:24:40.745 c82 Compacting 1@1 + 3@2 files
-2025/04/21-11:24:41.345 c82 Generated table #398@1: 65681 keys, 2225634 bytes
-2025/04/21-11:24:41.353 c82 Generated table #399@1: 2765 keys, 56464 bytes
-2025/04/21-11:24:41.353 c82 Compacted 1@1 + 3@2 files => 2282098 bytes
-2025/04/21-11:24:41.364 c82 compacted to: files[ 0 0 2 0 0 0 0 ]
-2025/04/21-11:24:41.364 c82 Delete type=2 #390
-2025/04/21-11:24:41.364 c82 Delete type=2 #393
-2025/04/21-11:24:41.364 c82 Delete type=2 #391
-2025/04/21-11:24:41.364 c82 Delete type=2 #397
-2025/04/21-11:24:41.364 c82 Delete type=2 #388
+2025/04/26-16:18:29.970 8cf92 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/04/26-16:18:29.970 8cf92 Recovering log #156
+2025/04/26-16:18:29.973 8cf92 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000156.log 
+2025/04/26-16:18:31.250 8cf94 Level-0 table #161: started
+2025/04/26-16:18:31.255 8cf94 Level-0 table #161: 126924 bytes OK
+2025/04/26-16:18:31.257 8cf94 Delete type=0 #156
+2025/04/26-16:18:31.257 8cf94 Manual compaction at level-0 from '\x00;\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00<\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/04/26-16:18:32.352 8cf93 Compacting 1@1 + 1@2 files
+2025/04/26-16:18:32.395 8cf93 Generated table #162@1: 42155 keys, 1557629 bytes
+2025/04/26-16:18:32.395 8cf93 Compacted 1@1 + 1@2 files => 1557629 bytes
+2025/04/26-16:18:32.402 8cf93 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/04/26-16:18:32.403 8cf93 Delete type=2 #158
+2025/04/26-16:18:32.403 8cf93 Delete type=2 #161

@@ -302,9 +302,12 @@ async buscarHoras(req, res) {
           imp_dtvenc: req.body.datavencimento,
           imp_mensalidade: req.body.mensalidade,
           imp_tel2: req.body.tel2,
-          imp_tel3: req.body.tel3
+          imp_tel3: req.body.tel3,
+          vendedor: req.body.vendedor,
+          dia1: req.body.dia1,
+          taxa: req.body.taxa
         };
-      
+        console.log("Dados recebidos para cadastro de implantação:", newuser);
         try {
           // 1. Grava a implantação
           await adc.adcImplantacao(
@@ -323,7 +326,10 @@ async buscarHoras(req, res) {
             newuser.imp_mensalidade,
             newuser.imp_tel2,
             newuser.imp_tel3,
-            newuser.carro
+            newuser.carro,
+            newuser.vendedor,
+            newuser.dia1,
+            newuser.taxa
           );
           let dataFormatada = (() => {
             const dataObj = new Date(newuser.data);
@@ -332,17 +338,31 @@ async buscarHoras(req, res) {
             const ano = dataObj.getFullYear();
             return `${dia}/${mes}/${ano}`;
           })();
-          const telefone = await adc.buscarTelefonePorId(newuser.usu);
+          let data2 = (() => {
+            const dataObj = new Date(newuser.dia1);
+            const dia = String(dataObj.getDate()).padStart(2, '0');
+            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+            const ano = dataObj.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+          })();
+          const usuario = await adc.buscarTelefonePorId(newuser.usu);
+
+          const telefone = usuario.usu_tel;
+          const tecnico = usuario.usunome;
           console.log("telefone a enviar mensagem no cadastro de implantacao",telefone)
+          const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
+          const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: ${newuser.taxa}` : '';
+
           // 3. Monta a mensagem
-          const mensagem = `Olá, você tem uma nova implantação!\n\n📋 Cliente: ${newuser.cliente}
-        📅 Data: ${dataFormatada}
+          const mensagem = `Olá,${tecnico} você tem uma nova implantação!\n\n📋 Cliente: ${newuser.cliente}
+        ${periodo}
         🔧 Tipo: ${newuser.tipo}
         📍 Local: ${newuser.cidade}, ${newuser.estado}
         🚗 Carro: ${newuser.carro}
         👤 Nome: ${newuser.imp_contato}
         📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}
         💻 Conversão: ${newuser.imp_sis}
+        ${taxaImplantacao}
         📝 Observações: ${newuser.obs || 'Nenhuma'}
       `;
       
@@ -407,7 +427,10 @@ async buscarHoras(req, res) {
           imp_dtvenc: req.body.datavencimento,
           imp_mensalidade: req.body.mensalidade,
           imp_tel2: req.body.tel2,
-          imp_tel3: req.body.tel3
+          imp_tel3: req.body.tel3,
+          vendedor: req.body.vendedor,
+          dia1: req.body.dia1,
+          taxa: req.body.taxa
         };
       
         try {
@@ -417,7 +440,7 @@ async buscarHoras(req, res) {
               return res.status(404).send({ erro: 'Implantação não encontrada' });
             }
           
-            const telefone = await adc.buscarTelefonePorId(dadosAtualizados.usu);
+          
             let dataFormatadaT = (() => {
                 const dataObj = new Date(dadosAtualizados.data);
                 const dia = String(dataObj.getDate()).padStart(2, '0');
@@ -425,16 +448,30 @@ async buscarHoras(req, res) {
                 const ano = dataObj.getFullYear();
                 return `${dia}/${mes}/${ano}`;
               })();
-            //console.log("telefone a enviar mensagem da alteração",telefone);
-           // console.log("Data formatada",dataFormatadaT)
-            const mensagem = `🚨 Alteração em Implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
-          📅 Data: ${dataFormatadaT}
+              let data2 = (() => {
+                const dataObj = new Date(dadosAtualizados.dia1);
+                const dia = String(dataObj.getDate()).padStart(2, '0');
+                const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                const ano = dataObj.getFullYear();
+                return `${dia}/${mes}/${ano}`;
+              })();
+              const usuario = await adc.buscarTelefonePorId(dadosAtualizados.usu);
+
+              const telefone = usuario.usu_tel;
+              const tecnico = usuario.usunome;
+              console.log("telefone a enviar mensagem na alteração de implantacao",telefone)
+              const periodo = data2 ? `📅 Período: ${dataFormatadaT} a ${data2}` : `📅 Data: ${dataFormatadaT}`;
+              const taxaImplantacao = dadosAtualizados.taxa ? `💰 Taxa de implantação: R$${dadosAtualizados.taxa}` : '';
+    
+            const mensagem = `🚨 Alteração na sua implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
+            ${periodo}
           🔧 Tipo: ${dadosAtualizados.tipo}
           📍 Local: ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
           🚗 Carro: ${dadosAtualizados.carro}
           👤 Nome: ${dadosAtualizados.imp_contato}
           📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
           💻 Conversão: ${dadosAtualizados.imp_sis}
+          ${taxaImplantacao}
           📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
           `;
 
