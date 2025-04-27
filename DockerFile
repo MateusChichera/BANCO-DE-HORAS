@@ -1,0 +1,25 @@
+# Usando a imagem base do Node.js
+FROM node:16-slim
+
+# Instalando dependências necessárias para o Puppeteer e Chromium
+RUN apt-get update && apt-get install -y \
+    wget \
+    ca-certificates \
+    fontconfig \
+    chromium \
+    && rm -rf /var/lib/apt/lists/*
+
+# Diretório de trabalho onde o código será copiado
+WORKDIR /Horas
+
+# Copiando o código do projeto para o container
+COPY . .
+
+# Instalando dependências do projeto
+RUN npm install
+
+# Expondo a porta 3000 (caso sua aplicação utilize essa porta)
+EXPOSE 3000
+
+# Rodando o servidor da aplicação
+CMD ["npm", "start"]

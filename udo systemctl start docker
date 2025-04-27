@@ -1,0 +1,13 @@
+[0;1;31m●[0m docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+     Active: [0;1;31mfailed[0m (Result: exit-code) since Sun 2025-04-27 11:24:57 UTC; 2min 18s ago
+TriggeredBy: [0;1;31m●[0m docker.socket
+       Docs: https://docs.docker.com
+    Process: 593772 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock [0;1;31m(code=exited, status=1/FAILURE)[0m
+   Main PID: 593772 (code=exited, status=1/FAILURE)
+
+Apr 27 11:24:57 netuno systemd[1]: docker.service: Scheduled restart job, restart counter is at 3.
+Apr 27 11:24:57 netuno systemd[1]: Stopped Docker Application Container Engine.
+Apr 27 11:24:57 netuno systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mdocker.service: Start request repeated too quickly.[0m
+Apr 27 11:24:57 netuno systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mdocker.service: Failed with result 'exit-code'.[0m
+Apr 27 11:24:57 netuno systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start Docker Application Container Engine.[0m

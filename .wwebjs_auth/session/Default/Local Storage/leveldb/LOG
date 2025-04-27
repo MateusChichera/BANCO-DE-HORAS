@@ -1,6 +1,3 @@
-2025/04/26-16:19:45.905 8d11b Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/04/26-16:19:45.913 8d11b Recovering log #7
-2025/04/26-16:19:45.914 8d11b Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/000007.log 
-2025/04/26-16:59:55.874 8d11d Level-0 table #11: started
-2025/04/26-16:59:55.876 8d11d Level-0 table #11: 13942 bytes OK
-2025/04/26-16:59:55.878 8d11d Delete type=0 #7
+2025/04/27-12:34:34.565 92a2f Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/04/27-12:34:34.569 92a2f Recovering log #13
+2025/04/27-12:34:34.570 92a2f Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/000013.log 

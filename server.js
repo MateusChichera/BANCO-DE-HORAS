@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require("express-session");
 const path = require('path');
 const LoginController = require("./controllers/loginController");
-const autenticacaoMiddleware = require('./public/js/Login/Mid');
+const autenticacaoMiddleware = require('./public/js/Login/Mid.js');
 const cors = require('cors');
 const statusMonitor = require('express-status-monitor');
 

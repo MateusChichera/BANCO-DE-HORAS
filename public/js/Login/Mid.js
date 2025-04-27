@@ -1,19 +1,33 @@
-const express = require('express');
-const router = express.Router();
+const crypto = require('crypto');
+
+// Função para gerar o hash do userId
+function gerarHash(userId) {
+    const chaveSecreta = 'minhaChaveSuperSecreta';  // Mesma chave secreta
+    return crypto.createHmac('sha256', chaveSecreta)
+                 .update(userId.toString())
+                 .digest('hex');
+}
 
 function autenticacaoMiddleware(req, res, next) {
-    // Verifica se o ID do usuário está presente nos cookies
+    // Obtém o userId e o hash armazenado no cookie
     const userId = req.cookies.userId;
-    const nome = req.cookies.Nome
-    if (userId) {
-        // ID do usuário encontrado, permitir a continuação da requisição
-        res.cookie('userId', userId, { maxAge: 15 * 60 * 1000 });
-        res.cookie('Nome', nome, { maxAge: 15 * 60 * 1000 }); // definindo o cookies para durar no maximo 15 minutos
-        console.log("ID DO USUARIO LOGADO E NOME: ",userId,nome);
-        next();
+    const userHash = req.cookies.userHash;
+
+    if (userId && userHash) {
+        // Gerando o hash esperado com base no userId
+        const expectedHash = gerarHash(userId);
+
+        // Verifica se o hash do cookie corresponde ao hash esperado
+        if (userHash === expectedHash) {
+            console.log("Usuário autenticado com sucesso");
+            next(); // O usuário está autenticado, continua a requisição
+        } else {
+            console.log("Hash inválido. Autenticação falhou.");
+            res.redirect('/login');  // Redireciona para a página de login
+        }
     } else {
-        // ID do usuário não encontrado, redirecionar para a página de login
-        res.redirect('/login');
+        console.log("userId ou userHash não encontrados nos cookies.");
+        res.redirect('/login');  // Redireciona para a página de login
     }
 }
 
