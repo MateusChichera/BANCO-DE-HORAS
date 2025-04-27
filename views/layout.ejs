@@ -13,47 +13,118 @@
   <link rel="stylesheet" href="/css/template/adminlte.min.css">
    <!-- Estilos customizados para o tema dark -->
    <style>
+
+
+@media (max-width: 768px) {
+  body.sidebar-open #sidebarToggle {
+    left: calc(250px + 15px);
+    transform: rotate(90deg);
+  }
+  
+  /* Ajuste fino para diferentes tamanhos de tela */
+  @media (max-width: 400px) {
+    .main-sidebar.show + .content-wrapper #sidebarToggle {
+      left: calc(100% - 50px);
+    }
+  }
+}
     /* Adicionado para definir a cor da barra superior e do rodapé */
     .main-header, .main-footer {
-      background-color: #343a40 !important; /* Defina a cor desejada */
+      background-color: #343a40 !important;
     }
 
     /* Adicionado para ajustar a cor da barra lateral */
     .main-sidebar {
-      background-color:  #343a40 !important; /* Mantenha a cor da barra lateral */
+      background-color: #343a40 !important;
+      transition: transform 0.3s ease;
     }
 
     /* Adicionado para corrigir a cor do rodapé (footer) */
     .content-wrapper {
-      background-color: #2c3b41; /* Cor de fundo da página principal */
-      padding-top: 20px; /* Ajuste de margem superior */
+      background-color: #2c3b41;
+      padding-top: 20px;
     }
 
-    /* Adicionado para corrigir a cor do rodapé (footer) */
     .card {
-      background-color: #2c3b41; /* Cor de fundo dos cards */
+      background-color: #2c3b41;
     }
 
-    /* Adicionado para corrigir a cor do rodapé (footer) */
     .card-body {
-      background-color: #ffffff; /* Cor de fundo do conteúdo dentro do card */
+      background-color: #ffffff;
     }
-    .navbar-toggler {
-  visibility: visible !important; /* Garante que o botão esteja visível */
-}
 
-.navbar-collapse {
-  visibility: hidden;
-}
-
+   /* ESTILOS CORRIGIDOS PARA SIDEBAR MOBILE */
 @media (max-width: 768px) {
-  .navbar-collapse {
-    visibility: visible; /* Torna o menu visível no celular */
+  .main-sidebar {
+    position: fixed !important;
+    transform: translateX(-100%) !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    z-index: 1050 !important;
+    width: 250px !important;
+    transition: transform 0.3s ease-in-out !important;
+    height: 100vh !important;
+    overflow-y: auto !important;
+    margin-left: 0 !important;
+  }
+
+  .main-sidebar.show {
+    transform: translateX(0) !important;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1040;
+    cursor: pointer;
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+  #sidebarToggle {
+    display: block !important;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1060;
+    background: rgba(52, 58, 64, 0.9);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    padding: 0;
+    transition: transform 0.3s ease, left 0.3s ease;
+  }
+  }
+
+  .content-wrapper {
+    margin-left: 0 !important;
+  }
+
+  body {
+    overflow-x: hidden;
   }
 }
+.main-sidebar.show + .content-wrapper #sidebarToggle {
+    left: 260px; /* 250px (sidebar) + 10px (margem) */
+    transform: rotate(180deg); /* Opcional: gira o ícone */
+  }
+</style>
 
-
-  </style>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Obtendo o nome do usuário dos cookies
@@ -172,22 +243,14 @@
 <!--<body class="hold-transition sidebar-mini layout-fixed">-->
 <div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#navbarNav" role="button" aria-expanded="false" aria-controls="navbarNav">
-          <i class="fas fa-bars"></i>
-        </a>
-        
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
-
+  <button id="sidebarToggle" class="d-md-none">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="sidebar-overlay"></div>
+  
+  
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside id="sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
       <!--<span class="brand-text font-weight-light">BANCO DE HORAS</span>!-->
@@ -373,6 +436,63 @@
       window.location.href = '/login';
     });
   });
+  document.addEventListener("DOMContentLoaded", function() {
+  const sidebar = document.getElementById("sidebar");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const overlay = document.querySelector(".sidebar-overlay");
+
+  function toggleSidebar() {
+    sidebar.classList.toggle("show");
+    overlay.classList.toggle("show");
+    document.body.classList.toggle("sidebar-open");
+    // Debug visual
+    console.log("Sidebar display:", window.getComputedStyle(sidebar).display);
+    console.log("Sidebar transform:", window.getComputedStyle(sidebar).transform);
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove("show");
+    overlay.classList.remove("show");
+  }
+
+  if (sidebar && sidebarToggle && overlay) {
+    // Botão toggle
+    sidebarToggle.addEventListener("click", function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleSidebar();
+    });
+
+    // Overlay
+    overlay.addEventListener("click", closeSidebar);
+
+    // Fechar ao clicar fora
+    document.addEventListener("click", function(e) {
+      if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
+        closeSidebar();
+      }
+    });
+
+    // Debug inicial
+    console.log("Estado Inicial:");
+    console.log("Sidebar left:", sidebar.getBoundingClientRect().left);
+    console.log("Sidebar width:", sidebar.offsetWidth);
+  } else {
+    console.error("Elementos não encontrados:", {
+      sidebar: !!sidebar,
+      toggle: !!sidebarToggle,
+      overlay: !!overlay
+    });
+  }
+
+  // Forçar redesenho (trigger reflow)
+  setTimeout(() => {
+    sidebar.style.display = 'none';
+    sidebar.offsetHeight; // Trigger reflow
+    sidebar.style.display = '';
+  }, 100);
+});
+
 </script>
 
 
