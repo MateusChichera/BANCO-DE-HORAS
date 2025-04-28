@@ -120,16 +120,6 @@ function converterParaFormatoHora(minutos) {
 <td>${formatarDataISO8601ParaDDMMYYYY(implantacoes[i].imp_dia)}</td>
 <td>${implantacoes[i].imp_tipo}</td>
 <td>${implantacoes[i].imp_obs}</td>
-<td>
-    <div>
-        <button data-id="${implantacoes[i].imp_id}" class="btn btn-primary editarBtn">
-            <i class="fas fa-pen"></i>
-        </button>
-        <button data-id="${implantacoes[i].imp_id}" class="btn btn-danger btnExclusao">
-            <i class="fas fa-trash"></i>
-        </button>
-    </div>
-</td>
 `;
     document.getElementById("tabelaImplantacoes").appendChild(linha);
     var cont =parseInt(implantacoes.length)

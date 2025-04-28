@@ -5,6 +5,7 @@ const moment = require('moment');
 const Database = require('../utils/database')
 const { calcularDistancia } = require('./calculardistancia.js'); 
 const axios = require('axios');
+const { consoleLog } = require("@ngrok/ngrok");
 
 const conexao = new Database();
 
@@ -365,17 +366,88 @@ async buscarHoras(req, res) {
         ${taxaImplantacao}
         📝 Observações: ${newuser.obs || 'Nenhuma'}
       `;
-      
+          
           // 4. Envia a mensagem no WhatsApp
           const whatsappService = require('../services/whatsappService.js'); // ajuste o caminho se necessário
           await whatsappService.enviarMensagem(telefone, mensagem);
-          
+
+
           res.send({ ok: true, msg: 'Implantação cadastrada e mensagem enviada com sucesso!' });
         } catch (erro) {
           console.error(erro);
           res.status(500).send({ erro: 'Erro ao cadastrar implantação ou enviar mensagem' });
         }
+                    ///MENSAGEM PARA O VENDEDOR E FERNANDO ---------------------------------------------------------------------------------------
+
+        (async () => {
+            try {
+                let dataFormatada = (() => {
+                    const dataObj = new Date(newuser.data);
+                    const dia = String(dataObj.getDate()).padStart(2, '0');
+                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                    const ano = dataObj.getFullYear();
+                    return `${dia}/${mes}/${ano}`;
+                  })();
+                  let data2 = (() => {
+                    const dataObj = new Date(newuser.dia1);
+                    const dia = String(dataObj.getDate()).padStart(2, '0');
+                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                    const ano = dataObj.getFullYear();
+                    return `${dia}/${mes}/${ano}`;
+                  })();
+                  const usuario = await adc.buscarTelefonePorId(newuser.usu);
+                  const tecnico = usuario.usunome;
+
+                  const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
+                  const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: ${newuser.taxa}` : '';
+
+                const mensagem = `Olá, nova implantação agendada!\n\n📋 Cliente: ${newuser.cliente}
+        ${periodo}
+        🔧 Tipo: ${newuser.tipo}
+        📍 Local: ${newuser.cidade}, ${newuser.estado}
+        🚗 Carro: ${newuser.carro}
+        👤 Nome: ${newuser.imp_contato}
+        📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}
+        💻 Conversão: ${newuser.imp_sis}
+        👤 Tecnico: ${tecnico} 
+        ${taxaImplantacao}
+        📝 Observações: ${newuser.obs || 'Nenhuma'}
+      `;
+              const whatsappService = require('../services/whatsappService.js');
         
+              // Buscar telefone do vendedor
+              console.log("ID do vendedor:", newuser.vendedor);
+
+              const vendedo = await adc.buscarTelefonePorId(newuser.vendedor);
+              const telefoneV = vendedo.usu_tel;
+
+              console.log("Telefone do vendedor:", telefoneV);
+              const telefoneF = '5518981174107'; // Fernando
+        
+              // função auxiliar para esperar um tempo
+              const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        
+              // Atraso aleatório entre 1 e 20 segundos
+              const delayVendedor = Math.floor(Math.random() * 20000) + 1000; 
+              const delayFernando = Math.floor(Math.random() * 20000) + 1000;
+        
+              // Dispara os envios de forma independente
+              setTimeout(() => {
+                whatsappService.enviarMensagem(telefoneV, mensagem)
+                  .then(() => console.log(`Mensagem enviada para vendedor ${telefoneV}`))
+                  .catch(err => console.error('Erro ao enviar para vendedor:', err));
+              }, delayVendedor);
+        
+              setTimeout(() => {
+                whatsappService.enviarMensagem(telefoneF, mensagem)
+                  .then(() => console.log(`Mensagem enviada para Fernando ${telefoneF}`))
+                  .catch(err => console.error('Erro ao enviar para Fernando:', err));
+              }, delayFernando);
+        
+            } catch (erro) {
+              console.error('Erro ao tentar enviar mensagens adicionais:', erro);
+            }
+          })();
       }
       //RELATORIO VIAGENS
 
