@@ -6,8 +6,41 @@ document.addEventListener("DOMContentLoaded", function() {
 //CALCULA HORAS EXTRAS
    
 
-//CALCULA HORAS EXTRAS
-   
+    function preencherFormulario(usuario) {
+        document.getElementById('entrada').value = usuario.entrada || '';
+        document.getElementById('cafe1').value = usuario.cafe1 || '';
+        document.getElementById('cafe2').value = usuario.cafe2 || '';
+        document.getElementById('almoco1').value = usuario.almoco1 || '';
+        document.getElementById('almoco2').value = usuario.almoco2 || '';
+        document.getElementById('cafe3').value = usuario.cafe3 || '';
+        document.getElementById('cafe4').value = usuario.cafe4 || '';
+        document.getElementById('saida').value = usuario.saida || '';
+        document.getElementById('dia').value = usuario.dia ? new Date(usuario.dia).toISOString().split('T')[0] : '';
+    }
+
+    async function buscarUsuario() {
+        try {
+            const pathParts = window.location.pathname.split('/');
+            const id = pathParts[pathParts.length - 1]; // pega o último pedaço da URL (que é o 17)
+    
+            console.log('ID capturado:', id);
+    
+            const url = `http://137.131.128.248:3000/usuarios/detalhes/${id}`;
+            const resposta = await fetch(url);
+            const dados = await resposta.json();
+            if (resposta.ok) {
+                preencherFormulario(dados.detalhes[0]);  // Acessando o primeiro item do array 'detalhes'
+            } else {
+                alert('Erro ao buscar horas');
+            }
+        } catch (error) {
+            console.error('Erro ao buscar dados:', error);
+            alert('Erro ao buscar dados');
+        }
+    }
+    // Chama a função para preencher os dados assim que a página carregar
+    buscarUsuario();
+
 
 function calcularHorasExtras(entrada, saida, almoco1, almoco2, jornadaPadrao) {
     // Certifique-se de que entrada, saida, almoco1 e almoco2 são strings

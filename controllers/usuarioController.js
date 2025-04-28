@@ -176,22 +176,28 @@ async buscarHoras(req, res) {
     editarView(req, res) {
         console.log("Método editarView chamado.");
         const userId = req.params.id;
-    
-        // Chame a função do modelo para buscar detalhes com base no ID
-        const usuarioModel = new UsuarioModel();
-        usuarioModel.buscaid(userId)
-            .then(detalhes => {
-                // Renderize a view e envie os detalhes para o front-end
-                console.log("Detalhes recuperados:", detalhes);
-                res.render('Usuario/editar', { userId, detalhes });
-            })
-            .catch(error => {
-                console.error("Erro ao buscar detalhes do usuário:", error);
-                res.send({ ok: false, msg: "Erro ao buscar detalhes do usuário no banco de dados." });
-            });
-        
-        console.log("Método editarView concluído.");
+        res.render('Usuario/editar', { userId });  // Passa só o id (se quiser)
     }
+    
+
+    //BUSCAR DETALHES DAS  HORAS
+
+    async buscarDetalhes(req, res) {
+        console.log("Método buscarDetalhes chamado.");
+        const userId = req.params.id;
+        console.log("ID do usuário:", userId);
+    
+        try {
+            const usuarioModel = new UsuarioModel();
+            const detalhes = await usuarioModel.buscaid(userId);
+            console.log("Detalhes recuperados:", detalhes);
+            res.json({ ok: true, detalhes });
+        } catch (error) {
+            console.error('Erro ao buscar detalhes:', error);
+            res.json({ ok: false, msg: 'Erro ao buscar detalhes do usuário.' });
+        }
+    }
+    
 
     editarimplantacaoView(req, res) {
         res.render('Usuario/editarImplantacoes');
@@ -377,6 +383,8 @@ async buscarHoras(req, res) {
           console.error(erro);
           res.status(500).send({ erro: 'Erro ao cadastrar implantação ou enviar mensagem' });
         }
+
+
                     ///MENSAGEM PARA O VENDEDOR E FERNANDO ---------------------------------------------------------------------------------------
 
         (async () => {
@@ -560,6 +568,76 @@ async buscarHoras(req, res) {
               res.status(500).send({ erro: 'Erro ao atualizar implantação ou enviar mensagem' });
             }
           }
+
+          (async () => {
+            try {
+                let dataFormatada = (() => {
+                    const dataObj = new Date(dadosAtualizados.data);
+                    const dia = String(dataObj.getDate()).padStart(2, '0');
+                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                    const ano = dataObj.getFullYear();
+                    return `${dia}/${mes}/${ano}`;
+                  })();
+                  let data2 = (() => {
+                    const dataObj = new Date(dadosAtualizados.dia1);
+                    const dia = String(dataObj.getDate()).padStart(2, '0');
+                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+                    const ano = dataObj.getFullYear();
+                    return `${dia}/${mes}/${ano}`;
+                  })();
+                  const usuario = await adc.buscarTelefonePorId(dadosAtualizados.usu);
+                  const tecnico = usuario.usunome;
+
+                  const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
+                  const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: ${dadosAtualizados.taxa}` : '';
+
+                const mensagem = `Olá, nova implantação agendada!\n\n📋 Cliente: ${dadosAtualizados.cliente}
+        ${periodo}
+        🔧 Tipo: ${dadosAtualizados.tipo}
+        📍 Local: ${dadosAtualizados.cidade}, ${newuser.estado}
+        🚗 Carro: ${dadosAtualizados.carro}
+        👤 Nome: ${dadosAtualizados.imp_contato}
+        📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
+        💻 Conversão: ${dadosAtualizados.imp_sis}
+        👤 Tecnico: ${tecnico} 
+        ${taxaImplantacao}
+        📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
+      `;
+              const whatsappService = require('../services/whatsappService.js');
+        
+              // Buscar telefone do vendedor
+              console.log("ID do vendedor:", dadosAtualizados.vendedor);
+
+              const vendedo = await adc.buscarTelefonePorId(dadosAtualizados.vendedor);
+              const telefoneV = vendedo.usu_tel;
+
+              console.log("Telefone do vendedor:", telefoneV);
+              const telefoneF = '5518981174107'; // Fernando
+        
+              // função auxiliar para esperar um tempo
+              const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        
+              // Atraso aleatório entre 1 e 20 segundos
+              const delayVendedor = Math.floor(Math.random() * 20000) + 1000; 
+              const delayFernando = Math.floor(Math.random() * 20000) + 1000;
+        
+              // Dispara os envios de forma independente
+              setTimeout(() => {
+                whatsappService.enviarMensagem(telefoneV, mensagem)
+                  .then(() => console.log(`Mensagem enviada para vendedor ${telefoneV}`))
+                  .catch(err => console.error('Erro ao enviar para vendedor:', err));
+              }, delayVendedor);
+        
+              setTimeout(() => {
+                whatsappService.enviarMensagem(telefoneF, mensagem)
+                  .then(() => console.log(`Mensagem enviada para Fernando ${telefoneF}`))
+                  .catch(err => console.error('Erro ao enviar para Fernando:', err));
+              }, delayFernando);
+        
+            } catch (erro) {
+              console.error('Erro ao tentar enviar mensagens adicionais:', erro);
+            }
+          })();
           
       }
 

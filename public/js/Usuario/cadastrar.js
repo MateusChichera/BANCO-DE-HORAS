@@ -57,7 +57,51 @@ document.addEventListener("DOMContentLoaded", function() {
     const almoco2 = '13:00'; // Retorno do almoço
     const resultado = calcularHorasExtras(entrada, saida, almoco1, almoco2, jornadaPadrao);
     console.log(resultado);
+
+    function gerarHorariosCafe() {
+        function gerarHorarioAleatorio(minHora, minMinuto, maxHora, maxMinuto) {
+            // Converte tudo para minutos
+            const minTotal = minHora * 60 + minMinuto;
+            const maxTotal = maxHora * 60 + maxMinuto;
     
+            // Gera um valor aleatório em minutos
+            const horarioAleatorioMinutos = Math.floor(Math.random() * (maxTotal - minTotal + 1)) + minTotal;
+    
+            // Converte de volta para horas e minutos
+            const hora = Math.floor(horarioAleatorioMinutos / 60);
+            const minuto = horarioAleatorioMinutos % 60;
+    
+            // Formata no padrão HH:MM
+            return `${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}`;
+        }
+    
+        function adicionarMinutos(horario, minutosParaAdicionar) {
+            const [hora, minuto] = horario.split(':').map(Number);
+            const totalMinutos = hora * 60 + minuto + minutosParaAdicionar;
+            const novaHora = Math.floor(totalMinutos / 60);
+            const novoMinuto = totalMinutos % 60;
+            return `${novaHora.toString().padStart(2, '0')}:${novoMinuto.toString().padStart(2, '0')}`;
+        }
+    
+        // Café da manhã (09:00 - 11:00)
+        const cafe1 = gerarHorarioAleatorio(9, 0, 11, 0);
+        const cafe2 = adicionarMinutos(cafe1, 10);
+    
+        // Café da tarde (15:00 - 17:00)
+        const cafe3 = gerarHorarioAleatorio(15, 0, 17, 0);
+        const cafe4 = adicionarMinutos(cafe3, 10);
+    
+        // Agora preenche os campos automaticamente
+        document.getElementById("cafe1").value = cafe1;
+        document.getElementById("cafe2").value = cafe2;
+        document.getElementById("cafe3").value = cafe3;
+        document.getElementById("cafe4").value = cafe4;
+    }
+       
+
+    window.onload = function() {
+        gerarHorariosCafe();
+    };
 
 
     function gravarUsuario() {

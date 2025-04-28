@@ -26,6 +26,7 @@ class UsuarioRoute {
         this.#router.get('/editar/viagem/:id', ctrl.editarImpView);
         this.#router.post('/edt/viagem/:id', ctrl.atualizarImplantacao);
         this.#router.get('/editar/:id', ctrl.editarView);
+        this.#router.get('/detalhes/:id', ctrl.buscarDetalhes);
         this.#router.post('/editar/:id', ctrl.editar);
         this.#router.post('/excluir', ctrl.excluir);
         this.#router.get('/buscar', ctrl.buscarHoras);
