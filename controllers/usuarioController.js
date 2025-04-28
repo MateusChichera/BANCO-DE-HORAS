@@ -257,7 +257,7 @@ async buscarHoras(req, res) {
         if(req.body.id != ""){
             exc.excUsuarios(req.body.id)
 
-            res.send({ok: true, msg: "Usuário excluído!"})
+            res.send({ok: true, msg: "Horas excluidas!"})
         }
         else{
             res.send({ok: false, msg: "Dados inválidos!"})
@@ -555,11 +555,11 @@ async buscarHoras(req, res) {
           📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
           `;
 
-          console.log("Mensagem a ser enviada:\n", mensagem);
+          //console.log("Mensagem a ser enviada:\n", mensagem);
             const whatsappService = require('../services/whatsappService.js');
             await whatsappService.enviarMensagem(telefone, mensagem);
           
-            return res.send({ ok: true, msg: 'Implantação atualizada e mensagem enviada com sucesso!' });
+            res.send({ ok: true, msg: 'Implantação atualizada e mensagem enviada com sucesso!' });
           
           } catch (erro) {
             console.error("Erro no processo de atualização ou envio de mensagem:", erro);
@@ -570,7 +570,8 @@ async buscarHoras(req, res) {
           }
 
           (async () => {
-            try {
+            try {   
+                console.log("Chamando a função de mensagem para o vendedor e Fernando");
                 let dataFormatada = (() => {
                     const dataObj = new Date(dadosAtualizados.data);
                     const dia = String(dataObj.getDate()).padStart(2, '0');
@@ -589,12 +590,12 @@ async buscarHoras(req, res) {
                   const tecnico = usuario.usunome;
 
                   const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
-                  const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: ${dadosAtualizados.taxa}` : '';
+                  const taxaImplantacao = dadosAtualizados.taxa ? `💰 Taxa de implantação: ${dadosAtualizados.taxa}` : '';
 
-                const mensagem = `Olá, nova implantação agendada!\n\n📋 Cliente: ${dadosAtualizados.cliente}
+                const mensagem = `Olá, houve uma alteração na implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
         ${periodo}
         🔧 Tipo: ${dadosAtualizados.tipo}
-        📍 Local: ${dadosAtualizados.cidade}, ${newuser.estado}
+        📍 Local: ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
         🚗 Carro: ${dadosAtualizados.carro}
         👤 Nome: ${dadosAtualizados.imp_contato}
         📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
