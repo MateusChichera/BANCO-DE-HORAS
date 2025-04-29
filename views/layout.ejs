@@ -422,7 +422,7 @@
   <footer class="main-footer">
     <strong>Copyright &copy; 2025 Mateus Chichera.</strong>
     All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
+    <div class="float-right d-block">
       <b>Version</b> 4.2.5
   
       <!-- WhatsApp -->
@@ -650,7 +650,19 @@ function gravarEmailConfig() {
     sidebar.style.display = '';
   }, 100);
 });
+document.querySelector('.sidebar-overlay').addEventListener('click', () => {
+  const sidebar = document.querySelector('.main-sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  const toggleBtn = document.getElementById('sidebarToggle');
 
+  sidebar.classList.remove('show');
+  overlay.classList.remove('show');
+  
+
+  // Reseta o botão para posição original
+  toggleBtn.style.left = '10px';
+  toggleBtn.style.transform = 'rotate(0deg)';
+});
 </script>
 
 
