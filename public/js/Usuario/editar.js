@@ -49,11 +49,18 @@ function calcularHorasExtras(entrada, saida, almoco1, almoco2, jornadaPadrao) {
     almoco1 = String(almoco1);
     almoco2 = String(almoco2);
 
+    entrada = entrada.substring(0,5); // pega só os 5 primeiros caracteres
+    saida = saida.substring(0,5);
+    almoco1 = almoco1.substring(0,5);
+    almoco2 = almoco2.substring(0,5);
+
     // Verifique se os formatos são HH:mm
     const entradaMatch = entrada.match(/^(\d{1,2}):(\d{2})$/);
     const saidaMatch = saida.match(/^(\d{1,2}):(\d{2})$/);
     const almoco1Match = almoco1.match(/^(\d{1,2}):(\d{2})$/);
     const almoco2Match = almoco2.match(/^(\d{1,2}):(\d{2})$/);
+
+    // Verifica se os horários estão no formato correto
 
     if (!entradaMatch || !saidaMatch || !almoco1Match || !almoco2Match) {
         throw new Error('Formato de entrada, saída, almoço1 ou almoço2 inválido. Use HH:mm.');

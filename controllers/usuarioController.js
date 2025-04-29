@@ -358,7 +358,7 @@ async buscarHoras(req, res) {
           const tecnico = usuario.usunome;
           console.log("telefone a enviar mensagem no cadastro de implantacao",telefone)
           const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
-          const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: ${newuser.taxa}` : '';
+          const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: R$${newuser.taxa}` : '';
 
           // 3. Monta a mensagem
           const mensagem = `Olá,${tecnico} você tem uma nova implantação!\n\n📋 Cliente: ${newuser.cliente}
@@ -407,7 +407,7 @@ async buscarHoras(req, res) {
                   const tecnico = usuario.usunome;
 
                   const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
-                  const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: ${newuser.taxa}` : '';
+                  const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: R$${newuser.taxa}` : '';
 
                 const mensagem = `Olá, nova implantação agendada!\n\n📋 Cliente: ${newuser.cliente}
         ${periodo}
@@ -590,7 +590,7 @@ async buscarHoras(req, res) {
                   const tecnico = usuario.usunome;
 
                   const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
-                  const taxaImplantacao = dadosAtualizados.taxa ? `💰 Taxa de implantação: ${dadosAtualizados.taxa}` : '';
+                  const taxaImplantacao = dadosAtualizados.taxa ? `💰 Taxa de implantação: R$${dadosAtualizados.taxa}` : '';
 
                 const mensagem = `Olá, houve uma alteração na implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
         ${periodo}

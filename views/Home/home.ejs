@@ -59,138 +59,166 @@
 
 <body>
   <h2 id="tituloCalendario" style="text-align:center;"></h2>
+  <div class="form-group">
+    <select class="form-control" id="anoSelect"></select>
+    <select class="form-control" id="mesSelect">
+      <option value="01">Janeiro</option>
+      <option value="02">Fevereiro</option>
+      <option value="03">Março</option>
+      <option value="04">Abril</option>
+      <option value="05">Maio</option>  
+      <option value="06">Junho</option>
+      <option value="07">Julho</option>
+      <option value="08">Agosto</option>
+      <option value="09">Setembro</option>
+      <option value="10">Outubro</option>
+      <option value="11">Novembro</option>
+      <option value="12">Dezembro</option>
+    </select>
+  </div>
 
   <div class="calendario" id="calendario"></div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      function getCookie(nome) {
-        const valor = document.cookie
-          .split('; ')
-          .find(row => row.startsWith(nome + '='));
-        return valor ? valor.split('=')[1] : null;
+      document.addEventListener("DOMContentLoaded", () => {
+      const hoje = new Date();
+      const anoAtual = hoje.getFullYear();
+      const mesAtual = hoje.getMonth(); // Janeiro = 0
+
+      // Definir ano atual no select
+      const anoSelect = document.getElementById("anoSelect");
+      for (let i = 0; i < 5; i++) {  // Exibir 5 anos a partir do ano atual
+        const anoOption = document.createElement("option");
+        anoOption.value = anoAtual + i;
+        anoOption.textContent = anoAtual + i;
+        if (anoOption.value == anoAtual) {
+          anoOption.selected = true;
+        }
+        anoSelect.appendChild(anoOption);
       }
 
-      function getDataInicioFimMes() {
-        const hoje = new Date();
-        const ano = hoje.getFullYear();
-        const mes = hoje.getMonth(); // Janeiro = 0
+      // Definir mês atual no select
+      const mesSelect = document.getElementById("mesSelect");
+      mesSelect.value = (mesAtual + 1).toString().padStart(2, '0'); // mesAtual é 0-indexed, então somamos 1
 
-        const primeiroDia = new Date(ano, mes, 1).toISOString().split('T')[0];
-        const ultimoDia = new Date(ano, mes + 1, 0).toISOString().split('T')[0];
-
-        return { primeiroDia, ultimoDia };
-      }
-
-      function montarCalendario(dados) {
-  const calendario = document.getElementById("calendario");
-  if (!calendario) return;
-
-  calendario.innerHTML = "";
-
-  const hoje = new Date();
-  const ano = hoje.getFullYear();
-  const mes = hoje.getMonth(); 
-  const diasNoMes = new Date(ano, mes + 1, 0).getDate();
-
-  // Nomes dos dias da semana
-  /*const diasDaSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-  diasDaSemana.forEach(dia => {
-    const header = document.createElement("div");
-    header.classList.add("dia");
-    header.style.backgroundColor = "#111";
-    header.style.fontWeight = "bold";
-    header.style.textAlign = "center";
-    header.innerHTML = dia;
-    calendario.appendChild(header);
-  });*/
-
-  // Espaços vazios antes do primeiro dia
-  const primeiroDiaSemana = new Date(ano, mes, 1).getDay(); 
-  const offset = primeiroDiaSemana === 0 ? 6 : primeiroDiaSemana - 1;
-  for (let i = 0; i < offset; i++) {
-    const vazio = document.createElement("div");
-    vazio.classList.add("dia");
-    vazio.style.background = "transparent";
-    vazio.style.border = "none";
-    calendario.appendChild(vazio);
-  }
-
-  for (let dia = 1; dia <= diasNoMes; dia++) {
-    const dataAtual = new Date(ano, mes, dia);
-    const dataFormatada = dataAtual.toISOString().split('T')[0];
-
-    const divDia = document.createElement("div");
-    divDia.classList.add("dia");
-
-    const nomeDiaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'short' });
-    divDia.innerHTML = `<strong>${dia}</strong><br><span style="font-size:0.7em; color:#bbb;">${nomeDiaSemana}</span>`;
-
-    const eventosNoDia = dados.filter(ev => ev.imp_dia.startsWith(dataFormatada));
-    eventosNoDia.forEach(ev => {
-      const info = document.createElement("div");
-      info.classList.add("info");
-      info.innerHTML = `<b>${ev.usunome}</b><br>${ev.imp_cidade}`;
-      divDia.appendChild(info);
-    });
-
-    if (eventosNoDia.length > 0) {
-      divDia.addEventListener('click', () => {
-        const modal = document.getElementById('modal');
-        const modalData = document.getElementById('modalData');
-        const modalConteudo = document.getElementById('modalConteudo');
-
-        const diaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'long' });
-        modalData.textContent = `Eventos em ${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}`;
-
-        modalConteudo.innerHTML = eventosNoDia.map(ev => `
-          <div style="margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;">
-            <strong>${ev.usunome}</strong><br>
-            Cliente: ${ev.imp_nome}<br>
-            Tipo: ${ev.imp_tipo}<br>
-            Cidade: ${ev.imp_cidade} - ${ev.imp_estado}<br>
-            Observações: ${ev.imp_obs || 'Nenhuma'}
-          </div>
-        `).join('');
-
-        modal.style.display = 'flex';
-      });
+      // Função para obter o valor de um cookie pelo nome
+      function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Verifica se o cookie começa com o nome desejado
+        if (cookie.startsWith(name + '=')) {
+            // Retorna o valor do cookie sem o nome
+            return cookie.substring(name.length + 1);
+        }
     }
-
-    calendario.appendChild(divDia);
-  }
+    return ''; // Retorna uma string vazia se o cookie não for encontrado
 }
 
-
+      // Função para buscar o calendário
       async function carregarCalendario() {
+        const ano = anoSelect.value;
+        const mes = mesSelect.value;
+        const primeiroDia = new Date(ano, mes - 1, 1).toISOString().split('T')[0];  // mês é 0-indexed
+        const ultimoDia = new Date(ano, mes, 0).toISOString().split('T')[0]; // Último dia do mês
         const userId = getCookie('userId');
-        if (userId === "4" || userId === "6") {
-          const { primeiroDia, ultimoDia } = getDataInicioFimMes();
+        if(userId != 4){
+         // alert("Usuário não autorizado a acessar o calendário.");
+          return;
+        }
+        try {
+          const url = `http://137.131.128.248:3000/usuarios/calendario?dia=${primeiroDia}&dia2=${ultimoDia}`;
+          const resposta = await fetch(url);
+          const dados = await resposta.json();
 
-          try {
-            const url = `http://137.131.128.248:3000/usuarios/calendario?dia=${primeiroDia}&dia2=${ultimoDia}`;
-            const resposta = await fetch(url);
-            const dados = await resposta.json();
-
-            if (dados.ok) {
-              montarCalendario(dados.calendario);
-            } else {
-              alert("Erro ao buscar calendário.");
-            }
-          } catch (err) {
-            console.error("Erro no fetch:", err);
+          if (dados.ok) {
+            montarCalendario(dados.calendario);
+          } else {
+            alert("Erro ao buscar calendário.");
           }
+        } catch (err) {
+          console.error("Erro no fetch:", err);
         }
       }
-      
+
+      // Função para montar o calendário
+      function montarCalendario(dados) {
+        const calendario = document.getElementById("calendario");
+        if (!calendario) return;
+
+        calendario.innerHTML = "";
+        
+        const ano = parseInt(anoSelect.value);
+        const mes = parseInt(mesSelect.value);
+        const diasNoMes = new Date(ano, mes, 0).getDate();
+
+        // Espaços vazios antes do primeiro dia
+        const primeiroDiaSemana = new Date(ano, mes - 1, 1).getDay();
+        const offset = primeiroDiaSemana === 0 ? 6 : primeiroDiaSemana - 1;
+        for (let i = 0; i < offset; i++) {
+          const vazio = document.createElement("div");
+          vazio.classList.add("dia");
+          vazio.style.background = "transparent";
+          vazio.style.border = "none";
+          calendario.appendChild(vazio);
+        }
+
+        for (let dia = 1; dia <= diasNoMes; dia++) {
+          const dataAtual = new Date(ano, mes - 1, dia);
+          const dataFormatada = dataAtual.toISOString().split('T')[0];
+
+          const divDia = document.createElement("div");
+          divDia.classList.add("dia");
+
+          const nomeDiaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'short' });
+          divDia.innerHTML = `<strong>${dia}</strong><br><span style="font-size:0.7em; color:#bbb;">${nomeDiaSemana}</span>`;
+
+          const eventosNoDia = dados.filter(ev => ev.imp_dia.startsWith(dataFormatada));
+          eventosNoDia.forEach(ev => {
+            const info = document.createElement("div");
+            info.classList.add("info");
+            info.innerHTML = `<b>${ev.usunome}</b><br>${ev.imp_cidade}`;
+            divDia.appendChild(info);
+          });
+
+          if (eventosNoDia.length > 0) {
+            divDia.addEventListener('click', () => {
+              const modal = document.getElementById('modal');
+              const modalData = document.getElementById('modalData');
+              const modalConteudo = document.getElementById('modalConteudo');
+
+              const diaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'long' });
+              modalData.textContent = `Eventos em ${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}`;
+
+              modalConteudo.innerHTML = eventosNoDia.map(ev => `
+                <div style="margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;">
+                  <strong>${ev.usunome}</strong><br>
+                  Cliente: ${ev.imp_nome}<br>
+                  Tipo: ${ev.imp_tipo}<br>
+                  Cidade: ${ev.imp_cidade} - ${ev.imp_estado}<br>
+                  Observações: ${ev.imp_obs || 'Nenhuma'}
+                </div>
+              `).join('');
+
+              modal.style.display = 'flex';
+            });
+          }
+
+          calendario.appendChild(divDia);
+        }
+      }
+
+      // Carregar calendário inicial
       carregarCalendario();
 
-    const hoje = new Date()    
-    const nomeMes = hoje.toLocaleString('pt-BR', { month: 'long' });
-    document.getElementById('tituloCalendario').textContent = `Implantações de ${nomeMes}`;
+      // Atualizar calendário quando mudar o mês ou ano
+      anoSelect.addEventListener('change', carregarCalendario);
+      mesSelect.addEventListener('change', carregarCalendario);
+
+      // Atualizar o título do calendário
+      const nomeMes = hoje.toLocaleString('pt-BR', { month: 'long' });
+      document.getElementById('tituloCalendario').textContent = `Implantações de ${nomeMes}`;
     });
-
-
   </script>
 </body>
 </html>
