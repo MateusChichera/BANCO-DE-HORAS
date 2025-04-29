@@ -1,5 +1,5 @@
 <script src="/js/Usuario/listar.js"></script>
-<script src="/js/Usuario/relatorio.js"></script>
+<!--<script src="/js/Usuario/relatorio.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 <style>
     body {
@@ -173,7 +173,7 @@ function getCookie(name) {
         <div class="d-flex justify-content-end mb-3">
             <button id="exportarExcelBtn" class="btn btn-success">Exportar Horas para Excel</button>
         </div>
-        <!-- Relatório de Distâncias -->
+        <!-- Relatório de Distâncias 
         <hr>
         <h2>Relatório de Distâncias (KM)</h2>
         <div id="relatorioViagensContainer" style="margin-bottom: 20px;">
@@ -182,17 +182,17 @@ function getCookie(name) {
 
             <p><strong>Total de KM percorridos:</strong> <span id="totalKm">--</span> km</p>
         </div>
-
+-->
         <!-- Botão Exportar Implantações -->
         <div class="d-flex justify-content-end mb-3">
             <button id="exportarExcelBtn1" class="btn btn-success">Exportar Implantações para Excel</button>
         </div>
-
+        <!-- Botões de impressão 
         <div class="d-flex justify-content-end mb-3">
             <button class="btn btn-info me-2" onclick="imprimirHoras()">Imprimir Horas</button>
             <button class="btn btn-info" onclick="imprimirImplantacoes()">Imprimir Implantações</button>
           </div>
-
+-->
           <button class="btn btn-warning" onclick="enviarRelatorioEmail()">Enviar horas via E-mail</button>
           <button class="btn btn-warning" onclick="enviarRelatorioEmailimp()">Enviar implantações via E-mail</button>
 
@@ -333,7 +333,7 @@ const diaFim = formatarDataBrasileira(diaFimISO);
 
     // --- Envio ---
     const dados = {
-        to: 'adm@infomaster.inf.br',
+        to: 'mateeusz17@hotmail.com',
         subject: assunto,
         html: corpoHtml,
         usuid: getCookie('userId'),

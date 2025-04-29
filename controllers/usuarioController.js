@@ -390,14 +390,19 @@ async buscarHoras(req, res) {
         (async () => {
             try {
                 let dataFormatada = (() => {
+                    if (!newuser.data) return null;
                     const dataObj = new Date(newuser.data);
+                    if (isNaN(dataObj)) return null;
                     const dia = String(dataObj.getDate()).padStart(2, '0');
                     const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
                     const ano = dataObj.getFullYear();
                     return `${dia}/${mes}/${ano}`;
                   })();
+                  
                   let data2 = (() => {
+                    if (!newuser.dia1) return null;
                     const dataObj = new Date(newuser.dia1);
+                    if (isNaN(dataObj)) return null;
                     const dia = String(dataObj.getDate()).padStart(2, '0');
                     const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
                     const ano = dataObj.getFullYear();
@@ -431,11 +436,13 @@ async buscarHoras(req, res) {
 
               console.log("Telefone do vendedor:", telefoneV);
               const telefoneF = '5518981174107'; // Fernando
+              const telefoneT = '5518981760014'
         
               // função auxiliar para esperar um tempo
               const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         
               // Atraso aleatório entre 1 e 20 segundos
+              const delayFelipe = Math.floor(Math.random() * 20000) + 1000; // 1 a 20 segundos
               const delayVendedor = Math.floor(Math.random() * 20000) + 1000; 
               const delayFernando = Math.floor(Math.random() * 20000) + 1000;
         
@@ -449,8 +456,13 @@ async buscarHoras(req, res) {
               setTimeout(() => {
                 whatsappService.enviarMensagem(telefoneF, mensagem)
                   .then(() => console.log(`Mensagem enviada para Fernando ${telefoneF}`))
-                  .catch(err => console.error('Erro ao enviar para Fernando:', err));
+                  .catch(err => console.error('Erro ao enviar para Felipe:', err));
               }, delayFernando);
+              setTimeout(() => {
+                whatsappService.enviarMensagem(telefoneT, mensagem)
+                  .then(() => console.log(`Mensagem enviada para Felipe ${telefoneT}`))
+                  .catch(err => console.error('Erro ao enviar para Felipe:', err));
+              }, delayFelipe);
         
             } catch (erro) {
               console.error('Erro ao tentar enviar mensagens adicionais:', erro);
@@ -520,21 +532,26 @@ async buscarHoras(req, res) {
               return res.status(404).send({ erro: 'Implantação não encontrada' });
             }
           
-          
             let dataFormatadaT = (() => {
+                if (!dadosAtualizados.data) return null;
                 const dataObj = new Date(dadosAtualizados.data);
+                if (isNaN(dataObj)) return null;
                 const dia = String(dataObj.getDate()).padStart(2, '0');
                 const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
                 const ano = dataObj.getFullYear();
                 return `${dia}/${mes}/${ano}`;
               })();
+              
               let data2 = (() => {
+                if (!dadosAtualizados.dia1) return null;
                 const dataObj = new Date(dadosAtualizados.dia1);
+                if (isNaN(dataObj)) return null;
                 const dia = String(dataObj.getDate()).padStart(2, '0');
                 const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
                 const ano = dataObj.getFullYear();
                 return `${dia}/${mes}/${ano}`;
               })();
+              
               const usuario = await adc.buscarTelefonePorId(dadosAtualizados.usu);
 
               const telefone = usuario.usu_tel;
@@ -614,11 +631,13 @@ async buscarHoras(req, res) {
 
               console.log("Telefone do vendedor:", telefoneV);
               const telefoneF = '5518981174107'; // Fernando
+              const telefoneT = '5518981760014'; // Telefone do felipe
         
               // função auxiliar para esperar um tempo
               const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         
               // Atraso aleatório entre 1 e 20 segundos
+              const delayFelipe = Math.floor(Math.random() * 20000) + 1000;
               const delayVendedor = Math.floor(Math.random() * 20000) + 1000; 
               const delayFernando = Math.floor(Math.random() * 20000) + 1000;
         
@@ -634,6 +653,11 @@ async buscarHoras(req, res) {
                   .then(() => console.log(`Mensagem enviada para Fernando ${telefoneF}`))
                   .catch(err => console.error('Erro ao enviar para Fernando:', err));
               }, delayFernando);
+              setTimeout(() => {
+                whatsappService.enviarMensagem(telefoneT, mensagem)
+                  .then(() => console.log(`Mensagem enviada para Felipe ${telefoneT}`))
+                  .catch(err => console.error('Erro ao enviar para Fernando:', err));
+              }, delayFelipe);
         
             } catch (erro) {
               console.error('Erro ao tentar enviar mensagens adicionais:', erro);

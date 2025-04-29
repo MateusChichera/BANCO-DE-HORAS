@@ -1,15 +1,15 @@
-2025/04/29-15:53:17.390 a23b7 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/04/29-15:53:17.390 a23b7 Recovering log #416
-2025/04/29-15:53:17.402 a23b7 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000416.log 
-2025/04/29-15:53:18.815 a23c3 Level-0 table #422: started
-2025/04/29-15:53:18.824 a23c3 Level-0 table #422: 291878 bytes OK
-2025/04/29-15:53:18.826 a23c3 Delete type=0 #416
-2025/04/29-15:53:18.826 a23c3 Manual compaction at level-0 from '\x00u\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00v\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/04/29-15:53:19.953 a23b9 Compacting 1@1 + 2@2 files
-2025/04/29-15:53:20.031 a23b9 Generated table #423@1: 73939 keys, 2230010 bytes
-2025/04/29-15:53:20.054 a23b9 Generated table #424@1: 13151 keys, 429806 bytes
-2025/04/29-15:53:20.054 a23b9 Compacted 1@1 + 2@2 files => 2659816 bytes
-2025/04/29-15:53:20.058 a23b9 compacted to: files[ 0 0 2 0 0 0 0 ]
-2025/04/29-15:53:20.058 a23b9 Delete type=2 #419
-2025/04/29-15:53:20.058 a23b9 Delete type=2 #422
-2025/04/29-15:53:20.058 a23b9 Delete type=2 #418
+2025/04/29-18:53:34.453 a39a2 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/04/29-18:53:34.453 a39a2 Recovering log #431
+2025/04/29-18:53:34.462 a39a2 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000431.log 
+2025/04/29-18:53:35.766 a39a4 Level-0 table #437: started
+2025/04/29-18:53:35.773 a39a4 Level-0 table #437: 260630 bytes OK
+2025/04/29-18:53:35.775 a39a4 Delete type=0 #431
+2025/04/29-18:53:35.775 a39a2 Manual compaction at level-0 from '\x00x\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00y\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/04/29-18:53:36.897 a39a3 Compacting 1@1 + 2@2 files
+2025/04/29-18:53:36.962 a39a3 Generated table #438@1: 74662 keys, 2230822 bytes
+2025/04/29-18:53:36.980 a39a3 Generated table #439@1: 16308 keys, 530871 bytes
+2025/04/29-18:53:36.980 a39a3 Compacted 1@1 + 2@2 files => 2761693 bytes
+2025/04/29-18:53:36.982 a39a3 compacted to: files[ 0 0 2 0 0 0 0 ]
+2025/04/29-18:53:36.986 a39a3 Delete type=2 #433
+2025/04/29-18:53:36.986 a39a3 Delete type=2 #434
+2025/04/29-18:53:36.986 a39a3 Delete type=2 #437

@@ -1,12 +1,15 @@
-2025/04/29-18:04:05.305 a3055 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/04/29-18:04:05.305 a3055 Recovering log #421
-2025/04/29-18:04:05.348 a3055 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000421.log 
-2025/04/29-18:04:06.848 a3057 Level-0 table #427: started
-2025/04/29-18:04:06.863 a3057 Level-0 table #427: 596361 bytes OK
-2025/04/29-18:04:06.865 a3057 Delete type=0 #421
-2025/04/29-18:04:06.865 a3057 Manual compaction at level-0 from '\x00v\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00w\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/04/29-18:04:08.012 a305e Compacting 1@1 + 2@2 files
-2025/04/29-18:04:08.101 a305e Generated table #428@1: 74260 keys, 2231523 bytes
-2025/04/29-18:04:08.131 a305e Generated table #429@1: 13682 keys, 447535 bytes
-2025/04/29-18:04:08.131 a305e Compacted 1@1 + 2@2 files => 2679058 bytes
-2025/04/29-18:04:08.133 a305e compacted to: files[ 0 0 2 0 0 0 0 ]
+2025/04/29-18:55:19.321 a3b44 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/04/29-18:55:19.321 a3b44 Recovering log #436
+2025/04/29-18:55:19.329 a3b44 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000436.log 
+2025/04/29-18:55:20.602 a3b44 Level-0 table #442: started
+2025/04/29-18:55:20.608 a3b44 Level-0 table #442: 248833 bytes OK
+2025/04/29-18:55:20.611 a3b44 Delete type=0 #436
+2025/04/29-18:55:20.611 a3b44 Manual compaction at level-0 from '\x00y\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00z\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/04/29-18:55:21.713 a3b44 Compacting 1@1 + 2@2 files
+2025/04/29-18:55:21.785 a3b44 Generated table #443@1: 74601 keys, 2230742 bytes
+2025/04/29-18:55:21.802 a3b44 Generated table #444@1: 17723 keys, 568747 bytes
+2025/04/29-18:55:21.803 a3b44 Compacted 1@1 + 2@2 files => 2799489 bytes
+2025/04/29-18:55:21.804 a3b44 compacted to: files[ 0 0 2 0 0 0 0 ]
+2025/04/29-18:55:21.804 a3b44 Delete type=2 #438
+2025/04/29-18:55:21.804 a3b44 Delete type=2 #442
+2025/04/29-18:55:21.805 a3b44 Delete type=2 #439
