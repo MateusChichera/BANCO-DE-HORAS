@@ -123,6 +123,69 @@
     left: 260px; /* 250px (sidebar) + 10px (margem) */
     transform: rotate(180deg); /* Opcional: gira o ícone */
   }
+  #modalEmail {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+}
+
+#modalEmail .modal-content {
+  background: #fff;
+  color: #333;
+  padding: 20px 20px 30px 20px;
+  max-width: 400px;
+  margin: 10% auto;
+  border-radius: 8px;
+  position: relative;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+#modalEmail h3 {
+  margin-top: 0;
+  color: #444;
+}
+
+#modalEmail label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#modalEmail input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+#modalEmail button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#modalEmail button:hover {
+  background-color: #0056b3;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: red;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
 </style>
 
   <script>
@@ -238,6 +301,25 @@
     </div>
   </div>
 </div>
+<!-- MODAL DA CONFIG EMAIL-->
+<div id="modalEmail">
+  <div class="modal-content">
+    <span class="close-modal" onclick="document.getElementById('modalEmail').style.display='none'">&times;</span>
+    
+    <h3>Configurar E-mail</h3>
+
+    <label>Usuário (e-mail):</label>
+    <input type="text" id="smtp_user" />
+
+    <label>Senha:</label>
+    <input type="password" id="smtp_pass" />
+
+    <button onclick="gravarEmailConfig()">Salvar</button>
+  </div>
+</div>
+
+
+
 
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
 <!--<body class="hold-transition sidebar-mini layout-fixed">-->
@@ -323,6 +405,7 @@
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
+       
     </div>
     <!-- /.sidebar -->
   </aside>
@@ -337,15 +420,23 @@
   </div>
   <!--4.2.5 FUNCIONANDO AS MENSAGEM NO WHATSAPP, PARTE DO FERNANDO DE VIAGENS COMPLETO- FALTANDO O FRONT COM FORMATAÇÕES E BOTÃO PARA IMPRIMIR, HORAS SEM DATA PRE DEFINIDA -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2025 Mateus Chichera</a>.</strong>
+    <strong>Copyright &copy; 2025 Mateus Chichera.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 4.2.5
+  
+      <!-- WhatsApp -->
       <a href="#" id="openWhatsappModal" title="Abrir WhatsApp" style="margin-left: 15px; color: #25D366;">
         <i class="fab fa-whatsapp fa-lg"></i>
       </a>
+  
+      <!-- Configuração de E-mail -->
+      <a href="#" id="btnConfigEmail" title="Configurar E-mail" style="margin-left: 15px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png" alt="Configurações" width="20" />
+      </a>
     </div>
   </footer>
+  
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -361,6 +452,73 @@
 <script src="/js/template/adminlte.min.js"></script>
 </body>
   <script>
+    //CADASTRO DE EMAIL-------------------------------------
+    function getCookie(cname) {
+  const name = cname + "=";
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i].trim();
+    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+  }
+  return "";
+}
+
+const usuid = getCookie("userId");
+const from_name = getCookie("Nome");
+
+// Abrir modal e buscar dados existentes
+document.getElementById("btnConfigEmail").addEventListener("click", () => {
+  fetch(`http://137.131.128.248:3000/api/email/config/${usuid}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.length > 0) {
+        document.getElementById("smtp_user").value = data[0].smtp_user || "";
+        document.getElementById("smtp_pass").value = data[0].smtp_pass || "";
+      } else {
+        document.getElementById("smtp_user").value = "";
+        document.getElementById("smtp_pass").value = "";
+      }
+      document.getElementById("modalEmail").style.display = "block";
+    })
+    .catch(err => {
+      alert("Erro ao buscar configuração de e-mail.");
+      console.error(err);
+    });
+});
+
+// Função de gravação
+function gravarEmailConfig() {
+  const smtp_user = document.getElementById("smtp_user").value;
+  const smtp_pass = document.getElementById("smtp_pass").value;
+
+  const payload = {
+    usuid: usuid,
+    smtp_host: "mx.infomaster.inf.br",
+    smtp_port: "587",
+    smtp_user: smtp_user,
+    smtp_pass: smtp_pass,
+    from_email: smtp_user,
+    from_name: from_name,
+    use_tls: true,
+    use_ssl: false
+  };
+
+  fetch("http://137.131.128.248:3000/api/email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("Configuração salva com sucesso!");
+    document.getElementById("modalEmail").style.display = "none";
+  })
+  .catch(err => {
+    alert("Erro ao salvar configuração.");
+    console.error(err);
+  });
+}
   document.addEventListener('DOMContentLoaded', function () {
     // Função para obter o valor de um cookie pelo nome
     function getCookie(name) {

@@ -122,6 +122,9 @@ function getCookie(name) {
                 <option value="1">Mateus</option>
                 <option value="2">Carlos Muller</option>
                 <option value="3">Vinicius</option>
+                <option value="5">Guilherme</option>
+                <option value="7">Leonardo</option>
+                <option value="8">Edmilson</option>
             </select>
         </div>
         <div class="form-group col-md-4">
@@ -190,7 +193,7 @@ function getCookie(name) {
             <button class="btn btn-info" onclick="imprimirImplantacoes()">Imprimir Implantações</button>
           </div>
 
-          <button class="btn btn-warning" onclick="enviarRelatorioEmail()">Enviar Relatório por E-mail</button>
+          <button class="btn btn-warning" onclick="enviarRelatorioEmail()">Enviar E-mail</button>
 
     </div>
     <!-- Área oculta para impressão -->
@@ -201,30 +204,82 @@ function getCookie(name) {
 
     //ENVIO DO EMAIL
     function enviarRelatorioEmail() {
-    const tabelaHoras = document.querySelector('table.table').outerHTML;
-    const tabelaImplantacoes = document.getElementById('tabelaImplantacoes').outerHTML;
+    // --- Captura os valores do período ---
+    function formatarDataBrasileira(dataISO) {
+    const [ano, mes, dia] = dataISO.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
 
+const diaInicioISO = document.getElementById('dia').value;
+const diaFimISO = document.getElementById('dia2').value;
+
+const diaInicio = formatarDataBrasileira(diaInicioISO);
+const diaFim = formatarDataBrasileira(diaFimISO);
+    // --- Pega o nome do usuário do cookie ---
+    const cookies = document.cookie.split(';').reduce((acc, c) => {
+        const [key, value] = c.trim().split('=');
+        acc[key] = decodeURIComponent(value);
+        return acc;
+    }, {});
+    const nomeUsuario = cookies['Nome'] || 'Usuário';
+
+    // --- Captura as tabelas ---
+    const tabelaHoras = document.querySelector('table.table').outerHTML;
+    const tabelaImplantacoes = document.getElementById('tabelaImplantacoes');
+    const tabelaImplantacoesClone = tabelaImplantacoes.cloneNode(true);
+
+
+    // --- Estiliza as células das tabelas ---
+    const tabelaHorasElement = document.createElement('div');
+    tabelaHorasElement.innerHTML = tabelaHoras;
+    tabelaHorasElement.querySelectorAll('th, td').forEach(el => {
+        el.style.border = '1px solid #ddd';
+        el.style.padding = '8px';
+        el.style.textAlign = 'left';
+        el.style.fontFamily = 'Arial, sans-serif';
+    });
+    tabelaImplantacoesClone.querySelectorAll('th, td').forEach(el => {
+        el.style.border = '1px solid #ddd';
+        el.style.padding = '8px';
+        el.style.textAlign = 'left';
+        el.style.fontFamily = 'Arial, sans-serif';
+    });
+
+    // --- Data e hora atual ---
+    const agora = new Date();
+    const dataHoraEnvio = agora.toLocaleString('pt-BR');
+
+    // --- Gera corpo do email ---
     const corpoHtml = `
-        <h2>Relatório de Horas</h2>
-        ${tabelaHoras}
+        <h2>Horas</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            ${tabelaHorasElement.innerHTML}
+        </table>
         <br/>
-        <h2>Relatório de Implantações</h2>
-        ${tabelaImplantacoes}
+        <h2>Implantações</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            ${tabelaImplantacoesClone.outerHTML}
+        </table>
+        <br/><hr style="margin-top: 40px;">
+        <p style="font-size: 12px; color: gray; text-align: right;">
+            Enviado por <strong>${nomeUsuario}</strong> em ${dataHoraEnvio}
+        </p>
     `;
 
+    // --- Assunto do email ---
+    const assunto = `Horas e Implantações de ${nomeUsuario} - Período: ${diaInicio} a ${diaFim}`;
+
+    // --- Envio ---
     const dados = {
-        to: 'mateeusz17@hotmail.com', // troque para o destinatário real
-        subject: 'Relatório de Horas e Implantações',
+        to: 'mateeusz17@hotmail.com',
+        subject: assunto,
         html: corpoHtml,
-        usuid: 1
+        usuid: getCookie('userId'),
     };
 
     fetch('http://137.131.128.248:3000/api/enviar', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados)
     })
     .then(res => res.json())
@@ -236,6 +291,8 @@ function getCookie(name) {
         alert('Erro ao enviar o e-mail.');
     });
 }
+
+
 
 
         //PERIODOS DEFINIDOS
