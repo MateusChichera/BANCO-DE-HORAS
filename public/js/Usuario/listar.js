@@ -117,7 +117,9 @@ function converterParaFormatoHora(minutos) {
 <td>${implantacoes[i].imp_nome}</td>
 <td>${implantacoes[i].imp_cidade}</td>
 <td>${implantacoes[i].imp_estado}</td>
-<td>${formatarDataISO8601ParaDDMMYYYY(implantacoes[i].imp_dia)}</td>
+                <td>
+  ${formatarDataISO8601ParaDDMMYYYY(implantacoes[i].imp_dia)}${implantacoes[i].imp_dia1 ? ' a ' + formatarDataISO8601ParaDDMMYYYY(implantacoes[i].imp_dia1) : ''}
+</td>
 <td>${implantacoes[i].imp_tipo}</td>
 <td>${implantacoes[i].imp_obs}</td>
 `;

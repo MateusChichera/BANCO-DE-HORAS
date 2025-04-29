@@ -444,7 +444,7 @@ async listarUsuarios(usuid) {
     }
     // busca implantacoes
     async buscaimplantacoes(usu_id,dia,dia2){
-        let sql = "SELECT imp_nome,imp_cidade,imp_estado,imp_dia,imp_tipo,imp_obs FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
+        let sql = "SELECT imp_nome,imp_cidade,imp_estado,imp_dia,imp_dia1,imp_tipo,imp_obs FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
     
         let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
         return rows;
@@ -457,6 +457,7 @@ async listarUsuarios(usuid) {
                 i.imp_cidade,
                 i.imp_estado,
                 i.imp_dia,
+                i.imp_dia1,
                 i.imp_tipo,
                 i.imp_obs,
                 u.usunome

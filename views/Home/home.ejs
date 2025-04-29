@@ -164,48 +164,53 @@
         }
 
         for (let dia = 1; dia <= diasNoMes; dia++) {
-          const dataAtual = new Date(ano, mes - 1, dia);
-          const dataFormatada = dataAtual.toISOString().split('T')[0];
+  const dataAtual = new Date(ano, mes - 1, dia);
+  const dataFormatada = dataAtual.toISOString().split('T')[0];
 
-          const divDia = document.createElement("div");
-          divDia.classList.add("dia");
+  const divDia = document.createElement("div");
+  divDia.classList.add("dia");
 
-          const nomeDiaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'short' });
-          divDia.innerHTML = `<strong>${dia}</strong><br><span style="font-size:0.7em; color:#bbb;">${nomeDiaSemana}</span>`;
+  const nomeDiaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'short' });
+  divDia.innerHTML = `<strong>${dia}</strong><br><span style="font-size:0.7em; color:#bbb;">${nomeDiaSemana}</span>`;
 
-          const eventosNoDia = dados.filter(ev => ev.imp_dia.startsWith(dataFormatada));
-          eventosNoDia.forEach(ev => {
-            const info = document.createElement("div");
-            info.classList.add("info");
-            info.innerHTML = `<b>${ev.usunome}</b><br>${ev.imp_cidade}`;
-            divDia.appendChild(info);
-          });
+  const eventosNoDia = dados.filter(ev => 
+    (ev.imp_dia && ev.imp_dia.startsWith(dataFormatada)) ||
+    (ev.imp_dia1 && ev.imp_dia1.startsWith(dataFormatada))
+  );
 
-          if (eventosNoDia.length > 0) {
-            divDia.addEventListener('click', () => {
-              const modal = document.getElementById('modal');
-              const modalData = document.getElementById('modalData');
-              const modalConteudo = document.getElementById('modalConteudo');
+  eventosNoDia.forEach(ev => {
+    const info = document.createElement("div");
+    info.classList.add("info");
+    info.innerHTML = `<b>${ev.usunome}</b><br>${ev.imp_cidade}`;
+    divDia.appendChild(info);
+  });
 
-              const diaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'long' });
-              modalData.textContent = `Eventos em ${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}`;
+  if (eventosNoDia.length > 0) {
+    divDia.addEventListener('click', () => {
+      const modal = document.getElementById('modal');
+      const modalData = document.getElementById('modalData');
+      const modalConteudo = document.getElementById('modalConteudo');
 
-              modalConteudo.innerHTML = eventosNoDia.map(ev => `
-                <div style="margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;">
-                  <strong>${ev.usunome}</strong><br>
-                  Cliente: ${ev.imp_nome}<br>
-                  Tipo: ${ev.imp_tipo}<br>
-                  Cidade: ${ev.imp_cidade} - ${ev.imp_estado}<br>
-                  Observações: ${ev.imp_obs || 'Nenhuma'}
-                </div>
-              `).join('');
+      const diaSemana = dataAtual.toLocaleDateString('pt-BR', { weekday: 'long' });
+      modalData.textContent = `Eventos em ${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}`;
 
-              modal.style.display = 'flex';
-            });
-          }
+      modalConteudo.innerHTML = eventosNoDia.map(ev => `
+        <div style="margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;">
+          <strong>${ev.usunome}</strong><br>
+          Cliente: ${ev.imp_nome}<br>
+          Tipo: ${ev.imp_tipo}<br>
+          Cidade: ${ev.imp_cidade} - ${ev.imp_estado}<br>
+          Observações: ${ev.imp_obs || 'Nenhuma'}
+        </div>
+      `).join('');
 
-          calendario.appendChild(divDia);
-        }
+      modal.style.display = 'flex';
+    });
+  }
+
+  calendario.appendChild(divDia);
+}
+
       }
 
       // Carregar calendário inicial
