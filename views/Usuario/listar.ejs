@@ -189,12 +189,55 @@ function getCookie(name) {
             <button class="btn btn-info me-2" onclick="imprimirHoras()">Imprimir Horas</button>
             <button class="btn btn-info" onclick="imprimirImplantacoes()">Imprimir Implantações</button>
           </div>
+
+          <button class="btn btn-warning" onclick="enviarRelatorioEmail()">Enviar Relatório por E-mail</button>
+
     </div>
     <!-- Área oculta para impressão -->
 <div id="printArea" style="display: none; background: white; color: black; padding: 20px; font-family: Arial;"></div>
 
 </div>
 <script>
+
+    //ENVIO DO EMAIL
+    function enviarRelatorioEmail() {
+    const tabelaHoras = document.querySelector('table.table').outerHTML;
+    const tabelaImplantacoes = document.getElementById('tabelaImplantacoes').outerHTML;
+
+    const corpoHtml = `
+        <h2>Relatório de Horas</h2>
+        ${tabelaHoras}
+        <br/>
+        <h2>Relatório de Implantações</h2>
+        ${tabelaImplantacoes}
+    `;
+
+    const dados = {
+        to: 'mateeusz17@hotmail.com', // troque para o destinatário real
+        subject: 'Relatório de Horas e Implantações',
+        html: corpoHtml,
+        usuid: 1
+    };
+
+    fetch('http://137.131.128.248:3000/api/enviar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.mensagem || 'E-mail enviado com sucesso!');
+    })
+    .catch(error => {
+        console.error('Erro ao enviar o e-mail:', error);
+        alert('Erro ao enviar o e-mail.');
+    });
+}
+
+
         //PERIODOS DEFINIDOS
     // Função para calcular o período baseado no fechamento
     function calcularPeriodo() {

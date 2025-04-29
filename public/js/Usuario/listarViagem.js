@@ -83,7 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </td>
             `;
-            tabela.appendChild(linha);
+           // tabela.appendChild(linha);
+           tbody.appendChild(linha);
+
         }
 
         // Linha com total
@@ -93,7 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
             <td class="extra-column">${implantacao.length}</td>
             <td></td>
         `;
-        tabela.appendChild(linhaTotalimp);
+       // tabela.appendChild(linhaTotalimp);
+       tbody.appendChild(linhaTotalimp);
+
 
         let botoesExclusao = document.querySelectorAll(".btnExclusao");
         for (let i = 0; i < botoesExclusao.length; i++) {

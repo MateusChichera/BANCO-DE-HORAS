@@ -53,7 +53,12 @@ const UsuarioRoute = require('./routes/usuarioRoute');
 const LoginRoute = require('./routes/loginRoute');
 const WhatsappRoute = require('./routes/whatsappRoute');
 const MonitorRoute = require('./routes/monitorRoute');
+const EmailRoute = require('./routes/emailRoute');
 
+
+//Iniciando ROTA DE EMAIL
+const emailRouteInstance = new EmailRoute();
+const emailRouter = emailRouteInstance.getRouter();
 
 //Iniciando a rota de login
 const loginRouteInstance = new LoginRoute();
@@ -81,8 +86,11 @@ app.use('/', monitorRouter); // Corrigido para usar monitorRouter
 app.use('/login', loginRouter); // Corrigido aqui para usar loginRouter em vez de LoginRouter
 app.use('/', autenticacaoMiddleware, homeRouteInstance.getRouter());
 app.use('/usuarios', autenticacaoMiddleware, usuarioRouter);
-app.use('/whatsapp', autenticacaoMiddleware, whatsappRouter); // Corrigido para usar whatsappRouter
+app.use('/whatsapp', autenticacaoMiddleware, whatsappRouter);
+app.use('/api', autenticacaoMiddleware, emailRouter); // Corrigido para usar emailRouter
+console.log('Rota de email registrada');
 
-app.listen(process.env.port || 3000, () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log("Servidor web iniciado na porta 3000");
 });
+

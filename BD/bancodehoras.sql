@@ -54,3 +54,20 @@ ADD COLUMN usu_tel VARCHAR(255)
 
 ALTER TABLE implantacoes  
 ADD COLUMN imp_carro VARCHAR(50)
+
+
+//* CONFIG DE EMAIL*/
+CREATE TABLE config_email (
+    email_id INT PRIMARY KEY AUTO_INCREMENT,
+    usuid INT NOT NULL,
+    smtp_host VARCHAR(255) NOT NULL,
+    smtp_port INTEGER NOT NULL DEFAULT 587,
+    smtp_user VARCHAR(255) NOT NULL,
+    smtp_pass TEXT NOT NULL, -- criptografada
+    from_email VARCHAR(255) NOT NULL,
+    from_name VARCHAR(255),
+    use_tls BOOLEAN DEFAULT TRUE,
+    use_ssl BOOLEAN DEFAULT FALSE,
+    ativo BOOLEAN DEFAULT TRUE,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
