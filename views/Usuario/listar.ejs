@@ -193,7 +193,8 @@ function getCookie(name) {
             <button class="btn btn-info" onclick="imprimirImplantacoes()">Imprimir Implantações</button>
           </div>
 
-          <button class="btn btn-warning" onclick="enviarRelatorioEmail()">Enviar E-mail</button>
+          <button class="btn btn-warning" onclick="enviarRelatorioEmail()">Enviar horas via E-mail</button>
+          <button class="btn btn-warning" onclick="enviarRelatorioEmailimp()">Enviar implantações via E-mail</button>
 
     </div>
     <!-- Área oculta para impressão -->
@@ -203,7 +204,83 @@ function getCookie(name) {
 <script>
 
     //ENVIO DO EMAIL
-    function enviarRelatorioEmail() {
+    function enviarRelatorioEmailimp() {
+    // --- Captura os valores do período ---
+    function formatarDataBrasileira(dataISO) {
+    const [ano, mes, dia] = dataISO.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
+
+const diaInicioISO = document.getElementById('dia').value;
+const diaFimISO = document.getElementById('dia2').value;
+
+const diaInicio = formatarDataBrasileira(diaInicioISO);
+const diaFim = formatarDataBrasileira(diaFimISO);
+    // --- Pega o nome do usuário do cookie ---
+    const cookies = document.cookie.split(';').reduce((acc, c) => {
+        const [key, value] = c.trim().split('=');
+        acc[key] = decodeURIComponent(value);
+        return acc;
+    }, {});
+    const nomeUsuario = cookies['Nome'] || 'Usuário';
+
+    // --- Captura as tabelas ---
+    const tabelaImplantacoes = document.getElementById('tabelaImplantacoes');
+    const tabelaImplantacoesClone = tabelaImplantacoes.cloneNode(true);
+
+
+    // --- Estiliza as células das tabelas ---
+    tabelaImplantacoesClone.querySelectorAll('th, td').forEach(el => {
+        el.style.border = '1px solid #ddd';
+        el.style.padding = '8px';
+        el.style.textAlign = 'left';
+        el.style.fontFamily = 'Arial, sans-serif';
+    });
+
+    // --- Data e hora atual ---
+    const agora = new Date();
+    const dataHoraEnvio = agora.toLocaleString('pt-BR');
+
+    // --- Gera corpo do email ---
+    const corpoHtml = `
+        <h2>Implantações</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            ${tabelaImplantacoesClone.outerHTML}
+        </table>
+        <br/><hr style="margin-top: 40px;">
+        <p style="font-size: 12px; color: gray; text-align: right;">
+            Enviado por <strong>${nomeUsuario}</strong> em ${dataHoraEnvio}
+        </p>
+    `;
+
+    // --- Assunto do email ---
+    const assunto = `Implantações de ${nomeUsuario} - Período: ${diaInicio} a ${diaFim}`;
+
+    // --- Envio ---
+    const dados = {
+        to: 'adm@infomaster.inf.br',
+        subject: assunto,
+        html: corpoHtml,
+        usuid: getCookie('userId'),
+    };
+
+    fetch('http://137.131.128.248:3000/api/enviar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.mensagem || 'E-mail de implantações enviado com sucesso!');
+    })
+    .catch(error => {
+        console.error('Erro ao enviar o e-mail de implantações:', error);
+        alert('Erro ao enviar o e-mail.');
+    });
+}
+//ENVIAR IMPLANTAÇÕES POR EMAIL
+
+function enviarRelatorioEmail() {
     // --- Captura os valores do período ---
     function formatarDataBrasileira(dataISO) {
     const [ano, mes, dia] = dataISO.split("-");
@@ -225,9 +302,6 @@ const diaFim = formatarDataBrasileira(diaFimISO);
 
     // --- Captura as tabelas ---
     const tabelaHoras = document.querySelector('table.table').outerHTML;
-    const tabelaImplantacoes = document.getElementById('tabelaImplantacoes');
-    const tabelaImplantacoesClone = tabelaImplantacoes.cloneNode(true);
-
 
     // --- Estiliza as células das tabelas ---
     const tabelaHorasElement = document.createElement('div');
@@ -238,13 +312,6 @@ const diaFim = formatarDataBrasileira(diaFimISO);
         el.style.textAlign = 'left';
         el.style.fontFamily = 'Arial, sans-serif';
     });
-    tabelaImplantacoesClone.querySelectorAll('th, td').forEach(el => {
-        el.style.border = '1px solid #ddd';
-        el.style.padding = '8px';
-        el.style.textAlign = 'left';
-        el.style.fontFamily = 'Arial, sans-serif';
-    });
-
     // --- Data e hora atual ---
     const agora = new Date();
     const dataHoraEnvio = agora.toLocaleString('pt-BR');
@@ -255,11 +322,6 @@ const diaFim = formatarDataBrasileira(diaFimISO);
         <table style="width: 100%; border-collapse: collapse;">
             ${tabelaHorasElement.innerHTML}
         </table>
-        <br/>
-        <h2>Implantações</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-            ${tabelaImplantacoesClone.outerHTML}
-        </table>
         <br/><hr style="margin-top: 40px;">
         <p style="font-size: 12px; color: gray; text-align: right;">
             Enviado por <strong>${nomeUsuario}</strong> em ${dataHoraEnvio}
@@ -267,11 +329,11 @@ const diaFim = formatarDataBrasileira(diaFimISO);
     `;
 
     // --- Assunto do email ---
-    const assunto = `Horas e Implantações de ${nomeUsuario} - Período: ${diaInicio} a ${diaFim}`;
+    const assunto = `Horas de ${nomeUsuario} - Período: ${diaInicio} a ${diaFim}`;
 
     // --- Envio ---
     const dados = {
-        to: 'mateeusz17@hotmail.com',
+        to: 'adm@infomaster.inf.br',
         subject: assunto,
         html: corpoHtml,
         usuid: getCookie('userId'),
@@ -287,11 +349,10 @@ const diaFim = formatarDataBrasileira(diaFimISO);
         alert(data.mensagem || 'E-mail enviado com sucesso!');
     })
     .catch(error => {
-        console.error('Erro ao enviar o e-mail:', error);
+        console.error('Erro ao enviar o e-mail de horas:', error);
         alert('Erro ao enviar o e-mail.');
     });
 }
-
 
 
 

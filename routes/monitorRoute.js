@@ -23,7 +23,9 @@ class MonitorRoute {
             { nome: 'Usuarios - Calendário', url: `${BASE_URL}/usuarios/calendario` },
             { nome: 'Whatsapp - QR Code', url: `${BASE_URL}/whatsapp/qrcode` },
             { nome: 'Whatsapp - Enviar Mensagem', url: `${BASE_URL}/whatsapp/enviar` },
-            { nome: 'Whatsapp - QR Code Img', url: `${BASE_URL}/whatsapp/qrcode-img` }
+            { nome: 'Whatsapp - QR Code Img', url: `${BASE_URL}/whatsapp/qrcode-img` },
+            { nome: 'Enviar email', url: `${BASE_URL}/api/enviar` },
+            { nome: 'Cadastar o email', url: `${BASE_URL}/api/email` }
         ];
 
         this.router.get('/monitor', async (req, res) => {
