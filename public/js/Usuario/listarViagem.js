@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     function formatarParaReais(valor) {
         const numero = parseFloat(valor);
-        if (isNaN(numero)) return "Valor inválido";
+        if (isNaN(numero)) return "Sem mensalidade";
         
         return numero.toLocaleString('pt-BR', {
             style: 'currency',
@@ -70,7 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${implantacao[i].imp_estado}</td>
                 <td>${implantacao[i].imp_tipo}</td>
                 <td>${implantacao[i].imp_sis}</td>
-                <td>${formatarDataISO8601ParaDDMMYYYY(implantacao[i].imp_dtvenc)}</td>
+                <td>
+  ${implantacao[i].imp_dtvenc ? formatarDataISO8601ParaDDMMYYYY(implantacao[i].imp_dtvenc) : 'Sem data de vencimento'}
+</td>
                 <td>${formatarParaReais(implantacao[i].imp_mensalidade)}</td>
                 <td>${implantacao[i].usunome}</td>
                 <td>${implantacao[i].imp_carro}</td>

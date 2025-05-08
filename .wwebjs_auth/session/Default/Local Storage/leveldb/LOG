@@ -1,3 +1,45 @@
 2025/04/29-20:37:19.292 a47cf Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
 2025/04/29-20:37:19.302 a47cf Recovering log #39
 2025/04/29-20:37:19.303 a47cf Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/000039.log 
+2025/04/30-15:28:20.913 a47d0 Level-0 table #43: started
+2025/04/30-15:28:20.915 a47d0 Level-0 table #43: 12535 bytes OK
+2025/04/30-15:28:20.917 a47d0 Delete type=0 #39
+2025/05/01-11:19:29.694 a47d0 Level-0 table #45: started
+2025/05/01-11:19:29.696 a47d0 Level-0 table #45: 12347 bytes OK
+2025/05/01-11:19:29.698 a47d0 Delete type=0 #42
+2025/05/01-11:19:29.698 a47d0 Compacting 4@0 + 1@1 files
+2025/05/01-11:19:29.700 a47d0 Generated table #46@0: 306 keys, 7135 bytes
+2025/05/01-11:19:29.700 a47d0 Compacted 4@0 + 1@1 files => 7135 bytes
+2025/05/01-11:19:29.702 a47d0 compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/05/01-11:19:29.702 a47d0 Delete type=2 #34
+2025/05/01-11:19:29.702 a47d0 Delete type=2 #45
+2025/05/01-11:19:29.702 a47d0 Delete type=2 #37
+2025/05/01-11:19:29.702 a47d0 Delete type=2 #43
+2025/05/01-11:19:29.702 a47d0 Delete type=2 #40
+2025/05/02-07:10:19.009 a47d0 Level-0 table #48: started
+2025/05/02-07:10:19.012 a47d0 Level-0 table #48: 12604 bytes OK
+2025/05/02-07:10:19.014 a47d0 Delete type=0 #44
+2025/05/03-03:11:18.533 a47d0 Level-0 table #50: started
+2025/05/03-03:11:18.536 a47d0 Level-0 table #50: 12493 bytes OK
+2025/05/03-03:11:18.538 a47d0 Delete type=0 #47
+2025/05/04-15:13:02.721 a47d0 Level-0 table #52: started
+2025/05/04-15:13:02.723 a47d0 Level-0 table #52: 10533 bytes OK
+2025/05/04-15:13:02.726 a47d0 Delete type=0 #49
+2025/05/05-21:54:33.177 a47d0 Level-0 table #54: started
+2025/05/05-21:54:33.180 a47d0 Level-0 table #54: 11240 bytes OK
+2025/05/05-21:54:33.182 a47d0 Delete type=0 #51
+2025/05/05-21:54:33.182 a47d0 Compacting 4@0 + 1@1 files
+2025/05/05-21:54:33.184 a47d0 Generated table #55@0: 307 keys, 7280 bytes
+2025/05/05-21:54:33.184 a47d0 Compacted 4@0 + 1@1 files => 7280 bytes
+2025/05/05-21:54:33.186 a47d0 compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/05/05-21:54:33.186 a47d0 Delete type=2 #50
+2025/05/05-21:54:33.186 a47d0 Delete type=2 #54
+2025/05/05-21:54:33.186 a47d0 Delete type=2 #52
+2025/05/05-21:54:33.186 a47d0 Delete type=2 #48
+2025/05/05-21:54:33.186 a47d0 Delete type=2 #46
+2025/05/06-21:45:45.225 a47d0 Level-0 table #57: started
+2025/05/06-21:45:45.228 a47d0 Level-0 table #57: 12857 bytes OK
+2025/05/06-21:45:45.230 a47d0 Delete type=0 #53
+2025/05/07-20:36:52.574 a47d0 Level-0 table #59: started
+2025/05/07-20:36:52.576 a47d0 Level-0 table #59: 12604 bytes OK
+2025/05/07-20:36:52.578 a47d0 Delete type=0 #56
