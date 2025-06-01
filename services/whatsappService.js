@@ -1,6 +1,9 @@
 // services/whatsappService.js
 const qrcode = require('qrcode');
 const { Client, LocalAuth } = require('whatsapp-web.js'); // <- essa linha TEM que vir antes
+const db = require('../utils/database.js')
+
+const conexao = new db();
 
 let qrCodeData = null;
 let clientReady = false; // nova flag
@@ -45,11 +48,22 @@ function esperarClientePronto() {
 }
 
 // Envia a mensagem com garantia de que o cliente está pronto
-async function enviarMensagem(numero, mensagem) {
+async function enviarMensagem(numero, mensagem, tecnicoId = null) {
   await esperarClientePronto();
   const numeroComDDD = `${numero}@c.us`;
   try {
-    return await client.sendMessage(numeroComDDD, mensagem);
+    const sentMsg = await client.sendMessage(numeroComDDD, mensagem);
+    
+    // Registrar no banco (se for mensagem de agendamento)
+    if (tecnicoId) {
+      await conexao.ExecutaComando(`
+        INSERT INTO mensagens_enviadas 
+        (tecnico_id, whatsapp_id, mensagem_texto) 
+        VALUES (?, ?, ?)
+      `, [tecnicoId, sentMsg.id._serialized, mensagem]);
+    }
+    
+    return sentMsg;
   } catch (erro) {
     console.error('Erro ao enviar mensagem:', erro);
     throw erro;

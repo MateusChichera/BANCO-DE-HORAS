@@ -1,3 +1,3 @@
-2025/06/01-00:07:59.078 fda4c Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/06/01-00:07:59.085 fda4c Recovering log #109
-2025/06/01-00:07:59.085 fda4c Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/000109.log 
+2025/06/01-05:48:34.493 1004a5 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/06/01-05:48:34.499 1004a5 Recovering log #113
+2025/06/01-05:48:34.499 1004a5 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/000113.log 

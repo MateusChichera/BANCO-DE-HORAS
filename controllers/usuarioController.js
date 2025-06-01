@@ -504,20 +504,37 @@ async buscarHoras(req, res) {
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Nova função para cadastrar implantações em massa
 async implantacoesEmMassa(req, res) {
-  const agendamentos = req.body; // O frontend enviará um array de agendamentos
+    const adc = new UsuarioModel();
+  const agendamentos = req.body;
 
   if (!Array.isArray(agendamentos) || agendamentos.length === 0) {
     return res.status(400).send({ erro: 'Nenhum agendamento fornecido para cadastro em massa.' });
   }
 
+  // Funções auxiliares
+  const formatarDataParaExibicao = (dataStr) => {
+    if (!dataStr) return '';
+    const partes = dataStr.split('/');
+    return partes.length === 3 ? `${partes[0]}/${partes[1]}/${partes[2]}` : dataStr;
+  };
+
+  const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
   const resultados = [];
   const erros = [];
+  const agendamentosPorTecnico = {};
+  const agendamentosPorVendedor = {};
+  const todosAgendamentos = [];
+  const DELAY_ENTRE_MENSAGENS = 15000; // 15 segundos
 
-  for (const newuser of agendamentos) {
-    const adc = new UsuarioModel();
-    try {
-      // --- INÍCIO DA MUDANÇA: Formatar datas para o SQL ---
-
+  try {
+    // Processar cada agendamento
+    for (let i = 0; i < agendamentos.length; i++) {
+      const agendamento = agendamentos[i];
+      
+      try {
+              // --- INÍCIO DA MUDANÇA: Formatar datas para o SQL ---
+        const newuser = agendamentos[i];
       // Função auxiliar para formatar DD/MM/YYYY para YYYY-MM-DD
       const formatarDataParaSQL = (dataStr) => {
         if (!dataStr) return null; // Retorna null para datas vazias (ou undefined, dependendo do seu DB schema)
@@ -556,55 +573,171 @@ async implantacoesEmMassa(req, res) {
         newuser.taxa
       );
 
-      // Lógica de formatação de datas e montagem da mensagem do WhatsApp
-      // (Esta parte pode continuar usando o formato DD/MM/YYYY se for o que o WhatsApp espera)
-      let dataFormatada = '';
-      if (newuser.data) {
-        const dataObj = new Date(newuser.data.split('/').reverse().join('-') + 'T00:00:00'); // Converte para YYYY-MM-DD
-        const dia = String(dataObj.getDate()).padStart(2, '0');
-        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
-        dataFormatada = `${dia}/${mes}/${ano}`;
+        // Formatar dados
+        const dataFormatada = formatarDataParaExibicao(agendamento.data);
+        const data2Formatada = formatarDataParaExibicao(agendamento.dia1);
+        const periodo = data2Formatada ? `${dataFormatada} a ${data2Formatada}` : dataFormatada;
+        const taxaMsg = agendamento.taxa ? `💰 Taxa: R$${agendamento.taxa}\n` : '';
+
+        // Obter informações adicionais
+        const tecnicoInfo = await adc.buscarTelefonePorId(agendamento.usu);
+        const vendedorInfo = agendamento.vendedor ? await adc.buscarTelefonePorId(agendamento.vendedor) : null;
+
+        // Formatando mensagem individual
+        const detalhesAgendamento = 
+          `➖➖➖➖➖➖➖➖➖\n` +
+          `*AGENDAMENTO ${i + 1}*\n\n` +
+          `📋 *${agendamento.cliente}*\n` +
+          `📅 ${periodo}\n` +
+          `📍 ${agendamento.cidade}, ${agendamento.estado}\n` +
+          `🔧 ${agendamento.tipo} | 🚗 ${agendamento.carro}\n` +
+          `💻 Conversão: ${agendamento.imp_sis || 'Não informado'}\n` +
+          `${taxaMsg}` +
+          `👤 Contato: ${agendamento.imp_contato || 'Não informado'}\n` +
+          `📞 Telefones: ${[agendamento.imp_tel, agendamento.imp_tel1, agendamento.imp_tel2, agendamento.imp_tel3]
+            .filter(t => t).join(' / ') || 'Não informado'}\n` +
+          `📝 Obs: ${agendamento.obs || 'Nenhuma'}\n` +
+          `➖➖➖➖➖➖➖➖➖\n\n`;
+
+        // Agrupar por técnico
+        if (tecnicoInfo) {
+          if (!agendamentosPorTecnico[agendamento.usu]) {
+            agendamentosPorTecnico[agendamento.usu] = {
+              nome: tecnicoInfo.usunome,
+              telefone: tecnicoInfo.usu_tel,
+              agendamentos: []
+            };
+          }
+          agendamentosPorTecnico[agendamento.usu].agendamentos.push(detalhesAgendamento);
+        }
+
+        // Agrupar por vendedor (com nome do técnico)
+        if (vendedorInfo && agendamento.vendedor) {
+          const detalhesVendedor = detalhesAgendamento.replace(
+            '➖➖➖➖➖➖➖➖➖\n',
+            `➖➖➖➖➖➖➖➖➖\n👨‍🔧 *Técnico:* ${tecnicoInfo.usunome}\n`
+          );
+
+          if (!agendamentosPorVendedor[agendamento.vendedor]) {
+            agendamentosPorVendedor[agendamento.vendedor] = {
+              nome: vendedorInfo.usunome,
+              telefone: vendedorInfo.usu_tel,
+              agendamentos: []
+            };
+          }
+          agendamentosPorVendedor[agendamento.vendedor].agendamentos.push(detalhesVendedor);
+        }
+        const detalhesVendedor = detalhesAgendamento.replace(
+            '➖➖➖➖➖➖➖➖➖\n',
+            `➖➖➖➖➖➖➖➖➖\n👨‍🔧 *Técnico:* ${tecnicoInfo.usunome}\n`
+          );
+
+        // Adicionar à lista completa
+        todosAgendamentos.push(detalhesVendedor);
+        resultados.push({ cliente: agendamento.cliente, status: 'sucesso' });
+
+      } catch (erro) {
+        console.error(`Erro no agendamento ${i + 1}:`, erro);
+        erros.push({ 
+          cliente: agendamento.cliente || `Agendamento ${i + 1}`, 
+          status: 'erro',
+          mensagem: erro.message 
+        });
       }
-
-      let data2Formatada = '';
-      if (newuser.dia1) {
-        const dataObj = new Date(newuser.dia1.split('/').reverse().join('-') + 'T00:00:00'); // Converte para YYYY-MM-DD
-        const dia = String(dataObj.getDate()).padStart(2, '0');
-        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-        const ano = dataObj.getFullYear();
-        data2Formatada = `${dia}/${mes}/${ano}`;
-      }
-
-      const usuario = await adc.buscarTelefonePorId(newuser.usu);
-      const telefone = usuario ? usuario.usu_tel : null;
-      const tecnico = usuario ? usuario.usunome : 'Técnico Desconhecido';
-
-      const periodo = data2Formatada ? `📅 Período: ${dataFormatada} a ${data2Formatada}` : `📅 Data: ${dataFormatada}`;
-      const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: R$${newuser.taxa}` : '';
-
-      const mensagem = `Olá, ${tecnico} você tem uma nova implantação!\n\n📋 Cliente: ${newuser.cliente}\n${periodo}\n🔧 Tipo: ${newuser.tipo}\n📍 Local: ${newuser.cidade}, ${newuser.estado}\n🚗 Carro: ${newuser.carro}\n👤 Nome: ${newuser.imp_contato}\n📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}\n💻 Conversão: ${newuser.imp_sis}\n${taxaImplantacao}\n📝 Observações: ${newuser.obs || 'Nenhuma'}`;
-    const whatsappService = require('../services/whatsappService.js');
-      if (telefone) {
-        await whatsappService.enviarMensagem(telefone, mensagem);
-        resultados.push({ cliente: newuser.cliente, status: 'sucesso', mensagem: 'Cadastrado e mensagem enviada' });
-      } else {
-        resultados.push({ cliente: newuser.cliente, status: 'aviso', mensagem: 'Cadastrado, mas telefone do técnico não encontrado para enviar mensagem' });
-      }
-    } catch (erro) {
-      console.error(`Erro ao processar agendamento para o cliente ${newuser.cliente}:`, erro);
-      erros.push({ cliente: newuser.cliente, status: 'erro', mensagem: erro.message });
     }
-  }
 
-  if (erros.length > 0) {
-    res.status(207).send({ // 207 Multi-Status indica que algumas operações falharam
-      msg: 'Processamento em massa concluído com alguns erros.',
-      resultados: resultados,
-      erros: erros
+    // Enviar mensagens agrupadas
+    const whatsappService = require('../services/whatsappService');
+
+    // 1. Para técnicos
+    for (const [userId, data] of Object.entries(agendamentosPorTecnico)) {
+      if (data.telefone && data.agendamentos.length > 0) {
+        try {
+          const mensagemTecnico = 
+            `*📋 AGENDAMENTOS PARA ${data.nome.toUpperCase()}*\n\n` +
+            data.agendamentos.join('') +
+            `*Para CONFIRMAR, responda com:*\n` +
+            `✅ SIM - Recebi e entendi\n` +
+            `❌ NÃO - Preciso de ajuda\n\n` +
+            `_Esta confirmação será enviada automaticamente_` +
+            `\n➖➖➖➖➖➖➖➖➖\n` +
+            `Total: ${data.agendamentos.length} agendamento(s)`;
+          
+          await whatsappService.enviarMensagem(data.telefone, mensagemTecnico, userId);
+          await delay(DELAY_ENTRE_MENSAGENS);
+        } catch (erro) {
+          console.error(`Erro ao enviar para técnico ${data.nome}:`, erro);
+        }
+      }
+    }
+
+    // 2. Para vendedores
+    for (const [vendedorId, data] of Object.entries(agendamentosPorVendedor)) {
+      if (data.telefone && data.agendamentos.length > 0) {
+        try {
+          const mensagemVendedor = 
+            `*📋 IMPLANTAÇÕES AGENDADAS - ${data.nome.toUpperCase()}*\n\n` +
+            data.agendamentos.join('') +
+            `\n➖➖➖➖➖➖➖➖➖\n` +
+            `Total: ${data.agendamentos.length} agendamento(s)`;
+          
+          await whatsappService.enviarMensagem(data.telefone, mensagemVendedor, vendedorId);
+          await delay(DELAY_ENTRE_MENSAGENS);
+        } catch (erro) {
+          console.error(`Erro ao enviar para vendedor ${data.nome}:`, erro);
+        }
+      }
+    }
+
+    // 3. Para admin (usuid = 4) e Felipe
+    const enviarRelatorio = async (telefone) => {
+      if (telefone && todosAgendamentos.length > 0) {
+        try {
+          const mensagem = 
+            `*📋 RELATÓRIO DE AGENDAMENTOS*\n\n` +
+            todosAgendamentos.join('') +
+            `✅ Total: ${todosAgendamentos.length} agendamento(s)\n` +
+            `📅 ${new Date().toLocaleDateString('pt-BR')}`;
+          
+          await whatsappService.enviarMensagem(telefone, mensagem);
+          await delay(DELAY_ENTRE_MENSAGENS);
+        } catch (erro) {
+          console.error('Erro ao enviar relatório:', erro);
+        }
+      }
+    };
+
+    // Enviar para admin
+    const adminInfo = await adc.buscarTelefonePorId(4);
+    if (adminInfo && adminInfo.usu_tel) {
+      await enviarRelatorio(adminInfo.usu_tel);
+    }
+
+    // Enviar para Felipe
+    await enviarRelatorio('5518988043123');
+
+    // Retornar resultado
+    const response = {
+      totais: {
+        sucessos: resultados.length,
+        erros: erros.length
+      },
+      resultados: resultados
+    };
+
+    if (erros.length > 0) {
+      response.erros = erros;
+      res.status(207).send(response);
+    } else {
+      res.send(response);
+    }
+
+  } catch (erroGeral) {
+    console.error('Erro geral:', erroGeral);
+    res.status(500).send({
+      erro: 'Falha no processamento em massa',
+      detalhes: erroGeral.message
     });
-  } else {
-    res.send({ ok: true, msg: 'Todos os agendamentos foram cadastrados e mensagens enviadas com sucesso!', resultados: resultados });
   }
 }
 
