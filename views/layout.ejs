@@ -8,32 +8,16 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="/css/fontawesome/all.min.css">
   <link rel="stylesheet" href="/css/template/adminlte.min.css">
-    <style>
-@media (max-width: 768px) {
-  body.sidebar-open #sidebarToggle {
-    left: calc(250px + 15px);
-    transform: rotate(90deg);
-  }
-  
-  /* Ajuste fino para diferentes tamanhos de tela */
-  @media (max-width: 400px) {
-    .main-sidebar.show + .content-wrapper #sidebarToggle {
-      left: calc(100% - 50px);
-    }
-  }
-}
-    /* Adicionado para definir a cor da barra superior e do rodapé */
+  <style>
+    /* Mantenha apenas esses estilos */
     .main-header, .main-footer {
       background-color: #343a40 !important;
     }
 
-    /* Adicionado para ajustar a cor da barra lateral */
     .main-sidebar {
       background-color: #343a40 !important;
-      transition: transform 0.3s ease;
     }
 
-    /* Adicionado para corrigir a cor do rodapé (footer) */
     .content-wrapper {
       background-color: #2c3b41;
       padding-top: 20px;
@@ -47,286 +31,92 @@
       background-color: #ffffff;
     }
 
-   /* ESTILOS CORRIGIDOS PARA SIDEBAR MOBILE */
-@media (max-width: 768px) {
-  .main-sidebar {
-    position: fixed !important;
-    transform: translateX(-100%) !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    z-index: 1050 !important;
-    width: 250px !important;
-    transition: transform 0.3s ease-in-out !important;
-    height: 100vh !important;
-    overflow-y: auto !important;
-    margin-left: 0 !important;
-  }
-
-  .main-sidebar.show {
-    transform: translateX(0) !important;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1040;
-    cursor: pointer;
-  }
-
-  .sidebar-overlay.show {
-    display: block;
-  }
-
-  @media (max-width: 768px) {
-  #sidebarToggle {
-    display: block !important;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1060;
-    background: rgba(52, 58, 64, 0.9);
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 40px;
-    padding: 0;
-    transition: transform 0.3s ease, left 0.3s ease;
-  }
-  }
-
-  .content-wrapper {
-    margin-left: 0 !important;
-  }
-
-  body {
-    overflow-x: hidden;
-  }
-}
-.main-sidebar.show + .content-wrapper #sidebarToggle {
-    left: 260px; /* 250px (sidebar) + 10px (margem) */
-    transform: rotate(180deg); /* Opcional: gira o ícone */
-  }
-  #modalEmail {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.6);
-}
-
-#modalEmail .modal-content {
-  background: #fff;
-  color: #333;
-  padding: 20px 20px 30px 20px;
-  max-width: 400px;
-  margin: 10% auto;
-  border-radius: 8px;
-  position: relative;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-#modalEmail h3 {
-  margin-top: 0;
-  color: #444;
-}
-
-#modalEmail label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-#modalEmail input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-#modalEmail button {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#modalEmail button:hover {
-  background-color: #0056b3;
-}
-
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  color: red;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
-}
-</style>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Obtendo o nome do usuário dos cookies
-
-      function getCookie(name) {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        // Verifica se o cookie começa com o nome desejado
-        if (cookie.startsWith(name + '=')) {
-          // Retorna o valor do cookie sem o nome
-          return cookie.substring(name.length + 1);
-        }
-      }
-      return ''; // Retorna uma string vazia se o cookie não for encontrado
-    }
-    const userName = getCookie('Nome');
-    // Seleciona o elemento span com o ID 'nome'
-    const nomeSpan = document.getElementById('nome');
-
-    // Atualiza o texto do elemento span com o nome do usuário
-    if (userName) {
-      nomeSpan.textContent += userName + '!';
-    } else {
-      nomeSpan.textContent += '!';
-    }
-    //---------------------------------------------------- deslogar-------------------------------------------------------
-      // Função para limpar os cookies
-      function limparCookies() {
-      // Define a data de expiração dos cookies para uma data no passado
-      const dataExpiracao = new Date();
-      dataExpiracao.setFullYear(dataExpiracao.getFullYear() - 1);
-
-      // Obtém todos os cookies
-      const cookies = document.cookie.split(';');
-      
-      // Limpa cada cookie
-      cookies.forEach(cookie => {
-        const partes = cookie.split('=');
-        const nomeCookie = partes.shift().trim();
-        document.cookie = `${nomeCookie}=; expires=${dataExpiracao.toUTCString()}; path=/`;
-      });
+    /* Estilo do modal de email (manter) */
+    #modalEmail {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
     }
 
-    // Obtendo o botão de deslogar
-    const btnDeslogar = document.getElementById('btnDeslogar');
-
-    // Adicionando um ouvinte de evento para o clique no botão de deslogar
-    btnDeslogar.addEventListener('click', function (event) {
-      // Previne o comportamento padrão do link
-      event.preventDefault();
-
-      // Chama a função para limpar os cookies
-      limparCookies();
-
-      // Redireciona para a página de login (substitua '/login' pela URL correta)
-      window.location.href = '/login';
-    });
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-    const openBtn = document.getElementById("openWhatsappModal");
-    const qrImage = document.getElementById("whatsappQrCode");
-    const modalEl = document.getElementById("whatsappModal");
-
-    if (openBtn && qrImage && modalEl) {
-      openBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        
-        // Fazer a requisição para pegar o QR Code
-        fetch("http://137.131.128.248:3000/whatsapp/qrcode-img", {
-          method: "GET",
-          credentials: "include"   // Isso vai garantir que os cookies sejam enviados com a requisição
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao carregar o QR Code');
-          }
-          return response.blob(); // A resposta será um blob (imagem)
-        })
-        .then(blob => {
-          const imgUrl = URL.createObjectURL(blob); // Cria uma URL temporária para a imagem
-          qrImage.src = imgUrl; // Atualiza a imagem no modal
-          
-          // Exibe o modal do WhatsApp
-          const modal = new bootstrap.Modal(modalEl);
-          modal.show();
-        })
-        .catch(error => {
-          console.error('Erro ao carregar o QR Code:', error);
-        });
-      });
-    } else {
-      console.warn("Algum dos elementos do modal do WhatsApp não foi encontrado no DOM.");
+    #modalEmail .modal-content {
+      background: #fff;
+      color: #333;
+      padding: 20px 20px 30px 20px;
+      max-width: 400px;
+      margin: 10% auto;
+      border-radius: 8px;
+      position: relative;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-  });
 
-  </script>
+    #modalEmail h3 {
+      margin-top: 0;
+      color: #444;
+    }
+
+    #modalEmail label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    #modalEmail input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    #modalEmail button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #modalEmail button:hover {
+      background-color: #0056b3;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: red;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-<div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center">
-      <div class="modal-header">
-        <h5 class="modal-title" id="whatsappModalLabel">Conecte-se ao WhatsApp</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
-      <div class="modal-body">
-        <img id="whatsappQrCode" src="" alt="QR Code do WhatsApp" class="img-fluid" />
-      </div>
-    </div>
-  </div>
-</div>
-<div id="modalEmail">
-  <div class="modal-content">
-    <span class="close-modal" onclick="document.getElementById('modalEmail').style.display='none'">&times;</span>
-    
-    <h3>Configurar E-mail</h3>
-
-    <label>Usuário (e-mail):</label>
-    <input type="text" id="smtp_user" />
-
-    <label>Senha:</label>
-    <input type="password" id="smtp_pass" />
-
-    <button onclick="gravarEmailConfig()">Salvar</button>
-  </div>
-</div>
-
-
-
 
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
 <div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-dark">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+  </nav>
 
-  <button id="sidebarToggle">
-    <i class="fas fa-bars"></i>
-  </button>
-  <div class="sidebar-overlay"></div>
-  
-  
-  <aside id="sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
     <a href="/" class="brand-link" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
       <img src="/images/logobrancosemfundo.png" alt="Logo Infomaster" style="width: 80px; margin-top: 5px;">
     </a>
-    
     
     <a style="text-align: center;" href="/" class="brand-link">
       <span id="nome" class="brand-text font-weight-light">Olá, </span>
@@ -336,6 +126,7 @@
       <span class="brand-text font-weight-light">Deslogar</span>
     </a>
 
+    <!-- Sidebar -->
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
@@ -343,30 +134,25 @@
         </div>
       </div>
 
-
+      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item" id="menuItemInicio">
             <a href="/" class="nav-link">
               <i class="nav-icon fas fa-home"></i>
-              <p>
-                Início
-              </p>
+              <p>Início</p>
             </a>
           </li>
           <li class="nav-item" id="menuItemCadastrarHoras">
             <a href="/usuarios/cadastrar" class="nav-link">
               <i class="fas fa-user-plus"></i>
-              <p>
-                Cadastrar Horas
-              </p>
+              <p>Cadastrar Horas</p>
             </a>
           </li>
           <li class="nav-item" id="agendamentoMenuItem">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i> <p>
-                Agendamento
-                <i class="right fas fa-angle-left"></i> </p>
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>Agendamento <i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item" id="subMenuItemCadastrarAgendamento">
@@ -386,121 +172,76 @@
           <li class="nav-item" id="menuItemHorasImplantacoes">
             <a href="/usuarios" class="nav-link">
               <i class="fas fa-file-alt"></i>
-              <p>
-                Horas e Implantações
-              </p>
+              <p>Horas e Implantações</p>
             </a>
           </li>
           <li class="nav-item" id="menuItemViagens">
             <a href="/usuarios/viagem" class="nav-link">
               <i class="fas fa-chart-bar"></i>
-              <p>
-                Viagens
-              </p>
+              <p>Viagens</p>
             </a>
           </li>
-          
         </ul>
       </nav>
-      </div>
-    </aside>
-
-  <div style="background-colorr: rgb(255, 255, 255);" class="content-wrapper">
-    <div style="margin:20px;" class="card card-body">
-        <%- body %>
     </div>
-    
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <div style="margin:20px;" class="card card-body">
+      <%- body %>
+    </div>
   </div>
+
+  <!-- Main Footer -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2025 Mateus Chichera.</strong>
     All rights reserved.
     <div class="float-right d-block">
       <b>Version</b> 4.2.5
-  
       <a href="#" id="btnConfigEmail" title="Configurar E-mail" style="margin-left: 15px;">
         <img src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png" alt="Configurações" width="20" />
       </a>
     </div>
   </footer>
-  
+</div>
 
-  <aside class="control-sidebar control-sidebar-dark">
-    </aside>
+<!-- Modal WhatsApp -->
+<div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+      <div class="modal-header">
+        <h5 class="modal-title" id="whatsappModalLabel">Conecte-se ao WhatsApp</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <img id="whatsappQrCode" src="" alt="QR Code do WhatsApp" class="img-fluid" />
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- Modal Email -->
+<div id="modalEmail">
+  <div class="modal-content">
+    <span class="close-modal" onclick="document.getElementById('modalEmail').style.display='none'">&times;</span>
+    <h3>Configurar E-mail</h3>
+    <label>Usuário (e-mail):</label>
+    <input type="text" id="smtp_user" />
+    <label>Senha:</label>
+    <input type="password" id="smtp_pass" />
+    <button onclick="gravarEmailConfig()">Salvar</button>
+  </div>
+</div>
+
+<!-- REQUIRED SCRIPTS -->
 <script src="/js/jquery/jquery.min.js"></script>
 <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="/js/template/adminlte.min.js"></script>
-</body>
-  <script>
-    //CADASTRO DE EMAIL-------------------------------------
-    function getCookie(cname) {
-  const name = cname + "=";
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const ca = decodedCookie.split(';');
-  for(let i = 0; i < ca.length; i++) {
-    let c = ca[i].trim();
-    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-  }
-  return "";
-}
 
-const usuid = getCookie("userId");
-const from_name = getCookie("Nome");
-
-// Abrir modal e buscar dados existentes
-document.getElementById("btnConfigEmail").addEventListener("click", () => {
-  fetch(`http://137.131.128.248:3000/api/email/config/${usuid}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data && data.length > 0) {
-        document.getElementById("smtp_user").value = data[0].smtp_user || "";
-        document.getElementById("smtp_pass").value = data[0].smtp_pass || "";
-      } else {
-        document.getElementById("smtp_user").value = "";
-        document.getElementById("smtp_pass").value = "";
-      }
-      document.getElementById("modalEmail").style.display = "block";
-    })
-    .catch(err => {
-      alert("Erro ao buscar configuração de e-mail.");
-      console.error(err);
-    });
-});
-
-// Função de gravação
-function gravarEmailConfig() {
-  const smtp_user = document.getElementById("smtp_user").value;
-  const smtp_pass = document.getElementById("smtp_pass").value;
-
-  const payload = {
-    usuid: usuid,
-    smtp_host: "mx.infomaster.inf.br",
-    smtp_port: "587",
-    smtp_user: smtp_user,
-    smtp_pass: smtp_pass,
-    from_email: smtp_user,
-    from_name: from_name,
-    use_tls: true,
-    use_ssl: false
-  };
-
-  fetch("http://137.131.128.248:3000/api/email", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert("Configuração salva com sucesso!");
-    document.getElementById("modalEmail").style.display = "none";
-  })
-  .catch(err => {
-    alert("Erro ao salvar configuração.");
-    console.error(err);
-  });
-}
-  document.addEventListener('DOMContentLoaded', function () {
-    // Função para obter o valor de um cookie pelo nome
+<script>
+  // Funções de cookie e permissões
+  document.addEventListener('DOMContentLoaded', function() {
     function getCookie(name) {
       const cookies = document.cookie.split(';');
       for (let i = 0; i < cookies.length; i++) {
@@ -509,65 +250,62 @@ function gravarEmailConfig() {
           return cookie.substring(name.length + 1);
         }
       }
-      return ''; // Retorna uma string vazia se o cookie não for encontrado
+      return '';
     }
 
-    // Obtém o userId do cookie
-    const userId = getCookie('userId');
+    const userName = getCookie('Nome');
+    const nomeSpan = document.getElementById('nome');
+    if (userName) {
+      nomeSpan.textContent += userName + '!';
+    } else {
+      nomeSpan.textContent += '!';
+    }
 
-    // Mapeia os IDs dos itens de menu para facilitar a manipulação
+    // Verificação de permissões
+    const userId = getCookie('userId');
     const menuItemIds = {
-        inicio: 'menuItemInicio',
-        cadastrarHoras: 'menuItemCadastrarHoras',
-        agendamento: 'agendamentoMenuItem', // O dropdown principal
-        subCadastrarAgendamento: 'subMenuItemCadastrarAgendamento',
-        subImportarAgendamento: 'subMenuItemImportarAgendamento',
-        horasImplantacoes: 'menuItemHorasImplantacoes',
-        viagens: 'menuItemViagens'
+      inicio: 'menuItemInicio',
+      cadastrarHoras: 'menuItemCadastrarHoras',
+      agendamento: 'agendamentoMenuItem',
+      subCadastrarAgendamento: 'subMenuItemCadastrarAgendamento',
+      subImportarAgendamento: 'subMenuItemImportarAgendamento',
+      horasImplantacoes: 'menuItemHorasImplantacoes',
+      viagens: 'menuItemViagens'
     };
 
-    // Função para ocultar todos os itens e depois exibir os permitidos
     function verificarPermissoes() {
-        // Oculta todos os itens de menu inicialmente, incluindo os sub-itens do agendamento
-        for (const key in menuItemIds) {
-            const element = document.getElementById(menuItemIds[key]);
-            if (element) {
-                element.style.display = 'none';
-            }
-        }
+      for (const key in menuItemIds) {
+        const element = document.getElementById(menuItemIds[key]);
+        if (element) element.style.display = 'none';
+      }
 
-        // Itens que são visíveis para a maioria ou por padrão (Início, Horas e Implantações)
-        const inicioItem = document.getElementById(menuItemIds.inicio);
-        const horasImplantacoesItem = document.getElementById(menuItemIds.horasImplantacoes);
+      const inicioItem = document.getElementById(menuItemIds.inicio);
+      const horasImplantacoesItem = document.getElementById(menuItemIds.horasImplantacoes);
+      
+      if (inicioItem) inicioItem.style.display = 'block';
+      if (horasImplantacoesItem) horasImplantacoesItem.style.display = 'block';
+
+      if (userId == 1 || userId == 2 || userId == 3 || userId == 5 || userId == 7) {
+        const cadastrarHorasItem = document.getElementById(menuItemIds.cadastrarHoras);
+        if (cadastrarHorasItem) cadastrarHorasItem.style.display = 'block';
+      } else if (userId == 4) {
+        const agendamentoItem = document.getElementById(menuItemIds.agendamento);
+        const viagensItem = document.getElementById(menuItemIds.viagens);
         
-        if (inicioItem) inicioItem.style.display = 'block';
-        if (horasImplantacoesItem) horasImplantacoesItem.style.display = 'block';
-
-        // Lógica de permissões específica para cada userId
-        if (userId == 1 || userId == 2 || userId == 3 || userId == 5) {
-            const cadastrarHorasItem = document.getElementById(menuItemIds.cadastrarHoras);
-            if (cadastrarHorasItem) cadastrarHorasItem.style.display = 'block';
-        } else if (userId == 4) {
-            const agendamentoItem = document.getElementById(menuItemIds.agendamento);
-            const viagensItem = document.getElementById(menuItemIds.viagens);
-            
-            if (agendamentoItem) {
-                agendamentoItem.style.display = 'block';
-                // Certifica-se de que os sub-itens do Agendamento também são exibidos
-                const subCadastrarAgendamento = document.getElementById(menuItemIds.subCadastrarAgendamento);
-                const subImportarAgendamento = document.getElementById(menuItemIds.subImportarAgendamento);
-                if (subCadastrarAgendamento) subCadastrarAgendamento.style.display = 'block';
-                if (subImportarAgendamento) subImportarAgendamento.style.display = 'block';
-            }
-            if (viagensItem) viagensItem.style.display = 'block';
-        } 
-        // Para userId == 6, apenas Início e Horas e Implantações (já exibidos acima)
+        if (agendamentoItem) {
+          agendamentoItem.style.display = 'block';
+          const subCadastrarAgendamento = document.getElementById(menuItemIds.subCadastrarAgendamento);
+          const subImportarAgendamento = document.getElementById(menuItemIds.subImportarAgendamento);
+          if (subCadastrarAgendamento) subCadastrarAgendamento.style.display = 'block';
+          if (subImportarAgendamento) subImportarAgendamento.style.display = 'block';
+        }
+        if (viagensItem) viagensItem.style.display = 'block';
+      }
     }
 
-    // Executa a função de verificação de permissões
     verificarPermissoes();
 
-    //---------------------------------------------------- deslogar-------------------------------------------------------
+    // Logout
     function limparCookies() {
       const dataExpiracao = new Date();
       dataExpiracao.setFullYear(dataExpiracao.getFullYear() - 1);
@@ -580,82 +318,97 @@ function gravarEmailConfig() {
     }
 
     const btnDeslogar = document.getElementById('btnDeslogar');
-    btnDeslogar.addEventListener('click', function (event) {
+    btnDeslogar.addEventListener('click', function(event) {
       event.preventDefault();
       limparCookies();
       window.location.href = '/login';
     });
+
+    // Configuração de email
+    const usuid = getCookie("userId");
+    const from_name = getCookie("Nome");
+
+    document.getElementById("btnConfigEmail").addEventListener("click", () => {
+      fetch(`http://137.131.128.248:3000/api/email/config/${usuid}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            document.getElementById("smtp_user").value = data[0].smtp_user || "";
+            document.getElementById("smtp_pass").value = data[0].smtp_pass || "";
+          } else {
+            document.getElementById("smtp_user").value = "";
+            document.getElementById("smtp_pass").value = "";
+          }
+          document.getElementById("modalEmail").style.display = "block";
+        })
+        .catch(err => {
+          alert("Erro ao buscar configuração de e-mail.");
+          console.error(err);
+        });
+    });
+
+    // WhatsApp QR Code
+    const openBtn = document.getElementById("openWhatsappModal");
+    const qrImage = document.getElementById("whatsappQrCode");
+    const modalEl = document.getElementById("whatsappModal");
+
+    if (openBtn && qrImage && modalEl) {
+      openBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        fetch("http://137.131.128.248:3000/whatsapp/qrcode-img", {
+          method: "GET",
+          credentials: "include"
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Erro ao carregar o QR Code');
+          return response.blob();
+        })
+        .then(blob => {
+          const imgUrl = URL.createObjectURL(blob);
+          qrImage.src = imgUrl;
+          const modal = new bootstrap.Modal(modalEl);
+          modal.show();
+        })
+        .catch(error => {
+          console.error('Erro ao carregar o QR Code:', error);
+        });
+      });
+    }
   });
-  document.addEventListener("DOMContentLoaded", function() {
-  const sidebar = document.getElementById("sidebar");
-  const sidebarToggle = document.getElementById("sidebarToggle");
-  const overlay = document.querySelector(".sidebar-overlay");
 
-  function toggleSidebar() {
-    sidebar.classList.toggle("show");
-    overlay.classList.toggle("show");
-    document.body.classList.toggle("sidebar-open");
-    // Debug visual
-    console.log("Sidebar display:", window.getComputedStyle(sidebar).display);
-    console.log("Sidebar transform:", window.getComputedStyle(sidebar).transform);
-  }
+  function gravarEmailConfig() {
+    const usuid = getCookie("userId");
+    const from_name = getCookie("Nome");
+    const smtp_user = document.getElementById("smtp_user").value;
+    const smtp_pass = document.getElementById("smtp_pass").value;
 
-  function closeSidebar() {
-    sidebar.classList.remove("show");
-    overlay.classList.remove("show");
-  }
+    const payload = {
+      usuid: usuid,
+      smtp_host: "mx.infomaster.inf.br",
+      smtp_port: "587",
+      smtp_user: smtp_user,
+      smtp_pass: smtp_pass,
+      from_email: smtp_user,
+      from_name: from_name,
+      use_tls: true,
+      use_ssl: false
+    };
 
-  if (sidebar && sidebarToggle && overlay) {
-    // Botão toggle
-    sidebarToggle.addEventListener("click", function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      toggleSidebar();
-    });
-
-    // Overlay
-    overlay.addEventListener("click", closeSidebar);
-
-    // Fechar ao clicar fora
-    document.addEventListener("click", function(e) {
-      if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
-        closeSidebar();
-      }
-    });
-
-    // Debug inicial
-    console.log("Estado Inicial:");
-    console.log("Sidebar left:", sidebar.getBoundingClientRect().left);
-    console.log("Sidebar width:", sidebar.offsetWidth);
-  } else {
-    console.error("Elementos não encontrados:", {
-      sidebar: !!sidebar,
-      toggle: !!sidebarToggle,
-      overlay: !!overlay
+    fetch("http://137.131.128.248:3000/api/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert("Configuração salva com sucesso!");
+      document.getElementById("modalEmail").style.display = "none";
+    })
+    .catch(err => {
+      alert("Erro ao salvar configuração.");
+      console.error(err);
     });
   }
-
-  // Forçar redesenho (trigger reflow)
-  setTimeout(() => {
-    sidebar.style.display = 'none';
-    sidebar.offsetHeight; // Trigger reflow
-    sidebar.style.display = '';
-  }, 100);
-});
-document.querySelector('.sidebar-overlay').addEventListener('click', () => {
-  const sidebar = document.querySelector('.main-sidebar');
-  const overlay = document.querySelector('.sidebar-overlay');
-  const toggleBtn = document.getElementById('sidebarToggle');
-
-  sidebar.classList.remove('show');
-  overlay.classList.remove('show');
-  
-
-  // Reseta o botão para posição original
-  toggleBtn.style.left = '10px';
-  toggleBtn.style.transform = 'rotate(0deg)';
-});
 </script>
-
-
+</body>
 </html>

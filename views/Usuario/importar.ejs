@@ -109,6 +109,20 @@
       width: 100%;
       box-sizing: border-box;
     }
+    /* Mantenha esses estilos */
+    .campo-valido {
+      border: 1px solid #00aa00 !important;
+      box-shadow: 0 0 5px rgba(0, 170, 0, 0.3) !important;
+    }
+    
+    .campo-invalido {
+      border: 1px solid #ff0000 !important;
+      box-shadow: 0 0 5px rgba(255, 0, 0, 0.3) !important;
+    }
+    
+    .campo-invalido::placeholder {
+      color: #ff9999 !important;
+    }
   </style>
 </head>
 <body>
@@ -125,10 +139,10 @@
         <th>Data</th>
         <th>Data 2</th>
         <th>Observações</th>
-        <th>Farmácia</th>
         <th>Cliente</th>
+        <th>Contato</th>
         <th>Cidade</th>
-        <th>Estado</th>
+        <th>UF</th>
         <th>Impl</th>
         <th>Vendedor</th>
         <th>Carro</th>
@@ -136,7 +150,7 @@
         <th>Tipo</th>
         <th>Telefone(s)</th>
         <th>Taxa</th>
-        <th>Ações</th>
+        <th>*</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -323,6 +337,24 @@
           `;
           tabelaBody.appendChild(row);
 
+
+          // Marca os selects como validados
+            row.querySelectorAll('select').forEach(select => {
+              select.dataset.validated = 'true';
+            });
+
+            // Adiciona eventos para validação em tempo real
+            row.querySelectorAll('input, select').forEach(element => {
+              element.addEventListener('input', function() {
+                validarCamposEmTempoReal();
+              });
+              
+              if (element.tagName === 'SELECT') {
+                element.addEventListener('change', function() {
+                  validarCamposEmTempoReal();
+                });
+              }
+            });
           row.querySelector('.excluir-btn').addEventListener('click', () => {
             tabelaBody.removeChild(row);
           });
@@ -332,9 +364,15 @@
             i++;
           }
         }
+        setTimeout(() => {
+      validarCamposEmTempoReal(true);
+    }, 0);
       };
+      
       reader.readAsArrayBuffer(file);
+
     });
+
 
     btnEnviar.addEventListener('click', async () => {
       const agendamentos = [];
@@ -416,6 +454,62 @@
         alert('Erro ao enviar agendamentos. Verifique a conexão e o console para mais detalhes.');
       }
     });
+
+
+ function validarCamposEmTempoReal(onlyInvalid = false) {
+  const rows = tabelaBody.querySelectorAll('tr');
+  
+  rows.forEach(row => {
+    const campos = [
+      { element: row.querySelector('.data-field'), required: true },
+      { element: row.querySelector('.implantador-select'), required: true, notValue: '0' },
+      { element: row.querySelector('.farmacia-field'), required: true },
+      { element: row.querySelector('.cidade-field'), required: true },
+      { element: row.querySelector('.estado-field'), required: true },
+      { element: row.querySelector('.vendedor-select'), required: true, notValue: '0' },
+      { element: row.querySelector('.carro-select'), required: true, notValue: '--Selecione--' },
+      { element: row.querySelector('.tipo-select'), required: true, notValue: '' }
+    ];
+    
+    campos.forEach(campo => {
+      if (!campo.element) return;
+      
+      const value = campo.element.tagName === 'SELECT' 
+                  ? campo.element.value 
+                  : campo.element.value.trim();
+      
+      const isValid = !campo.required || 
+                     (value !== '' && 
+                      (!campo.notValue || value !== campo.notValue));
+      
+      // Remove todas as classes primeiro
+      campo.element.classList.remove('campo-valido', 'campo-invalido');
+      
+      if (onlyInvalid) {
+        // Validação inicial - só mostra os inválidos
+        if (!isValid) {
+          campo.element.classList.add('campo-invalido');
+        }
+      } else {
+        // Validação após interação
+        if (!isValid) {
+          campo.element.classList.add('campo-invalido');
+        } else {
+          // Só mostra verde se já foi marcado como inválido antes
+          if (campo.element.classList.contains('campo-invalido') || campo.element.dataset.wasInvalid) {
+            campo.element.classList.add('campo-valido');
+          }
+        }
+      }
+      
+      // Marca se já foi inválido em algum momento
+      if (!isValid) {
+        campo.element.dataset.wasInvalid = 'true';
+      }
+    });
+  });
+}
+
   </script>
 
 </body>
