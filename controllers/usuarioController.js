@@ -202,6 +202,12 @@ async buscarHoras(req, res) {
     editarimplantacaoView(req, res) {
         res.render('Usuario/editarImplantacoes');
     }
+
+    // IMPORTAR VIEW
+    importarView(req, res) {
+        console.log("Método importarView chamado.");
+        res.render('Usuario/importar');
+    };
     
     editarImpView(req, res) {
         console.log("Método editarImpView chamado.");
@@ -436,7 +442,7 @@ async buscarHoras(req, res) {
 
               console.log("Telefone do vendedor:", telefoneV);
               const telefoneF = '5518981174107'; // Fernando
-              const telefoneT = '5518981760014'
+              const telefoneT = '5518981760014'; //felipe
         
               // função auxiliar para esperar um tempo
               const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -494,6 +500,118 @@ async buscarHoras(req, res) {
             res.send({ ok: false, msg: "Erro ao buscar agendamentos no banco de dados." });
         }
     }
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Nova função para cadastrar implantações em massa
+async implantacoesEmMassa(req, res) {
+  const agendamentos = req.body; // O frontend enviará um array de agendamentos
+
+  if (!Array.isArray(agendamentos) || agendamentos.length === 0) {
+    return res.status(400).send({ erro: 'Nenhum agendamento fornecido para cadastro em massa.' });
+  }
+
+  const resultados = [];
+  const erros = [];
+
+  for (const newuser of agendamentos) {
+    const adc = new UsuarioModel();
+    try {
+      // --- INÍCIO DA MUDANÇA: Formatar datas para o SQL ---
+
+      // Função auxiliar para formatar DD/MM/YYYY para YYYY-MM-DD
+      const formatarDataParaSQL = (dataStr) => {
+        if (!dataStr) return null; // Retorna null para datas vazias (ou undefined, dependendo do seu DB schema)
+        const partes = dataStr.split('/');
+        if (partes.length === 3) {
+          return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+        }
+        return null; // Retorna null se o formato não for o esperado
+      };
+
+      const impDiaSQL = formatarDataParaSQL(newuser.data);
+      const impDia1SQL = formatarDataParaSQL(newuser.dia1);
+
+      // --- FIM DA MUDANÇA ---
+
+      // 1. Grava a implantação
+      await adc.adcImplantacao(
+        newuser.usu,
+        newuser.tipo,
+        newuser.cliente,
+        impDiaSQL, // Usar a data formatada para SQL
+        newuser.estado,
+        newuser.cidade,
+        newuser.obs,
+        newuser.imp_contato,
+        newuser.imp_tel,
+        newuser.imp_tel1,
+        newuser.imp_sis,
+        newuser.imp_dtvenc, // Assumindo que imp_dtvenc já vem no formato correto ou pode ser string vazia
+        newuser.imp_mensalidade, // Assumindo que imp_mensalidade já vem no formato correto ou pode ser string vazia
+        newuser.imp_tel2,
+        newuser.imp_tel3,
+        newuser.carro,
+        newuser.vendedor,
+        impDia1SQL, // Usar a data formatada para SQL
+        newuser.taxa
+      );
+
+      // Lógica de formatação de datas e montagem da mensagem do WhatsApp
+      // (Esta parte pode continuar usando o formato DD/MM/YYYY se for o que o WhatsApp espera)
+      let dataFormatada = '';
+      if (newuser.data) {
+        const dataObj = new Date(newuser.data.split('/').reverse().join('-') + 'T00:00:00'); // Converte para YYYY-MM-DD
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+        const ano = dataObj.getFullYear();
+        dataFormatada = `${dia}/${mes}/${ano}`;
+      }
+
+      let data2Formatada = '';
+      if (newuser.dia1) {
+        const dataObj = new Date(newuser.dia1.split('/').reverse().join('-') + 'T00:00:00'); // Converte para YYYY-MM-DD
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+        const ano = dataObj.getFullYear();
+        data2Formatada = `${dia}/${mes}/${ano}`;
+      }
+
+      const usuario = await adc.buscarTelefonePorId(newuser.usu);
+      const telefone = usuario ? usuario.usu_tel : null;
+      const tecnico = usuario ? usuario.usunome : 'Técnico Desconhecido';
+
+      const periodo = data2Formatada ? `📅 Período: ${dataFormatada} a ${data2Formatada}` : `📅 Data: ${dataFormatada}`;
+      const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: R$${newuser.taxa}` : '';
+
+      const mensagem = `Olá, ${tecnico} você tem uma nova implantação!\n\n📋 Cliente: ${newuser.cliente}\n${periodo}\n🔧 Tipo: ${newuser.tipo}\n📍 Local: ${newuser.cidade}, ${newuser.estado}\n🚗 Carro: ${newuser.carro}\n👤 Nome: ${newuser.imp_contato}\n📞 Telefones: ${newuser.imp_tel}, ${newuser.imp_tel1}, ${newuser.imp_tel2 || '-'}, ${newuser.imp_tel3 || '-'}\n💻 Conversão: ${newuser.imp_sis}\n${taxaImplantacao}\n📝 Observações: ${newuser.obs || 'Nenhuma'}`;
+    const whatsappService = require('../services/whatsappService.js');
+      if (telefone) {
+        await whatsappService.enviarMensagem(telefone, mensagem);
+        resultados.push({ cliente: newuser.cliente, status: 'sucesso', mensagem: 'Cadastrado e mensagem enviada' });
+      } else {
+        resultados.push({ cliente: newuser.cliente, status: 'aviso', mensagem: 'Cadastrado, mas telefone do técnico não encontrado para enviar mensagem' });
+      }
+    } catch (erro) {
+      console.error(`Erro ao processar agendamento para o cliente ${newuser.cliente}:`, erro);
+      erros.push({ cliente: newuser.cliente, status: 'erro', mensagem: erro.message });
+    }
+  }
+
+  if (erros.length > 0) {
+    res.status(207).send({ // 207 Multi-Status indica que algumas operações falharam
+      msg: 'Processamento em massa concluído com alguns erros.',
+      resultados: resultados,
+      erros: erros
+    });
+  } else {
+    res.send({ ok: true, msg: 'Todos os agendamentos foram cadastrados e mensagens enviadas com sucesso!', resultados: resultados });
+  }
+}
+
+
+
+
+
 
     // ATUALIZAR IMPLANTAÇÃO 
 

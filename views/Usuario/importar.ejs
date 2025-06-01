@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Importar Excel - Agendamento</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #1e1e1e;
+      margin-top: 20px;
+      /* Removido table-layout: fixed; para permitir que o conteúdo dite mais a largura */
+      /* No entanto, se precisar que a tabela não "escorra", pode ser útil reativar e ajustar as larguras TH */
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: left;
+      vertical-align: middle;
+      word-wrap: break-word;
+      /* Ajuste de min-width e max-width para células */
+      min-width: 80px; /* Largura mínima para colunas padrão */
+    }
+
+    /* Otimização de Largura para colunas específicas */
+    th:nth-child(1), td:nth-child(1) { min-width: 90px; max-width: 120px; } /* Data */
+    th:nth-child(2), td:nth-child(2) { min-width: 90px; max-width: 120px; } /* Data 2 */
+    th:nth-child(7), td:nth-child(7) { min-width: 50px; max-width: 70px; } /* Estado - mais compacto */
+    th:nth-child(12), td:nth-child(12) { min-width: 70px; max-width: 100px; } /* Tipo */
+    th:nth-child(14), td:nth-child(14) { min-width: 50px; max-width: 80px; } /* Taxa */
+    th:nth-child(15), td:nth-child(15) { min-width: 30px; max-width: 50px; text-align: center; } /* Ações */
+
+
+    th {
+      background-color: #333;
+      color: white;
+    }
+    input[type="file"], input[type="text"], select {
+      background-color: #2c2c2c;
+      color: white;
+      border: 1px solid #555;
+      padding: 6px 8px;
+      border-radius: 5px;
+      width: 100%; /* Continua 100% para preencher a célula */
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus, select:focus {
+      outline: none;
+      background-color: #1f1f1f;
+      border-color: #66afe9;
+    }
+    button.excluir-btn, #btnEnviar {
+      background-color: #cc3333;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
+      transition: background-color 0.3s;
+    }
+    /* Estilo para o ícone de lixeira */
+    button.excluir-btn i {
+      font-size: 1.1em; /* Ajuste o tamanho do ícone */
+    }
+
+    button.excluir-btn:hover {
+      background-color: #ff5555;
+    }
+    #btnLimpar {
+      margin-left: 10px;
+      background-color: #666;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    #btnLimpar:hover {
+      background-color: #888;
+    }
+    #btnEnviar {
+      background-color: #4CAF50;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #btnEnviar:hover {
+      background-color: #45a049;
+    }
+    .file-wrapper {
+      display: flex;
+      align-items: center;
+      max-width: 400px;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .full-width {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Importar Excel - Agendamento</h2>
+  <div class="file-wrapper">
+    <input type="file" id="excelFile" accept=".xlsx, .xls" />
+    <button id="btnLimpar" title="Remover arquivo e limpar tabela">Limpar</button>
+  </div>
+
+  <table id="tabela">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Data 2</th>
+        <th>Observações</th>
+        <th>Farmácia</th>
+        <th>Cliente</th>
+        <th>Cidade</th>
+        <th>Estado</th>
+        <th>Impl</th>
+        <th>Vendedor</th>
+        <th>Carro</th>
+        <th>Sistema</th>
+        <th>Tipo</th>
+        <th>Telefone(s)</th>
+        <th>Taxa</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button id="btnEnviar" class="full-width">Enviar Agendamentos</button>
+
+  <script>
+    const excelInput = document.getElementById('excelFile');
+    const tabelaBody = document.querySelector('#tabela tbody');
+    const btnLimpar = document.getElementById('btnLimpar');
+    const btnEnviar = document.getElementById('btnEnviar');
+
+    const implantadores = {
+      "Mateus": 1,
+      "Carlos Muller": 2,
+      "Vinicius": 3,
+      "Guilherme Sousa": 5
+    };
+
+    const vendedores = [
+      { id: 0, nome: '--Selecione--' },
+      { id: 7, nome: 'Leonardo' },
+      { id: 8, nome: 'Edmilson' },
+      { id: 4, nome: 'Fernando' }
+    ];
+
+    const carros = [
+      { nome: '--Selecione--' },
+      { nome: 'Uno 11' },
+      { nome: 'Uno 12' },
+      { nome: 'Uno 13' },
+      { nome: 'Uno 15' },
+      { nome: 'Fiesta' },
+      { nome: 'Online' }
+    ];
+
+    const tiposAgendamento = [
+      { value: 'Implantação', label: 'Implantação' }, // Corrigido para "Implantação"
+      { value: 'Conversão', label: 'Conversão' },
+      { value: 'Visita', label: 'Visita' },
+      { value: 'Online', label: 'Online' }
+    ];
+
+    const adicionarDias = (dataStr, dias) => {
+      if (!dataStr) return '';
+      const partes = dataStr.split('/');
+      const data = new Date(`${partes[2]}-${partes[1]}-${partes[0]}T00:00:00`);
+      data.setDate(data.getDate() + dias);
+      return data.toLocaleDateString('pt-BR');
+    };
+
+    const limparTabela = () => {
+      tabelaBody.innerHTML = '';
+      excelInput.value = ''; // limpa seleção do arquivo
+    };
+
+    btnLimpar.addEventListener('click', limparTabela);
+
+    excelInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        tabelaBody.innerHTML = '';
+
+        const diasSemana = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo'];
+
+        for (let i = 1; i < rows.length; i++) {
+          const linha1 = rows[i];
+          const linha2 = rows[i + 1] || [];
+
+          if (!linha1 || !linha1[0]) continue;
+
+          // Ignorar linhas de cabeçalho ou linhas vazias
+          if (typeof linha1[0] === 'string' && (linha1[0].toLowerCase().includes('data') || linha1[0].trim() === '')) continue;
+
+          const dataHoraTexto1 = linha1[0].toString().toLowerCase();
+          const dataHoraTexto2 = linha2[0] ? linha2[0].toString().toLowerCase() : '';
+
+          const dataRegex = /(\d{2}\/\d{2}\/\d{4})/;
+          const matchData = dataHoraTexto1.match(dataRegex);
+          const data = matchData ? matchData[1] : '';
+          if (!data) continue; // Pula a linha se não encontrar uma data válida
+
+          const diasMencionados1 = diasSemana.filter(dia => dataHoraTexto1.includes(dia));
+          const diasMencionados2 = diasSemana.filter(dia => dataHoraTexto2.includes(dia));
+
+          const horarioRegex = /(\d{2}:\d{2})/;
+          const horario1 = (dataHoraTexto1.match(horarioRegex) || [''])[0];
+          const horario2 = (dataHoraTexto2.match(horarioRegex) || [''])[0];
+
+          let observacoes = '';
+          const dias = [];
+          const horarios = [];
+
+          if (diasMencionados1.length) {
+            dias.push(diasMencionados1[0][0].toUpperCase() + diasMencionados1[0].slice(1));
+            if (horario1) horarios.push(horario1);
+          }
+          if (diasMencionados2.length) {
+            dias.push(diasMencionados2[0][0].toUpperCase() + diasMencionados2[0].slice(1));
+            if (horario2) horarios.push(horario2);
+          }
+
+          if (dias.length > 0) {
+            observacoes = dias.join(', ');
+            if (horarios.length > 0) {
+              observacoes += ' ' + horarios.join(', ');
+            }
+          }
+
+          const data2 = diasMencionados2.length > 0 ? adicionarDias(data, 1) : '';
+
+          const clienteCompleto = `${linha1[1] || ''} ${linha2[1] || ''}`.trim();
+          let farmacia = '';
+          let clienteNome = '';
+          const splitCliente = clienteCompleto.split(' ');
+          if (splitCliente.length >= 2) {
+            farmacia = splitCliente.slice(0, splitCliente.length - 1).join(' ');
+            clienteNome = splitCliente[splitCliente.length - 1];
+          } else {
+            farmacia = clienteCompleto;
+          }
+
+          let cidadeEstado = (linha1[2] || '').trim();
+          let cidade = cidadeEstado;
+          let estado = '';
+          if (cidadeEstado.length > 3 && cidadeEstado.includes(' ')) { // Verifica se tem espaço para separar cidade e estado
+            const partesCidadeEstado = cidadeEstado.split(' ');
+            estado = partesCidadeEstado.pop();
+            cidade = partesCidadeEstado.join(' ');
+          }
+
+          const implNome = linha1[3] || '';
+          const sistema = linha1[4] || linha2[4] || '';
+
+          const telefones = [linha1[5], linha2[5], linha1[6], linha2[6]].filter(Boolean).map(t => t.toString().trim());
+
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><input type="text" class="data-field" value="${data}" placeholder="dd/mm/aaaa"></td>
+            <td><input type="text" class="data2-field" value="${data2}" placeholder="dd/mm/aaaa"></td>
+            <td><input type="text" class="obs-field" value="${observacoes}" placeholder="Observações"></td>
+            <td><input type="text" class="farmacia-field" value="${farmacia}" placeholder="Farmácia"></td>
+            <td><input type="text" class="cliente-field" value="${clienteNome}" placeholder="Cliente"></td>
+            <td><input type="text" class="cidade-field" value="${cidade}" placeholder="Cidade"></td>
+            <td><input type="text" class="estado-field" value="${estado}" placeholder="Estado"></td>
+            <td>
+                <select class="form-control implantador-select">
+                    ${Object.entries(implantadores).map(([nome, id]) => `<option value="${id}" ${implNome === nome ? 'selected' : ''}>${nome}</option>`).join('')}
+                </select>
+            </td>
+            <td>
+                <select class="form-control vendedor-select">
+                    ${vendedores.map(v => `<option value="${v.id}">${v.nome}</option>`).join('')}
+                </select>
+            </td>
+            <td>
+                <select class="form-control carro-select">
+                    ${carros.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('')}
+                </select>
+            </td>
+            <td><input type="text" class="sistema-field" value="${sistema}" placeholder="Sistema"></td>
+            <td>
+              <select class="form-control tipo-select">
+                  <option value="">--Selecione--</option>
+                  ${tiposAgendamento.map(t => `<option value="${t.value}" ${t.value === 'Implantação' ? 'selected' : ''}>${t.label}</option>`).join('')}
+              </select>
+            </td>
+            <td>
+              ${telefones.map(t => `<input type="text" class="telefone-field" value="${t}" placeholder="Telefone">`).join('<br>')}
+            </td>
+            <td><input type="text" class="taxa-field" value="" placeholder="Taxa"></td>
+            <td>
+              <button class="excluir-btn" title="Excluir agendamento"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          `;
+          tabelaBody.appendChild(row);
+
+          row.querySelector('.excluir-btn').addEventListener('click', () => {
+            tabelaBody.removeChild(row);
+          });
+
+          // Pula a próxima linha se a linha atual já incorporou dados da linha seguinte (linha2)
+          if (diasMencionados2.length > 0) {
+            i++;
+          }
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    btnEnviar.addEventListener('click', async () => {
+      const agendamentos = [];
+      const rows = tabelaBody.querySelectorAll('tr');
+
+      if (rows.length === 0) {
+        alert('Não há agendamentos na tabela para enviar.');
+        return;
+      }
+
+      for (const row of rows) {
+        const data = row.querySelector('.data-field').value;
+        const data2 = row.querySelector('.data2-field').value;
+        const obs = row.querySelector('.obs-field').value;
+        const farmacia = row.querySelector('.farmacia-field').value;
+        const cliente = row.querySelector('.cliente-field').value;
+        const cidade = row.querySelector('.cidade-field').value;
+        const estado = row.querySelector('.estado-field').value;
+        const implantadorId = row.querySelector('.implantador-select').value;
+        const vendedorId = row.querySelector('.vendedor-select').value;
+        const carro = row.querySelector('.carro-select').value;
+        const sistema = row.querySelector('.sistema-field').value;
+        const tipo = row.querySelector('.tipo-select').value;
+        const telefones = Array.from(row.querySelectorAll('.telefone-field')).map(input => input.value).filter(Boolean);
+        const taxa = row.querySelector('.taxa-field').value;
+
+        // Validações para campos obrigatórios
+        if (!data || !implantadorId || implantadorId === '0' || !farmacia || !cidade || !estado || !vendedorId || vendedorId === '0' || !carro || carro === '--Selecione--' || !tipo || tipo === '') { // Adicionado tipo === '' para validar a seleção
+          alert('Por favor, preencha todos os campos obrigatórios (Data, Implantador, Vendedor, Carro, Tipo, Farmácia, Cidade, Estado) para todas as linhas.');
+          return; // Para a execução se algum campo estiver faltando
+        }
+
+        agendamentos.push({
+          usu: implantadorId,
+          carro: carro,
+          tipo: tipo,
+          cliente: `${farmacia}`, // Mantido o nome da farmácia aqui se o backend espera isso no 'cliente'
+          data: data,
+          estado: estado,
+          cidade: cidade,
+          obs: obs,
+          imp_contato: cliente,
+          imp_tel: telefones[0] || '',
+          imp_tel1: telefones[1] || '',
+          imp_sis: sistema,
+          imp_dtvenc: null,
+          imp_mensalidade: null,
+          imp_tel2: telefones[2] || '',
+          imp_tel3: telefones[3] || '',
+          vendedor: vendedorId,
+          dia1: data2,
+          taxa: taxa || null,
+        });
+      }
+
+      console.log('Agendamentos a serem enviados:', agendamentos);
+      const apiUrl = 'http://137.131.128.248:3000/importar'; 
+      let currentUrl = window.location.href;
+      
+      try {
+        const response = await fetch(currentUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(agendamentos),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          alert(result.msg || 'Agendamentos enviados com sucesso!');
+          limparTabela(); // Limpa a tabela após o envio bem-sucedido
+        } else {
+          const errorResult = await response.json();
+          alert(`Erro ao enviar agendamentos: ${errorResult.erro || 'Erro desconhecido'}`);
+        }
+      } catch (error) {
+        console.error('Erro ao enviar agendamentos:', error);
+        alert('Erro ao enviar agendamentos. Verifique a conexão e o console para mais detalhes.');
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -5,16 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Agendamentos</title>
 
-  <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="/css/fontawesome/all.min.css">
-  <!-- Theme style -->
   <link rel="stylesheet" href="/css/template/adminlte.min.css">
-   <!-- Estilos customizados para o tema dark -->
-   <style>
-
-
+    <style>
 @media (max-width: 768px) {
   body.sidebar-open #sidebarToggle {
     left: calc(250px + 15px);
@@ -215,8 +209,8 @@
       nomeSpan.textContent += '!';
     }
     //---------------------------------------------------- deslogar-------------------------------------------------------
-     // Função para limpar os cookies
-     function limparCookies() {
+      // Função para limpar os cookies
+      function limparCookies() {
       // Define a data de expiração dos cookies para uma data no passado
       const dataExpiracao = new Date();
       dataExpiracao.setFullYear(dataExpiracao.getFullYear() - 1);
@@ -259,7 +253,7 @@
         // Fazer a requisição para pegar o QR Code
         fetch("http://137.131.128.248:3000/whatsapp/qrcode-img", {
           method: "GET",
-          credentials: "include"  // Isso vai garantir que os cookies sejam enviados com a requisição
+          credentials: "include"   // Isso vai garantir que os cookies sejam enviados com a requisição
         })
         .then(response => {
           if (!response.ok) {
@@ -287,7 +281,6 @@
   </script>
 </head>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-<!-- Modal do WhatsApp -->
 <div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center">
@@ -301,7 +294,6 @@
     </div>
   </div>
 </div>
-<!-- MODAL DA CONFIG EMAIL-->
 <div id="modalEmail">
   <div class="modal-content">
     <span class="close-modal" onclick="document.getElementById('modalEmail').style.display='none'">&times;</span>
@@ -322,20 +314,16 @@
 
 
 <body class="hold-transition sidebar-mini layout-fixed dark-mode">
-<!--<body class="hold-transition sidebar-mini layout-fixed">-->
 <div class="wrapper">
 
-  <button id="sidebarToggle" class="d-md-none">
+  <button id="sidebarToggle">
     <i class="fas fa-bars"></i>
   </button>
   <div class="sidebar-overlay"></div>
   
   
-  <!-- Main Sidebar Container -->
   <aside id="sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
     <a href="/" class="brand-link" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-      <!--<span class="brand-text font-weight-light">BANCO DE HORAS</span>!-->
       <img src="/images/logobrancosemfundo.png" alt="Logo Infomaster" style="width: 80px; margin-top: 5px;">
     </a>
     
@@ -348,9 +336,7 @@
       <span class="brand-text font-weight-light">Deslogar</span>
     </a>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
           <a href="#" class="d-block"></a>
@@ -358,10 +344,9 @@
       </div>
 
 
-      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
+          <li class="nav-item" id="menuItemInicio">
             <a href="/" class="nav-link">
               <i class="nav-icon fas fa-home"></i>
               <p>
@@ -369,7 +354,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="menuItemCadastrarHoras">
             <a href="/usuarios/cadastrar" class="nav-link">
               <i class="fas fa-user-plus"></i>
               <p>
@@ -377,15 +362,28 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="/usuarios/implantacoes" class="nav-link">
-              <i class="fas fa-user-plus"></i>
-              <p>
+          <li class="nav-item" id="agendamentoMenuItem">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i> <p>
                 Agendamento
-              </p>
+                <i class="right fas fa-angle-left"></i> </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item" id="subMenuItemCadastrarAgendamento">
+                <a href="/usuarios/implantacoes" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cadastrar</p>
+                </a>
+              </li>
+              <li class="nav-item" id="subMenuItemImportarAgendamento">
+                <a href="/usuarios/importar" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Importar</p>
+                </a>
+              </li>
+            </ul>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="menuItemHorasImplantacoes">
             <a href="/usuarios" class="nav-link">
               <i class="fas fa-file-alt"></i>
               <p>
@@ -393,7 +391,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="menuItemViagens">
             <a href="/usuarios/viagem" class="nav-link">
               <i class="fas fa-chart-bar"></i>
               <p>
@@ -404,33 +402,21 @@
           
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
-       
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+      </div>
+    </aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div style="background-color: rgb(255, 255, 255);" class="content-wrapper">
-    <!-- /.content -->
+  <div style="background-colorr: rgb(255, 255, 255);" class="content-wrapper">
     <div style="margin:20px;" class="card card-body">
         <%- body %>
     </div>
     
   </div>
-  <!--4.2.5 FUNCIONANDO AS MENSAGEM NO WHATSAPP, PARTE DO FERNANDO DE VIAGENS COMPLETO- FALTANDO O FRONT COM FORMATAÇÕES E BOTÃO PARA IMPRIMIR, HORAS SEM DATA PRE DEFINIDA -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2025 Mateus Chichera.</strong>
     All rights reserved.
     <div class="float-right d-block">
       <b>Version</b> 4.2.5
   
-      <!-- WhatsApp -->
-      <a href="#" id="openWhatsappModal" title="Abrir WhatsApp" style="margin-left: 15px; color: #25D366;">
-        <i class="fab fa-whatsapp fa-lg"></i>
-      </a>
-  
-      <!-- Configuração de E-mail -->
       <a href="#" id="btnConfigEmail" title="Configurar E-mail" style="margin-left: 15px;">
         <img src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png" alt="Configurações" width="20" />
       </a>
@@ -438,15 +424,9 @@
   </footer>
   
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-
+    </aside>
+  </div>
 <script src="/js/jquery/jquery.min.js"></script>
 <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="/js/template/adminlte.min.js"></script>
@@ -535,41 +515,53 @@ function gravarEmailConfig() {
     // Obtém o userId do cookie
     const userId = getCookie('userId');
 
-    // Função para ocultar ou exibir os links do menu com base no userId
-    function verificarPermissoes() {
-      // Verifica as permissões baseadas no userId
-      const menuItems = document.querySelectorAll('.nav-item');
+    // Mapeia os IDs dos itens de menu para facilitar a manipulação
+    const menuItemIds = {
+        inicio: 'menuItemInicio',
+        cadastrarHoras: 'menuItemCadastrarHoras',
+        agendamento: 'agendamentoMenuItem', // O dropdown principal
+        subCadastrarAgendamento: 'subMenuItemCadastrarAgendamento',
+        subImportarAgendamento: 'subMenuItemImportarAgendamento',
+        horasImplantacoes: 'menuItemHorasImplantacoes',
+        viagens: 'menuItemViagens'
+    };
 
-      menuItems.forEach(item => {
-        // Verifica o href do link dentro da li
-        const link = item.querySelector('a').getAttribute('href');
-        
-        if (userId == 1 || userId == 2 || userId == 3 || userId == 5) {
-          // Pode visualizar 'Início', 'Cadastrar Horas' e 'Horas e Implantações'
-          if (link === '/' || link === '/usuarios/cadastrar' || link === '/usuarios') {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        } else if (userId == 6) {
-          // Pode visualizar apenas 'Início' e 'Horas e Implantações'
-          if (link === '/' || link === '/usuarios') {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        } else if (userId == 4) {
-          // Pode visualizar 'Início', 'Agendamento' e 'Viagens'
-          if (link === '/' || link === '/usuarios/implantacoes' || link === '/usuarios/viagem') {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        } else {
-          item.style.display = 'none';
+    // Função para ocultar todos os itens e depois exibir os permitidos
+    function verificarPermissoes() {
+        // Oculta todos os itens de menu inicialmente, incluindo os sub-itens do agendamento
+        for (const key in menuItemIds) {
+            const element = document.getElementById(menuItemIds[key]);
+            if (element) {
+                element.style.display = 'none';
+            }
         }
 
-      });
+        // Itens que são visíveis para a maioria ou por padrão (Início, Horas e Implantações)
+        const inicioItem = document.getElementById(menuItemIds.inicio);
+        const horasImplantacoesItem = document.getElementById(menuItemIds.horasImplantacoes);
+        
+        if (inicioItem) inicioItem.style.display = 'block';
+        if (horasImplantacoesItem) horasImplantacoesItem.style.display = 'block';
+
+        // Lógica de permissões específica para cada userId
+        if (userId == 1 || userId == 2 || userId == 3 || userId == 5) {
+            const cadastrarHorasItem = document.getElementById(menuItemIds.cadastrarHoras);
+            if (cadastrarHorasItem) cadastrarHorasItem.style.display = 'block';
+        } else if (userId == 4) {
+            const agendamentoItem = document.getElementById(menuItemIds.agendamento);
+            const viagensItem = document.getElementById(menuItemIds.viagens);
+            
+            if (agendamentoItem) {
+                agendamentoItem.style.display = 'block';
+                // Certifica-se de que os sub-itens do Agendamento também são exibidos
+                const subCadastrarAgendamento = document.getElementById(menuItemIds.subCadastrarAgendamento);
+                const subImportarAgendamento = document.getElementById(menuItemIds.subImportarAgendamento);
+                if (subCadastrarAgendamento) subCadastrarAgendamento.style.display = 'block';
+                if (subImportarAgendamento) subImportarAgendamento.style.display = 'block';
+            }
+            if (viagensItem) viagensItem.style.display = 'block';
+        } 
+        // Para userId == 6, apenas Início e Horas e Implantações (já exibidos acima)
     }
 
     // Executa a função de verificação de permissões
@@ -667,10 +659,3 @@ document.querySelector('.sidebar-overlay').addEventListener('click', () => {
 
 
 </html>
-
-
-
-
-
-
-

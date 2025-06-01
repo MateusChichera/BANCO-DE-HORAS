@@ -7,6 +7,7 @@ const emailController = {
         try {
             const { to, subject, html } = req.body;
             const usuid = req.usuario?.id || req.body.usuid;
+          
         
             const configs = await EmailModel.listarPorUsuario(usuid);
         

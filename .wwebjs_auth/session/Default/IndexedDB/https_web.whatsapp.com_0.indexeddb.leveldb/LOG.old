@@ -1,15 +1,17 @@
-2025/04/29-20:00:54.458 a42d2 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/04/29-20:00:54.458 a42d2 Recovering log #446
-2025/04/29-20:00:54.462 a42d2 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000446.log 
-2025/04/29-20:00:56.006 a42dd Level-0 table #452: started
-2025/04/29-20:00:56.011 a42dd Level-0 table #452: 117509 bytes OK
-2025/04/29-20:00:56.013 a42dd Delete type=0 #446
-2025/04/29-20:00:56.013 a42d2 Manual compaction at level-0 from '\x00{\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00|\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/04/29-20:00:57.122 a42d4 Compacting 1@1 + 2@2 files
-2025/04/29-20:00:57.182 a42d4 Generated table #453@1: 75627 keys, 2232196 bytes
-2025/04/29-20:00:57.202 a42d4 Generated table #454@1: 18815 keys, 619591 bytes
-2025/04/29-20:00:57.203 a42d4 Compacted 1@1 + 2@2 files => 2851787 bytes
-2025/04/29-20:00:57.205 a42d4 compacted to: files[ 0 0 2 0 0 0 0 ]
-2025/04/29-20:00:57.206 a42d4 Delete type=2 #452
-2025/04/29-20:00:57.206 a42d4 Delete type=2 #448
-2025/04/29-20:00:57.206 a42d4 Delete type=2 #449
+2025/06/01-00:07:59.604 fda29 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/06/01-00:07:59.604 fda29 Recovering log #733
+2025/06/01-00:07:59.607 fda29 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000733.log 
+2025/06/01-00:08:00.960 fda2b Level-0 table #740: started
+2025/06/01-00:08:00.964 fda2b Level-0 table #740: 127252 bytes OK
+2025/06/01-00:08:00.966 fda2b Delete type=0 #733
+2025/06/01-00:08:00.967 fda2b Manual compaction at level-0 from '\x00\x8c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x8d\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/06/01-00:08:02.091 fda2b Compacting 1@1 + 3@2 files
+2025/06/01-00:08:02.160 fda2b Generated table #741@1: 87539 keys, 2237410 bytes
+2025/06/01-00:08:02.233 fda2b Generated table #742@1: 100278 keys, 2253004 bytes
+2025/06/01-00:08:02.279 fda2b Generated table #743@1: 43940 keys, 1773090 bytes
+2025/06/01-00:08:02.279 fda2b Compacted 1@1 + 3@2 files => 6263504 bytes
+2025/06/01-00:08:02.280 fda2b compacted to: files[ 0 0 3 0 0 0 0 ]
+2025/06/01-00:08:02.281 fda2b Delete type=2 #737
+2025/06/01-00:08:02.281 fda2b Delete type=2 #736
+2025/06/01-00:08:02.281 fda2b Delete type=2 #740
+2025/06/01-00:08:02.281 fda2b Delete type=2 #735

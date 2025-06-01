@@ -21,6 +21,9 @@ class UsuarioRoute {
         this.#router.get('/relatorios', ctrl.relatorioViagens);
         this.#router.get('/calendario',ctrl.buscarCalendario)
 
+        this.#router.get('/importar', ctrl.importarView);
+        this.#router.post('/importar', ctrl.implantacoesEmMassa);
+
         this.#router.post('/deletar', ctrl.deletarImp);
         this.#router.get('/editar/viagem', ctrl.editarimplantacaoView);
         this.#router.get('/editar/viagem/:id', ctrl.editarImpView);
