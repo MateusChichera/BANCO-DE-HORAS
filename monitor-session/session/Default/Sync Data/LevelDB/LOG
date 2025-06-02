@@ -1,3 +1,3 @@
-2025/06/01-03:49:42.089 ff9a2 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Sync Data/LevelDB/MANIFEST-000001
-2025/06/01-03:49:42.090 ff9a2 Recovering log #3
-2025/06/01-03:49:42.090 ff9a2 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Sync Data/LevelDB/000003.log 
+2025/06/01-06:30:31.191 101323 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Sync Data/LevelDB/MANIFEST-000001
+2025/06/01-06:30:31.191 101323 Recovering log #3
+2025/06/01-06:30:31.192 101323 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Sync Data/LevelDB/000003.log 

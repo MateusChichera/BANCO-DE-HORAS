@@ -8,7 +8,7 @@ const LoginController = require("./controllers/loginController");
 const autenticacaoMiddleware = require('./public/js/Login/Mid.js');
 const cors = require('cors');
 const statusMonitor = require('express-status-monitor');
-//require('./services/monitorScheduler.js'); // Importa o agendador de monitoramento
+require('./services/monitorScheduler.js'); // Importa o agendador de monitoramento
 
 // Habilita o monitor
 

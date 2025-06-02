@@ -1,3 +1,6 @@
-2025/06/01-03:49:42.097 ff9da Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/06/01-03:49:42.102 ff9da Recovering log #3
-2025/06/01-03:49:42.102 ff9da Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000003.log 
+2025/06/01-06:30:31.207 101367 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/06/01-06:30:31.214 101367 Recovering log #3
+2025/06/01-06:30:31.214 101367 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000003.log 
+2025/06/01-13:20:57.117 101368 Level-0 table #5: started
+2025/06/01-13:20:57.119 101368 Level-0 table #5: 19697 bytes OK
+2025/06/01-13:20:57.121 101368 Delete type=0 #3

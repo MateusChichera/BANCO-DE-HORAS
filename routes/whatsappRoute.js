@@ -13,6 +13,7 @@ class WhatsappRoute {
     this.router.get('/qrcode', this.controller.gerarQRCode);
     this.router.post('/enviar', this.controller.enviarMensagem);
     this.router.get('/qrcode-img', this.controller.getQRCodeImage);
+    this.router.get('/qrcode-img-monitor', this.controller.getQRCodeImageMonitor);
   }
 
   getRouter() {

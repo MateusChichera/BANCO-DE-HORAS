@@ -714,7 +714,7 @@ async implantacoesEmMassa(req, res) {
     }
 
     // Enviar para Felipe
-    await enviarRelatorio('5518988043123');
+    await enviarRelatorio('5518981760014');
 
     // Retornar resultado
     const response = {

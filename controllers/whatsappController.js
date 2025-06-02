@@ -1,4 +1,5 @@
 const whatsappService = require('../services/whatsappService.js');
+const whatsappServiceMonitor = require('../services/whatsappMonitor.js');
 
 class WhatsappController {
   async gerarQRCode(req, res) {
@@ -12,6 +13,20 @@ class WhatsappController {
 
   async getQRCodeImage(req, res) {
     const qrCode = await whatsappService.getQRCode();
+    if (qrCode) {
+      const base64Data = qrCode.replace(/^data:image\/png;base64,/, '');
+      const imgBuffer = Buffer.from(base64Data, 'base64');
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Length': imgBuffer.length
+      });
+      res.end(imgBuffer);
+    } else {
+      res.status(404).send("QR Code ainda não gerado.");
+    }
+  }
+    async getQRCodeImageMonitor(req, res) {
+    const qrCode = await whatsappServiceMonitor.getQRCode();
     if (qrCode) {
       const base64Data = qrCode.replace(/^data:image\/png;base64,/, '');
       const imgBuffer = Buffer.from(base64Data, 'base64');
