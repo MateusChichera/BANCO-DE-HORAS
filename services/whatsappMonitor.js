@@ -109,7 +109,7 @@ class WhatsAppMonitor {
 
  async VerifyResponse() {
     try {
-      console.log('🔍 Verificando respostas não visualizadas no banco de dados...');
+     // console.log('🔍 Verificando respostas não visualizadas no banco de dados...');
       const mensagens = await conexao.ExecutaComando(`
         SELECT u.usuid, u.usunome, m.resposta_texto, m.data_resposta, m.id AS mensagem_id, m.resposta_vizualizada
         FROM Usuario u
