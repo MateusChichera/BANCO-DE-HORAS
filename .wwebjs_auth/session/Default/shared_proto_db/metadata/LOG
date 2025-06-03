@@ -1,3 +1,3 @@
-2025/06/01-06:30:31.350 10132f Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata/MANIFEST-000001
-2025/06/01-06:30:31.351 10132f Recovering log #3
-2025/06/01-06:30:31.351 10132f Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata/000003.log 
+2025/06/03-19:13:09.058 113689 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata/MANIFEST-000001
+2025/06/03-19:13:09.058 113689 Recovering log #3
+2025/06/03-19:13:09.059 113689 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/shared_proto_db/metadata/000003.log 

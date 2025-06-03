@@ -87,7 +87,7 @@ app.use('/', monitorRouter); // Corrigido para usar monitorRouter
 app.use('/login', loginRouter); // Corrigido aqui para usar loginRouter em vez de LoginRouter
 app.use('/', autenticacaoMiddleware, homeRouteInstance.getRouter());
 app.use('/usuarios', autenticacaoMiddleware, usuarioRouter);
-app.use('/whatsapp', autenticacaoMiddleware, whatsappRouter);
+app.use('/whatsapp',whatsappRouter);
 app.use('/api', autenticacaoMiddleware, emailRouter); // Corrigido para usar emailRouter
 console.log('Rota de email registrada');
 

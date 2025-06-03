@@ -47,6 +47,20 @@ function esperarClientePronto() {
   });
 }
 
+ async function VizualizarMensagem(whatsappId) {
+  try {
+     await conexao.ExecutaComando(`
+      UPDATE mensagens_enviadas
+      SET resposta_vizualizada = 1
+      WHERE whatsapp_id = ?
+    `, [whatsappId]);
+    return true;
+  } catch (error) {
+    console.error('Erro ao atualizar a vizualização da mensagem:', error);
+    throw error;
+  }
+ }
+
 // Envia a mensagem com garantia de que o cliente está pronto
 async function enviarMensagem(numero, mensagem, tecnicoId = null) {
   await esperarClientePronto();
@@ -93,5 +107,6 @@ async function getQRCode() {
 
 module.exports = {
   getQRCode,
-  enviarMensagem
+  enviarMensagem,
+  VizualizarMensagem
 };

@@ -58,47 +58,97 @@ class WhatsAppMonitor {
   }
 
   async processResponse(originalMsgId, response, from) {
-    try {
-      const [mensagem] = await conexao.ExecutaComando(`
-        SELECT * FROM mensagens_enviadas 
-        WHERE whatsapp_id = ? LIMIT 1
-      `, [originalMsgId]);
+  try {
+    const [mensagem] = await conexao.ExecutaComando(`
+      SELECT * FROM mensagens_enviadas 
+      WHERE whatsapp_id = ? LIMIT 1
+    `, [originalMsgId]);
 
-      if (mensagem && !mensagem.resposta_recebida) {
-        const isConfirmed = response.match(/✅|SIM|CONFIRMO|sim|confirmo/i);
+    if (mensagem && !mensagem.resposta_recebida) {
+      const isConfirmed = response.match(/✅|👍|Beleza|Blz|Fecho|Combinado|SIM|CONFIRMO|Sim|Confirmo|Ok|ok|Confirmado|confirmado/i);
+      console.log(`Resposta recebida: ${response} - Confirmada: ${isConfirmed}`);
 
-        await conexao.ExecutaComando(`
-          UPDATE mensagens_enviadas SET
-          resposta_recebida = ?,
-          resposta_texto = ?,
-          data_resposta = NOW()
-          WHERE id = ?
-        `, [isConfirmed ? 1 : 0, response, mensagem.id]);
+      await conexao.ExecutaComando(`
+        UPDATE mensagens_enviadas SET
+        resposta_recebida = ?,
+        resposta_texto = ?,
+        data_resposta = NOW()
+        WHERE id = ?
+      `, [isConfirmed ? 1 : 0, response, mensagem.id]);
 
-        if (isConfirmed) {
-          await this.notifyManager(mensagem.tecnico_id, from);
+      // Só envia para o SSE se for confirmada
+      if (isConfirmed) {
+        console.log("id da mensagem:", mensagem.id);
+        const [respostaDetalhada] = await conexao.ExecutaComando(`
+          SELECT u.usuid, u.usunome, m.resposta_texto, m.data_resposta
+          FROM Usuario u
+          INNER JOIN mensagens_enviadas m ON u.usuid = m.tecnico_id
+          WHERE m.id = ?
+        `, [mensagem.id]);
+          console.log('📦 Resultado do SELECT detalhado:', respostaDetalhada);
+        if (respostaDetalhada) {
+          const payload = {
+            id: mensagem.id,
+            novaConfirmacao: true,
+            tecnico: respostaDetalhada.usunome,
+            resposta: respostaDetalhada.resposta_texto,
+            dataHora: respostaDetalhada.data_resposta,
+          };
+
+          clientesConectados.forEach(cliente => {
+            cliente.write(`data: ${JSON.stringify(payload)}\n\n`);
+          });
         }
       }
-    } catch (error) {
-      console.error('Erro ao processar resposta:', error);
     }
+  } catch (error) {
+    console.error('Erro ao processar resposta:', error);
   }
+}
 
-  async notifyManager(tecnicoId, tecnicoPhone) {
+
+ async VerifyResponse() {
     try {
-      const [tecnico] = await conexao.ExecutaComando('SELECT usunome FROM Usuario WHERE usuid = ?', [tecnicoId]);
-      const managerPhone = '18988043123'; // Felipe
+      console.log('🔍 Verificando respostas não visualizadas no banco de dados...');
+      const mensagens = await conexao.ExecutaComando(`
+        SELECT u.usuid, u.usunome, m.resposta_texto, m.data_resposta, m.id AS mensagem_id, m.resposta_vizualizada
+        FROM Usuario u
+        INNER JOIN mensagens_enviadas m ON u.usuid = m.tecnico_id
+        WHERE m.resposta_recebida = 1 AND m.resposta_vizualizada = 0;
+      `);
 
-      const mensagem = `✅ Confirmação Recebida\n\n` +
-        `Técnico: ${tecnico.usunome}\n` +
-        `WhatsApp: ${tecnicoPhone.replace('@c.us', '')}\n` +
-        `Data: ${new Date().toLocaleString('pt-BR')}`;
-
-      await this.client.sendMessage(`${managerPhone}@c.us`, mensagem);
+      if (mensagens.length > 0) {
+        console.log(`✅ ${mensagens.length} novas respostas encontradas.`);
+        mensagens.forEach(mensagem => {
+          console.log(`  - Técnico: ${mensagem.usunome} - Resposta: "${mensagem.resposta_texto}" - Data: ${new Date(mensagem.data_resposta).toLocaleString()}`);
+        });
+        return mensagens; // Retorna o array de mensagens
+      } else {
+        console.log('Nenhuma nova resposta não visualizada encontrada.');
+        return []; // Retorna um array vazio se não houver mensagens
+      }
     } catch (error) {
-      console.error('Erro ao notificar gerente:', error);
+      console.error('❌ Erro ao verificar respostas no banco:', error);
+      throw error; // Re-lança o erro para que a controller possa capturá-lo
     }
   }
+
+      async MarcarComoVisualizada(mensagemId) {
+    try {
+      console.log(`👁️ Marcando mensagem ${mensagemId} como visualizada.`);
+      await conexao.ExecutaComando(`
+        UPDATE mensagens_enviadas
+        SET resposta_vizualizada = 1
+        WHERE id = ?;
+      `, [mensagemId]);
+      console.log(`✅ Mensagem ${mensagemId} marcada como visualizada com sucesso.`);
+      return { success: true };
+    } catch (error) {
+      console.error(`❌ Erro ao marcar mensagem ${mensagemId} como visualizada:`, error);
+      throw error;
+    }
+  }
+
 }
 
 module.exports = new WhatsAppMonitor();

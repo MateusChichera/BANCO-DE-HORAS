@@ -95,6 +95,95 @@
       font-weight: bold;
       cursor: pointer;
     }
+/* Seu CSS existente */
+  .navbar-badge {
+    font-size: 0.7rem;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  /* Estilos para o popup de mensagens (ajustados para Dark Mode) */
+  #popupMensagens {
+    display: none; /* Controlado por JS, mas com default aqui */
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 320px;
+    background-color: #2c3e50; /* Fundo mais escuro para o popup (azul petróleo/cinza escuro) */
+    color: #ecf0f1; /* Texto claro para o popup */
+    border: 1px solid #34495e; /* Borda mais escura */
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* Sombra mais intensa para dark mode */
+    z-index: 10000;
+    padding: 1rem;
+    font-size: 0.875rem;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+
+  #popupMensagens h4 {
+      color: #ecf0f1; /* Garante que o título seja claro */
+  }
+
+  /* Estilo para o botão "Marcar como lidas" */
+  #fecharPopup {
+  padding: 0.5rem 1rem;
+  background-color: #1f2937; /* gray-800 */
+  color: white;
+  border: none;
+  border-radius: 1rem; /* bordas bem arredondadas */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#fecharPopup:hover {
+  background-color: #374151; /* gray-700 */
+}
+
+  /* Estilo para cada item de mensagem - Bolha de Mensagem (WhatsApp like) */
+  .mensagem-item {
+    background-color: #3a546d; /* Fundo da bolha de mensagem (um azul escuro) */
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2); /* Sombra sutil para a bolha */
+    position: relative;
+    color: #ecf0f1; /* Cor do texto da mensagem */
+  }
+
+  .mensagem-item p {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .mensagem-item .nome-tecnico {
+    font-weight: bold;
+    color: #85e085; /* Cor do nome do técnico (um verde mais claro) */
+    margin-bottom: 0.25rem;
+  }
+
+  .mensagem-item .texto-resposta {
+    color: #ecf0f1; /* Garante que o texto da resposta seja claro */
+    margin-bottom: 0.5rem;
+  }
+
+  .mensagem-item .data-hora {
+    font-size: 0.7rem;
+    color: #95a5a6; /* Cor da data/hora (cinza claro) */
+    text-align: right;
+    display: block;
+    margin-top: 0.5rem;
+  }
+  
+  /* Estilo para a mensagem "Nenhuma mensagem nova." */
+  #mensagensConteudo p.text-gray-400 {
+      color: #95a5a6; /* Garante que essa mensagem seja visível no dark mode */
+  }
   </style>
 </head>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -109,6 +198,29 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
     </ul>
+ <ul class="navbar-nav ml-auto">
+  <li class="nav-item dropdown">
+    <a class="nav-link" href="#" id="sino">
+      <i class="fas fa-bell"></i>
+      <span id="badgeNotificacao" class="badge badge-danger navbar-badge" style="display: none;">●</span>
+    </a>
+  </li>
+</ul>
+
+<div id="popupMensagens">
+  <div class="flex justify-between items-center mb-3">
+    <h4 class="text-lg font-bold text-gray-100">Notificações</h4>
+    <button id="fecharPopup"
+  class="px-4 py-2 bg-gray-800 text-white rounded-2xl hover:bg-gray-700 transition-colors duration-200 text-sm font-semibold shadow-md">
+  Marcar como lidas
+</button>
+
+  </div>
+  <div id="mensagensConteudo">
+    <p class="text-gray-400 p-2">Nenhuma mensagem nova.</p>
+  </div>
+</div>
+
   </nav>
 
   <!-- Main Sidebar Container -->
@@ -409,6 +521,183 @@
       console.error(err);
     });
   }
+
+document.addEventListener("DOMContentLoaded", function() {
+    function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  const userId = getCookie("userId");
+
+  // Verifica se userId é diferente de 4
+  if (userId !== "4") {
+    const sino = document.getElementById("sino");
+    if (sino) {
+      sino.style.display = "none"; // Esconde o sino se não for user 4
+    }
+    console.log("Usuário não autorizado para ver notificações.");
+    return;
+  }
+
+    const badgeNotificacao = document.getElementById("badgeNotificacao");
+    const sino = document.getElementById("sino");
+    const mensagensConteudo = document.getElementById("mensagensConteudo");
+    const popupMensagens = document.getElementById("popupMensagens");
+    const fecharPopupBtn = document.getElementById("fecharPopup"); // Novo: Botão de fechar
+
+    let mensagensNaoLidas = []; // Armazenará todas as mensagens não lidas
+
+    // URLs das suas APIs
+    const API_URL_VERIFICAR = "http://137.131.128.248:3000/whatsapp/notificacoes";
+    const API_URL_MARCAR_LIDA = "http://137.131.128.248:3000/whatsapp/notificacoes/visualizada";
+    
+    // Função para buscar as mensagens não lidas no backend
+    async function buscarMensagensNaoLidas() {
+      try {
+        console.log("Buscando mensagens não lidas...");
+        const response = await fetch(API_URL_VERIFICAR);
+        if (!response.ok) {
+          throw new Error(`Erro HTTP ao buscar notificações: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Dados recebidos da API de notificações:", data);
+
+        if (data.mensagens && data.mensagens.length > 0) {
+          // Verifica se há novas mensagens que ainda não estão na lista
+          const novasMensagens = data.mensagens.filter(
+            novaMsg => !mensagensNaoLidas.some(existenteMsg => existenteMsg.mensagem_id === novaMsg.mensagem_id)
+          );
+
+          if (novasMensagens.length > 0) {
+              mensagensNaoLidas = [...mensagensNaoLidas, ...novasMensagens]; // Adiciona as novas mensagens
+              badgeNotificacao.style.display = "inline"; // Mostra a bolinha vermelha
+              console.log(`Bolinha de notificação exibida. ${mensagensNaoLidas.length} mensagens não lidas.`);
+              // Renderiza as mensagens no popup imediatamente após a busca,
+              // garantindo que o conteúdo esteja atualizado se o popup estiver aberto ou for aberto.
+              renderizarMensagensNoPopup(); 
+          }
+        } else {
+          // Se o backend não retornar mensagens, limpa a lista e esconde a bolinha
+          mensagensNaoLidas = []; 
+          badgeNotificacao.style.display = "none"; 
+          console.log("Nenhuma nova mensagem não lida encontrada.");
+          // Se o popup estiver aberto e não houver mais mensagens, atualiza o conteúdo
+          if (popupMensagens.style.display === 'block') {
+              renderizarMensagensNoPopup();
+          }
+        }
+      } catch (error) {
+        console.error("Erro ao buscar mensagens não lidas:", error);
+        badgeNotificacao.style.display = "none"; 
+        renderizarMensagensNoPopup(); // Garante que o popup seja limpo em caso de erro
+      }
+    }
+
+    // Função para renderizar as mensagens no popup
+    function renderizarMensagensNoPopup() {
+      mensagensConteudo.innerHTML = ''; // Limpa o conteúdo anterior
+
+      if (mensagensNaoLidas.length > 0) {
+        mensagensNaoLidas.forEach(msg => {
+          const dataFormatada = new Date(msg.data_resposta).toLocaleString('pt-BR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          const mensagemHtml = `
+            <div class="mensagem-item">
+              <p class="nome-tecnico">${msg.usunome}</p>
+              <p class="texto-resposta">${msg.resposta_texto}</p>
+              <p class="data-hora">${dataFormatada}</p>
+            </div>
+          `;
+          mensagensConteudo.insertAdjacentHTML('beforeend', mensagemHtml);
+        });
+      } else {
+        mensagensConteudo.innerHTML = '<p class="text-gray-600 p-2">Nenhuma mensagem nova.</p>';
+      }
+    }
+
+    // Função para marcar as mensagens como lidas no backend
+    async function marcarMensagensComoLidas() {
+      if (mensagensNaoLidas.length === 0) {
+        console.log("Nenhuma mensagem para marcar como lida.");
+        return;
+      }
+
+      console.log("Marcando mensagens como lidas no backend...");
+      // Itera sobre as mensagens e envia uma requisição POST para cada ID
+      for (const msg of mensagensNaoLidas) {
+        try {
+          const response = await fetch(API_URL_MARCAR_LIDA, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              // 'Authorization': `Bearer ${token}` // Descomente se tiver autenticação
+            },
+            body: JSON.stringify({ mensagemId: msg.mensagem_id }) // Envia o ID da mensagem
+          });
+          if (!response.ok) {
+            throw new Error(`Erro ao marcar mensagem ${msg.mensagem_id} como lida: ${response.status}`);
+          }
+          console.log(`Mensagem ${msg.mensagem_id} marcada como lida no backend.`);
+        } catch (error) {
+          console.error(`Erro ao marcar mensagem ${msg.mensagem_id} como lida:`, error);
+        }
+      }
+      
+      // Após marcar todas, limpa a lista no frontend e esconde a bolinha
+      mensagensNaoLidas = []; 
+      badgeNotificacao.style.display = "none"; 
+      renderizarMensagensNoPopup(); // Atualiza o popup para mostrar "Nenhuma mensagem nova."
+      
+      // Força uma nova busca imediatamente para garantir que o estado esteja atualizado
+      // Isso é importante para que a bolinha suma se não houver mais mensagens
+      buscarMensagensNaoLidas(); 
+    }
+
+    // Evento de clique no sino
+    sino.addEventListener("click", function () {
+      const isPopupVisible = popupMensagens.style.display === 'block';
+
+      if (isPopupVisible) {
+        // Se o popup está visível, esconde
+        popupMensagens.style.display = 'none';
+      } else {
+        // Se o popup está escondido, mostra e renderiza as mensagens atuais
+        renderizarMensagensNoPopup(); // Garante que o conteúdo mais recente seja exibido
+        popupMensagens.style.display = 'block';
+        // A função marcarMensagensComoLidas() NÃO É CHAMADA AQUI.
+        // Ela será chamada pelo botão "Fechar" do popup.
+      }
+    });
+
+    // Evento de clique no novo botão "Fechar" do popup
+    fecharPopupBtn.addEventListener("click", function() {
+        marcarMensagensComoLidas(); // Marca as mensagens como lidas
+        popupMensagens.style.display = 'none'; // Esconde o popup
+    });
+
+    // Opcional: Fechar o popup ao clicar fora dele
+    document.addEventListener("click", function(event) {
+      // Verifica se o clique não foi no sino, nem dentro do popup, nem no botão de fechar
+      if (!sino.contains(event.target) && !popupMensagens.contains(event.target) && event.target !== fecharPopupBtn) {
+        popupMensagens.style.display = 'none';
+      }
+    });
+
+    // === POLING: Configura a verificação periódica ===
+    // Chama a função de busca uma vez ao carregar a página
+    buscarMensagensNaoLidas();
+    // E depois a cada 5 segundos (5000 milissegundos)
+    setInterval(buscarMensagensNaoLidas, 5000); 
+  });
+
 </script>
 </body>
 </html>

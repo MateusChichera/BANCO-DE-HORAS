@@ -656,9 +656,8 @@ async implantacoesEmMassa(req, res) {
           const mensagemTecnico = 
             `*📋 AGENDAMENTOS PARA ${data.nome.toUpperCase()}*\n\n` +
             data.agendamentos.join('') +
-            `*Para CONFIRMAR, responda com:*\n` +
-            `✅ SIM - Recebi e entendi\n` +
-            `❌ NÃO - Preciso de ajuda\n\n` +
+            `*Para CONFIRMAR, selecione a mensagem e responda com:*\n` +
+            `✅ Ok\n` +
             `_Esta confirmação será enviada automaticamente_` +
             `\n➖➖➖➖➖➖➖➖➖\n` +
             `Total: ${data.agendamentos.length} agendamento(s)`;
@@ -714,7 +713,7 @@ async implantacoesEmMassa(req, res) {
     }
 
     // Enviar para Felipe
-    await enviarRelatorio('5518981760014');
+    await enviarRelatorio('5518988043123');
 
     // Retornar resultado
     const response = {
@@ -813,14 +812,14 @@ async implantacoesEmMassa(req, res) {
     
             const mensagem = `🚨 Alteração na sua implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
             ${periodo}
-          🔧 Tipo: ${dadosAtualizados.tipo}
-          📍 Local: ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
-          🚗 Carro: ${dadosAtualizados.carro}
-          👤 Nome: ${dadosAtualizados.imp_contato}
-          📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
-          💻 Conversão: ${dadosAtualizados.imp_sis}
+          🔧 ${dadosAtualizados.tipo}
+          📍 ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
+          🚗 ${dadosAtualizados.carro}
+          👤 ${dadosAtualizados.imp_contato}
+          📞 ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
+          💻 ${dadosAtualizados.imp_sis}
           ${taxaImplantacao}
-          📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
+          📝 ${dadosAtualizados.obs || 'Nenhuma'}
           `;
 
           //console.log("Mensagem a ser enviada:\n", mensagem);
@@ -862,15 +861,15 @@ async implantacoesEmMassa(req, res) {
 
                 const mensagem = `Olá, houve uma alteração na implantação!\n\n📋 Cliente: ${dadosAtualizados.cliente}
         ${periodo}
-        🔧 Tipo: ${dadosAtualizados.tipo}
-        📍 Local: ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
-        🚗 Carro: ${dadosAtualizados.carro}
-        👤 Nome: ${dadosAtualizados.imp_contato}
-        📞 Telefones: ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
-        💻 Conversão: ${dadosAtualizados.imp_sis}
-        👤 Tecnico: ${tecnico} 
+        🔧 ${dadosAtualizados.tipo}
+        📍 ${dadosAtualizados.cidade}, ${dadosAtualizados.estado}
+        🚗 ${dadosAtualizados.carro}
+        👤 ${dadosAtualizados.imp_contato}
+        📞 ${dadosAtualizados.imp_tel}, ${dadosAtualizados.imp_tel1}, ${dadosAtualizados.imp_tel2 || '-'}, ${dadosAtualizados.imp_tel3 || '-'}
+        💻 ${dadosAtualizados.imp_sis}
+        👤 ${tecnico} 
         ${taxaImplantacao}
-        📝 Observações: ${dadosAtualizados.obs || 'Nenhuma'}
+        📝 ${dadosAtualizados.obs || 'Nenhuma'}
       `;
               const whatsappService = require('../services/whatsappService.js');
         

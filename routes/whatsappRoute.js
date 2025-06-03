@@ -14,6 +14,8 @@ class WhatsappRoute {
     this.router.post('/enviar', this.controller.enviarMensagem);
     this.router.get('/qrcode-img', this.controller.getQRCodeImage);
     this.router.get('/qrcode-img-monitor', this.controller.getQRCodeImageMonitor);
+    this.router.get('/notificacoes', this.controller.VerificarResposta);
+    this.router.post('/notificacoes/visualizada', this.controller.MarcarNotificacaoComoLida);
   }
 
   getRouter() {
