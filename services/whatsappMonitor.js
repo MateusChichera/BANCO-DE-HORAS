@@ -118,13 +118,13 @@ class WhatsAppMonitor {
       `);
 
       if (mensagens.length > 0) {
-        console.log(`✅ ${mensagens.length} novas respostas encontradas.`);
+       //console.log(`✅ ${mensagens.length} novas respostas encontradas.`);
         mensagens.forEach(mensagem => {
-          console.log(`  - Técnico: ${mensagem.usunome} - Resposta: "${mensagem.resposta_texto}" - Data: ${new Date(mensagem.data_resposta).toLocaleString()}`);
+        //  console.log(`  - Técnico: ${mensagem.usunome} - Resposta: "${mensagem.resposta_texto}" - Data: ${new Date(mensagem.data_resposta).toLocaleString()}`);
         });
         return mensagens; // Retorna o array de mensagens
       } else {
-        console.log('Nenhuma nova resposta não visualizada encontrada.');
+       // console.log('Nenhuma nova resposta não visualizada encontrada.');
         return []; // Retorna um array vazio se não houver mensagens
       }
     } catch (error) {

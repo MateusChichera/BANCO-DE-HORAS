@@ -556,13 +556,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // Função para buscar as mensagens não lidas no backend
     async function buscarMensagensNaoLidas() {
       try {
-        console.log("Buscando mensagens não lidas...");
+       // console.log("Buscando mensagens não lidas...");
         const response = await fetch(API_URL_VERIFICAR);
         if (!response.ok) {
           throw new Error(`Erro HTTP ao buscar notificações: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Dados recebidos da API de notificações:", data);
+        //console.log("Dados recebidos da API de notificações:", data);
 
         if (data.mensagens && data.mensagens.length > 0) {
           // Verifica se há novas mensagens que ainda não estão na lista
@@ -573,7 +573,7 @@ document.addEventListener("DOMContentLoaded", function() {
           if (novasMensagens.length > 0) {
               mensagensNaoLidas = [...mensagensNaoLidas, ...novasMensagens]; // Adiciona as novas mensagens
               badgeNotificacao.style.display = "inline"; // Mostra a bolinha vermelha
-              console.log(`Bolinha de notificação exibida. ${mensagensNaoLidas.length} mensagens não lidas.`);
+             // console.log(`Bolinha de notificação exibida. ${mensagensNaoLidas.length} mensagens não lidas.`);
               // Renderiza as mensagens no popup imediatamente após a busca,
               // garantindo que o conteúdo esteja atualizado se o popup estiver aberto ou for aberto.
               renderizarMensagensNoPopup(); 
@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function() {
           // Se o backend não retornar mensagens, limpa a lista e esconde a bolinha
           mensagensNaoLidas = []; 
           badgeNotificacao.style.display = "none"; 
-          console.log("Nenhuma nova mensagem não lida encontrada.");
+         // console.log("Nenhuma nova mensagem não lida encontrada.");
           // Se o popup estiver aberto e não houver mais mensagens, atualiza o conteúdo
           if (popupMensagens.style.display === 'block') {
               renderizarMensagensNoPopup();
@@ -626,11 +626,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Função para marcar as mensagens como lidas no backend
     async function marcarMensagensComoLidas() {
       if (mensagensNaoLidas.length === 0) {
-        console.log("Nenhuma mensagem para marcar como lida.");
+        //console.log("Nenhuma mensagem para marcar como lida.");
         return;
       }
 
-      console.log("Marcando mensagens como lidas no backend...");
+      //console.log("Marcando mensagens como lidas no backend...");
       // Itera sobre as mensagens e envia uma requisição POST para cada ID
       for (const msg of mensagensNaoLidas) {
         try {

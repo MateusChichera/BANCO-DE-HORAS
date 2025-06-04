@@ -344,26 +344,39 @@ async buscarHoras(req, res) {
             newuser.dia1,
             newuser.taxa
           );
+
+          console.log("data 1", newuser.data);
+          console.log("data 2", newuser.dia1);
+
           let dataFormatada = (() => {
-            const dataObj = new Date(newuser.data);
-            const dia = String(dataObj.getDate()).padStart(2, '0');
-            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-            const ano = dataObj.getFullYear();
-            return `${dia}/${mes}/${ano}`;
-          })();
-          let data2 = (() => {
-            const dataObj = new Date(newuser.dia1);
-            const dia = String(dataObj.getDate()).padStart(2, '0');
-            const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-            const ano = dataObj.getFullYear();
-            return `${dia}/${mes}/${ano}`;
-          })();
+          const dataObj = new Date(newuser.data);
+          if (isNaN(dataObj)) return 'Data inválida';
+          const dia = String(dataObj.getUTCDate()).padStart(2, '0');
+          const mes = String(dataObj.getUTCMonth() + 1).padStart(2, '0');
+          const ano = dataObj.getUTCFullYear();
+          return `${dia}/${mes}/${ano}`;
+        })();
+
+        let data2 = (() => {
+          if (!newuser.dia1) return null; // Garante que não formate null
+          const dataObj = new Date(newuser.dia1);
+          if (isNaN(dataObj)) return null;
+          const dia = String(dataObj.getUTCDate()).padStart(2, '0');
+          const mes = String(dataObj.getUTCMonth() + 1).padStart(2, '0');
+          const ano = dataObj.getUTCFullYear();
+          return `${dia}/${mes}/${ano}`;
+        })();
+
+
+
           const usuario = await adc.buscarTelefonePorId(newuser.usu);
 
           const telefone = usuario.usu_tel;
           const tecnico = usuario.usunome;
           console.log("telefone a enviar mensagem no cadastro de implantacao",telefone)
-          const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
+         const periodo = data2
+                            ? `📅 Período: ${dataFormatada} a ${data2}`
+                            : `📅 Data: ${dataFormatada}`;
           const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: R$${newuser.taxa}` : '';
 
           // 3. Monta a mensagem
@@ -395,29 +408,30 @@ async buscarHoras(req, res) {
 
         (async () => {
             try {
-                let dataFormatada = (() => {
-                    if (!newuser.data) return null;
-                    const dataObj = new Date(newuser.data);
-                    if (isNaN(dataObj)) return null;
-                    const dia = String(dataObj.getDate()).padStart(2, '0');
-                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-                    const ano = dataObj.getFullYear();
-                    return `${dia}/${mes}/${ano}`;
-                  })();
-                  
-                  let data2 = (() => {
-                    if (!newuser.dia1) return null;
-                    const dataObj = new Date(newuser.dia1);
-                    if (isNaN(dataObj)) return null;
-                    const dia = String(dataObj.getDate()).padStart(2, '0');
-                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-                    const ano = dataObj.getFullYear();
-                    return `${dia}/${mes}/${ano}`;
-                  })();
+                 let dataFormatada = (() => {
+                  const dataObj = new Date(newuser.data);
+                  if (isNaN(dataObj)) return 'Data inválida';
+                  const dia = String(dataObj.getUTCDate()).padStart(2, '0');
+                  const mes = String(dataObj.getUTCMonth() + 1).padStart(2, '0');
+                  const ano = dataObj.getUTCFullYear();
+                  return `${dia}/${mes}/${ano}`;
+                })();
+
+                let data2 = (() => {
+                  if (!newuser.dia1) return null; // Garante que não formate null
+                  const dataObj = new Date(newuser.dia1);
+                  if (isNaN(dataObj)) return null;
+                  const dia = String(dataObj.getUTCDate()).padStart(2, '0');
+                  const mes = String(dataObj.getUTCMonth() + 1).padStart(2, '0');
+                  const ano = dataObj.getUTCFullYear();
+                  return `${dia}/${mes}/${ano}`;
+                })();
                   const usuario = await adc.buscarTelefonePorId(newuser.usu);
                   const tecnico = usuario.usunome;
 
-                  const periodo = data2 ? `📅 Período: ${dataFormatada} a ${data2}` : `📅 Data: ${dataFormatada}`;
+                 const periodo = data2
+                            ? `📅 Período: ${dataFormatada} a ${data2}`
+                            : `📅 Data: ${dataFormatada}`;
                   const taxaImplantacao = newuser.taxa ? `💰 Taxa de implantação: R$${newuser.taxa}` : '';
 
                 const mensagem = `Olá, nova implantação agendada!\n\n📋 Cliente: ${newuser.cliente}
@@ -712,8 +726,8 @@ async implantacoesEmMassa(req, res) {
       await enviarRelatorio(adminInfo.usu_tel);
     }
 
-    // Enviar para Felipe
-    await enviarRelatorio('5518988043123');
+    // Enviar para Felipe TELEFONE DO FELIPE
+    await enviarRelatorio('5518981760014');
 
     // Retornar resultado
     const response = {

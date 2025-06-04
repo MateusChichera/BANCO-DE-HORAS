@@ -1,15 +1,15 @@
-2025/06/03-20:39:26.329 1143b3 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/06/03-20:39:26.330 1143b3 Recovering log #243
-2025/06/03-20:39:26.336 1143b3 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000243.log 
-2025/06/03-20:39:28.268 1143b3 Level-0 table #249: started
-2025/06/03-20:39:28.276 1143b3 Level-0 table #249: 191901 bytes OK
-2025/06/03-20:39:28.287 1143b3 Delete type=0 #243
-2025/06/03-20:39:28.288 1143b3 Manual compaction at level-0 from '\x00G\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00H\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/06/03-20:39:29.638 1143b3 Compacting 1@1 + 2@2 files
-2025/06/03-20:39:29.745 1143b3 Generated table #250@1: 56118 keys, 2218631 bytes
-2025/06/03-20:39:29.815 1143b3 Generated table #251@1: 49229 keys, 1286536 bytes
-2025/06/03-20:39:29.815 1143b3 Compacted 1@1 + 2@2 files => 3505167 bytes
-2025/06/03-20:39:29.818 1143b3 compacted to: files[ 0 0 2 0 0 0 0 ]
-2025/06/03-20:39:29.819 1143b3 Delete type=2 #246
-2025/06/03-20:39:29.819 1143b3 Delete type=2 #245
-2025/06/03-20:39:29.819 1143b3 Delete type=2 #249
+2025/06/03-21:12:02.993 1158cb Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/06/03-21:12:02.994 1158cb Recovering log #273
+2025/06/03-21:12:03.019 1158cb Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000273.log 
+2025/06/03-21:12:04.501 1158cb Level-0 table #279: started
+2025/06/03-21:12:04.510 1158cb Level-0 table #279: 371567 bytes OK
+2025/06/03-21:12:04.512 1158cb Delete type=0 #273
+2025/06/03-21:12:04.513 1158cb Manual compaction at level-0 from '\x00M\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00N\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/06/03-21:12:05.834 1158d5 Compacting 1@1 + 2@2 files
+2025/06/03-21:12:05.915 1158d5 Generated table #280@1: 60109 keys, 2219861 bytes
+2025/06/03-21:12:05.975 1158d5 Generated table #281@1: 55280 keys, 1558496 bytes
+2025/06/03-21:12:05.975 1158d5 Compacted 1@1 + 2@2 files => 3778357 bytes
+2025/06/03-21:12:05.981 1158d5 compacted to: files[ 0 0 2 0 0 0 0 ]
+2025/06/03-21:12:05.981 1158d5 Delete type=2 #276
+2025/06/03-21:12:05.981 1158d5 Delete type=2 #279
+2025/06/03-21:12:05.981 1158d5 Delete type=2 #275
