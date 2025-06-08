@@ -8,21 +8,21 @@ O objetivo principal deste sistema é atualizar o método de agendamento de viag
 
 ## Tecnologias Utilizadas
 
-* [cite_start]**Backend:** Node.js  [cite_start]com Express 
-* [cite_start]**Frontend:** EJS (com renderização do servidor backend) 
-* [cite_start]**Banco de Dados:** MySQL 
-* **Integração WhatsApp:** `whatsapp-web.js` com Puppeteer
-* [cite_start]**Hospedagem:** Máquina Virtual (VM) na Oracle Cloud 
+* **Backend:** Node.js com Express  
+* **Frontend:** EJS (com renderização do servidor backend)  
+* **Banco de Dados:** MySQL  
+* **Integração WhatsApp:** `whatsapp-web.js` com Puppeteer  
+* **Hospedagem:** Máquina Virtual (VM) na Oracle Cloud  
 
 ## Funcionalidades Principais
 
 * **Importação de Planilha Excel:** Gerente pode importar planilhas com dados de agendamento.
 * **Gerenciamento de Agendamentos:** Visualização, edição e confirmação de agendamentos de viagens.
-* [cite_start]**Notificações Automáticas via WhatsApp:** Disparo de mensagens para técnicos com os detalhes de suas viagens semanais (para até 5 técnicos e 2 vendedores simultaneamente).
+* **Notificações Automáticas via WhatsApp:** Disparo de mensagens para técnicos com os detalhes de suas viagens semanais (para até 5 técnicos e 2 vendedores simultaneamente).
 * **Controle de Horas dos Técnicos:** Acompanhamento das horas trabalhadas pelos técnicos.
 * **Envio de Relatórios:** Técnicos podem enviar suas horas e viagens por e-mail, com configuração de e-mail por usuário.
-* [cite_start]**Autenticação de Usuários:** Controle de acesso com autenticação por hash e rotas autenticadas.
-* [cite_start]**Cálculo de Horas Extras:** Funcionalidade para calcular horas extras.
+* **Autenticação de Usuários:** Controle de acesso com autenticação por hash e rotas autenticadas.
+* **Cálculo de Horas Extras:** Funcionalidade para calcular horas extras.
 
 ## Como Acessar o Projeto
 
@@ -45,5 +45,5 @@ O principal objetivo pessoal com o desenvolvimento deste projeto foi alavancar a
 
 ## Autor
 
-[cite_start]Mateus Chichera de Sousa 
-[cite_start]GitHub: [https://github.com/MateusChichera](https://github.com/MateusChichera)
+**Mateus Chichera de Sousa**  
+🔗 [GitHub](https://github.com/MateusChichera)
