@@ -795,26 +795,20 @@ async implantacoesEmMassa(req, res) {
             if (resultado.affectedRows === 0) {
               return res.status(404).send({ erro: 'Implantação não encontrada' });
             }
-          
             let dataFormatadaT = (() => {
-                if (!dadosAtualizados.data) return null;
-                const dataObj = new Date(dadosAtualizados.data);
-                if (isNaN(dataObj)) return null;
-                const dia = String(dataObj.getDate()).padStart(2, '0');
-                const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-                const ano = dataObj.getFullYear();
-                return `${dia}/${mes}/${ano}`;
-              })();
-              
-              let data2 = (() => {
-                if (!dadosAtualizados.dia1) return null;
-                const dataObj = new Date(dadosAtualizados.dia1);
-                if (isNaN(dataObj)) return null;
-                const dia = String(dataObj.getDate()).padStart(2, '0');
-                const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-                const ano = dataObj.getFullYear();
-                return `${dia}/${mes}/${ano}`;
-              })();
+              if (!dadosAtualizados.data) return null;
+              const [ano, mes, dia] = dadosAtualizados.data.split('-');
+              if (!ano || !mes || !dia) return null;
+              return `${dia}/${mes}/${ano}`;
+            })();
+
+            let data2 = (() => {
+              if (!dadosAtualizados.dia1) return null;
+              const [ano, mes, dia] = dadosAtualizados.dia1.split('-');
+              if (!ano || !mes || !dia) return null;
+              return `${dia}/${mes}/${ano}`;
+            })();
+
               
               const usuario = await adc.buscarTelefonePorId(dadosAtualizados.usu);
 
@@ -854,18 +848,16 @@ async implantacoesEmMassa(req, res) {
             try {   
                 console.log("Chamando a função de mensagem para o vendedor e Fernando");
                 let dataFormatada = (() => {
-                    const dataObj = new Date(dadosAtualizados.data);
-                    const dia = String(dataObj.getDate()).padStart(2, '0');
-                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-                    const ano = dataObj.getFullYear();
+                     if (!dadosAtualizados.data) return null;
+                    const [ano, mes, dia] = dadosAtualizados.data.split('-');
+                    if (!ano || !mes || !dia) return null;
                     return `${dia}/${mes}/${ano}`;
                   })();
                   let data2 = (() => {
-                    const dataObj = new Date(dadosAtualizados.dia1);
-                    const dia = String(dataObj.getDate()).padStart(2, '0');
-                    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
-                    const ano = dataObj.getFullYear();
-                    return `${dia}/${mes}/${ano}`;
+                                if (!dadosAtualizados.dia1) return null;
+                              const [ano, mes, dia] = dadosAtualizados.dia1.split('-');
+                              if (!ano || !mes || !dia) return null;
+                              return `${dia}/${mes}/${ano}`;
                   })();
                   const usuario = await adc.buscarTelefonePorId(dadosAtualizados.usu);
                   const tecnico = usuario.usunome;

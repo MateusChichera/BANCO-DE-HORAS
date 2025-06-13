@@ -95,9 +95,9 @@ class WhatsAppMonitor {
             dataHora: respostaDetalhada.data_resposta,
           };
 
-          clientesConectados.forEach(cliente => {
+         /*clientesConectados.forEach(cliente => {
             cliente.write(`data: ${JSON.stringify(payload)}\n\n`);
-          });
+          });*/
         }
       }
     }
