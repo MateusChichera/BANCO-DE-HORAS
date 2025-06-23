@@ -167,7 +167,7 @@
   <table id="tabela">
     <thead>
       <tr>
-        <th>Data</th>
+        <th>Datas</th>
         <th>Data 2</th>
         <th>Observações</th>
         <th>Cliente</th>
@@ -324,8 +324,9 @@
 
           const implNome = linha1[3] || '';
           const sistema = linha1[4] || linha2[4] || '';
-
+          const taxaExcel = linha1[7] || '';
           const telefones = [linha1[5], linha2[5], linha1[6], linha2[6]].filter(Boolean).map(t => t.toString().trim());
+
 
           const row = document.createElement('tr');
           row.innerHTML = `
@@ -361,7 +362,7 @@
             <td>
               ${telefones.map(t => `<input type="text" class="telefone-field" value="${t}" placeholder="Telefone">`).join('<br>')}
             </td>
-            <td><input type="text" class="taxa-field" value="" placeholder="Taxa"></td>
+            <td><input type="text" class="taxa-field" value="${taxaExcel}" placeholder="Taxa"></td>
             <td>
               <button class="excluir-btn" title="Excluir agendamento"><i class="fas fa-trash-alt"></i></button>
             </td>

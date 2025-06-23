@@ -1,3 +1,3 @@
-2025/06/13-11:55:50.171 13d49f Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/MANIFEST-000001
-2025/06/13-11:55:50.172 13d49f Recovering log #3
-2025/06/13-11:55:50.176 13d49f Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/000003.log 
+2025/06/23-10:28:31.133 1666d1 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/MANIFEST-000001
+2025/06/23-10:28:31.133 1666d1 Recovering log #3
+2025/06/23-10:28:31.134 1666d1 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/000003.log 

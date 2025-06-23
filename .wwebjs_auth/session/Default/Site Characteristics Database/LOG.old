@@ -1,3 +1,2 @@
-2025/06/13-11:55:50.054 13d4b7 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Site Characteristics Database/MANIFEST-000001
-2025/06/13-11:55:50.056 13d4b7 Recovering log #3
-2025/06/13-11:55:50.056 13d4b7 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Site Characteristics Database/000003.log 
+2025/06/23-10:28:31.013 1666c8 Creating DB /home/ubuntu/Horas/.wwebjs_auth/session/Default/Site Characteristics Database since it was missing.
+2025/06/23-10:28:31.020 1666c8 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Site Characteristics Database/MANIFEST-000001

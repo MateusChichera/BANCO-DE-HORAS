@@ -1,3 +1,2 @@
-2025/06/13-11:55:50.049 13d4b5 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Service Worker/Database/MANIFEST-000001
-2025/06/13-11:55:50.052 13d4b5 Recovering log #3
-2025/06/13-11:55:50.057 13d4b5 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Service Worker/Database/000003.log 
+2025/06/23-10:28:32.241 1666bf Creating DB /home/ubuntu/Horas/.wwebjs_auth/session/Default/Service Worker/Database since it was missing.
+2025/06/23-10:28:32.246 1666bf Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Service Worker/Database/MANIFEST-000001

@@ -1,3 +1,2 @@
-2025/06/13-11:55:50.074 13d4f0 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/06/13-11:55:50.080 13d4f0 Recovering log #157
-2025/06/13-11:55:50.082 13d4f0 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/000157.log 
+2025/06/23-10:28:31.021 1666f6 Creating DB /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb since it was missing.
+2025/06/23-10:28:31.042 1666f6 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Local Storage/leveldb/MANIFEST-000001

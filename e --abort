@@ -17,3 +17,54 @@
 * [33m4f3d3f9[m corrigido o botão da sidebar, ajustado o input da data da tela de cadastro
 * [33m0303835[m Ajustado o corpo do email para enviar separado
 * [33m281888e[m Ajustado o corpo do email
+* [33m9adf028[m Feito envio de email das horas e implantações funcionando, sem formatação de email
+* [33m3e8ebdc[m ajustado calendario para escolher mês, ajustado permissões
+* [33m50bead3[m Enviando mensagem para o fernando e o vendedor no alterar
+* [33m23dae80[m Ajustei editar horas
+* [33me899596[m Feito disparo de mensagens para vendedor
+* [33m600a03c[m ajustado botão da sidebar
+* [33m02b6135[m configurado HASH de usuario na autenticação
+* [33ma461077[m ajustado novos campos de implantação, criado o monitor de rotas
+* [33m193fa52[m ajustado disparo da mensagem no alterar, ajustado front com overlay de loading
+* [33m185ef56[m ajustado algumas coisas no front e logo
+* [33m16b565c[m ajustado o front com botões de imprimir as horas e implantações e permissões
+* [33m1c7a817[m Feito alteração nas viagens e mandando mensagem no whatsapp
+* [33mdfd54fd[m criado os serviços do whatsapp e qrcode
+* [33mb67f2a3[m Ajustado o relatorio de distancia percorrida
+* [33mb7e1244[m Corrigido os caminhos das views na VM
+* [33mdefe926[m Contador de implantação ajustado
+* [33mb880322[m Colocado o botão de deslogar
+* [33m2c50e2e[m FUNCIONANDO AUTENTICAÇÃO EM TODAS PAGINAS
+* [33md1327eb[m ADCIONADO AUTENTICAÇÃO POR COOKIES E FUNCIONANDO
+* [33m0a57ff1[m ADCIONADO O CONTADOR DE IMPLANTAÇÕES E O BOTÃO DE EXCEL
+* [33m90402e3[m CADASTRANDO IMPLANTAÇÃO, E LISTANDO ORDENADO DE ACORDO COM AS HORAS DO MÊS
+* [33mcb5f433[m Ajustado a busca para ordernar por data
+* [33m20b7ba9[m AUTENTICAÇÃO FUNCIONANDO, FALTANDO APENAS O MID PARA REDIRECIONAR
+* [33med367a5[m COM ROTA DE LOGIN
+* [33m716f723[m FUNCIONANDO O EDITAR, EM ALTERAÇÃO O EXCLUIR
+* [33m70f8811[m HORAS EXTRAS ACERTADAS, FALTANDO EDITAR NO BANCO E EXCLUIR
+* [33mfc40c88[m AJUSTADO SERVER.JS
+* [33mb6bca27[m  Tentando arrumar e editar, arrumar também calculo de hora extra, adcionar os minutos do almoço e subitrair no total
+* [33m4b38c96[m TENTANDO APARECER OS VALORES DO EDITAR NO EJS
+* [33m3355f93[m CALCULANDO HORA EXTRA
+* [33m19e723a[m mostrando a data formatada
+* [33m118cd85[m FUNCIONANDO CADASTRO/ BUSCA DE HORA POR DATA / EXPORTANDO PARA EXCEL
+* [33mbaa5214[m FUNCIONANDO CADASTRO E TAMBÉM BUSCA DE HORA POR DATA
+* [33m1a8f137[m FUNCIONANDO CADASTRO NO BANCO PEGANDO LINK DA URL
+* [33ma14358e[m configurando raliway
+* [33m1db1cc5[m configurando raliway
+* [33m27a7ff2[m configurando raliway
+* [33m6b810d6[m configurando raliway
+* [33m4bad7f7[m configurando raliway
+* [33m608f037[m configurando raliway
+* [33m2261f54[m configurando netlify2x
+* [33mc8b0688[m configurando netlify2x
+* [33m23696d5[m configurando netlify
+* [33m9c59d42[m configurando netlify com tml
+*   [33mb6853b0[m INCIANDO.JS PARA FAZER O DEPLOY
+[32m|[m[33m\[m  
+[32m|[m * [33m724eac5[m Update server.js
+* [33m|[m [33mb3eb71b[m INCIANDO.JS PARA FAZER O DEPLOY
+[33m|[m[33m/[m  
+* [33m68acfb2[m add procfile, mais porta definida pela web
+* [33mf0c325c[m Gravando no Banco
