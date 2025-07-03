@@ -1,3 +1,6 @@
-2025/06/23-10:50:27.238 166e3f Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/06/23-10:50:27.244 166e3f Recovering log #3
-2025/06/23-10:50:27.244 166e3f Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000003.log 
+2025/07/03-09:55:54.917 196c2b Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/07/03-09:55:54.923 196c2b Recovering log #27
+2025/07/03-09:55:54.924 196c2b Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000027.log 
+2025/07/03-09:56:54.926 196c2d Level-0 table #31: started
+2025/07/03-09:56:54.929 196c2d Level-0 table #31: 12728 bytes OK
+2025/07/03-09:56:54.931 196c2d Delete type=0 #27

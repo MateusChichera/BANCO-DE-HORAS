@@ -12,9 +12,6 @@ const conexao = new Database();
 
 class UsuarioController {
 
-    //CALENDARIO
-    // Busca implantações para exibição em calendário
-
 
 async buscarCalendario(req, res) {
     try {
@@ -921,7 +918,8 @@ async implantacoesEmMassa(req, res) {
           })();
           
       }
-
+        //antiga deletar implantação sem mensagem
+        /*
        deletarImp(req, res) {
         console.log("Chamando a funçao de deletar")
             const exc = new UsuarioModel();
@@ -936,6 +934,158 @@ async implantacoesEmMassa(req, res) {
             }
       
       }
+            */
+      async deletarImp(req, res) {
+        console.log("Chamando a função de deletar");
+        const exc = new UsuarioModel();
+        const id = req.body.id;
+    
+        if (!id) {
+            return res.status(400).send({ ok: false, msg: "ID da implantação não fornecido!" });
+        }
+    
+        let dadosDeletados; // Declarar fora do try para que seja acessível no catch secundário
+        let nomeTecnico = 'Técnico Desconhecido'; // Default para mensagens secundárias
+        let telefoneTecnico = null; // Default
+    
+        // Definir as funções auxiliares e constantes de delay AQUI dentro da função
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+        const DELAY_MIN = 5000; // Atraso mínimo de 5 segundos
+        const DELAY_MAX_ADD = 15000; // Atraso adicional máximo de 15 segundos (total de 5 a 20 segundos)
+    
+        try {
+            // 1. Buscar os dados da implantação antes de deletar
+            const implantacaoArray = await exc.buscaidImp(id);
+            dadosDeletados = implantacaoArray[0]; // Pega o objeto da implantação
+    
+            console.log("implantacaoParaDeletar (dados brutos da model):", implantacaoArray);
+    
+            if (!dadosDeletados) {
+                return res.status(404).send({ erro: 'Implantação não encontrada para exclusão' });
+            }
+    
+            // 2. Deletar a implantação
+            const resultadoExclusao = await exc.deletarImplantacao(id);
+    
+            if (resultadoExclusao.affectedRows === 0) {
+                return res.status(404).send({ erro: 'Implantação não encontrada para exclusão' });
+            }
+    
+            // --- Preparar dados e mensagens ---
+    
+            // Buscar informações do técnico para todas as mensagens
+            const usuarioTecnico = await exc.buscarTelefonePorId(dadosDeletados.usuid);
+            telefoneTecnico = usuarioTecnico ? usuarioTecnico.usu_tel : null;
+            nomeTecnico = usuarioTecnico ? usuarioTecnico.usunome : 'Técnico Desconhecido';
+    
+            // Formatação das datas
+            const formatarDataParaExibicao = (dateObj) => {
+                if (!dateObj) return null;
+                const date = new Date(dateObj); // Garante que é um objeto Date
+                const dia = String(date.getUTCDate()).padStart(2, '0');
+                const mes = String(date.getUTCMonth() + 1).padStart(2, '0'); // Mês é 0-indexed
+                const ano = date.getUTCFullYear();
+                return `${dia}/${mes}/${ano}`;
+            };
+    
+            const dataFormatadaT = formatarDataParaExibicao(dadosDeletados.imp_dia);
+            const data2 = formatarDataParaExibicao(dadosDeletados.imp_dia1);
+    
+            const periodo = data2 ? `📅 Período: ${dataFormatadaT} a ${data2}` : `📅 Data: ${dataFormatadaT}`;
+            const taxaImplantacao = dadosDeletados.imp_taxa ? `💰 Taxa de implantação: R$${dadosDeletados.imp_taxa}` : '';
+    
+            // Definir as mensagens AQUI dentro da função
+            const baseMensagem = `📋 Cliente: *${dadosDeletados.imp_nome}*
+    ${periodo}
+    🔧 ${dadosDeletados.imp_tipo}
+    📍 ${dadosDeletados.imp_cidade}, ${dadosDeletados.imp_estado}
+    🚗 ${dadosDeletados.imp_carro}
+    👤 ${dadosDeletados.imp_contato}
+    📞 ${dadosDeletados.imp_tel}, ${dadosDeletados.imp_tel1 || '-'}, ${dadosDeletados.imp_tel2 || '-'}, ${dadosDeletados.imp_tel3 || '-'}
+    💻 ${dadosDeletados.imp_sis}
+    ${taxaImplantacao}
+    📝 ${dadosDeletados.imp_obs || 'Nenhuma'}
+    `;
+    
+            const mensagemTecnico = `🚨 Sua implantação foi *CANCELADA*!\n\n${baseMensagem}`;
+            const mensagemGeral = `Olá, houve um *CANCELAMENTO* de implantação!\n\n👨‍🔧 Técnico: ${nomeTecnico}\n\n${baseMensagem}`;
+            const mensagemClaudemir = `*CANCELOU IMPLANTAÇÃO*\n\n👨‍🔧 Técnico: ${nomeTecnico}\n\n${baseMensagem}`;
+            const whatsappService = require('../services/whatsappService.js');
+    
+            // --- Iniciar o processo de envio de mensagens em paralelo com atrasos ---
+            (async () => { // IIFE (Immediately Invoked Function Expression) para executar async em paralelo
+                try {
+                    let currentDelay = 0; // Iniciar atraso em 0 para a primeira mensagem
+    
+                    // 1. Enviar para o Técnico
+                    if (telefoneTecnico) {
+                        currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
+                        setTimeout(() => {
+                            whatsappService.enviarMensagem(telefoneTecnico, mensagemTecnico)
+                                .then(() => console.log(`Mensagem de cancelamento enviada para o técnico ${nomeTecnico} (${telefoneTecnico})`))
+                                .catch(err => console.error('Erro ao enviar para técnico:', err));
+                        }, currentDelay);
+                    } else {
+                        console.warn(`Não foi possível enviar mensagem para o técnico. Telefone não encontrado para o ID: ${dadosDeletados.usuid}`);
+                    }
+    
+                    // 2. Enviar para o Vendedor
+                    const vendedorInfo = await exc.buscarTelefonePorId(dadosDeletados.imp_vendedorcod);
+                    const telefoneVendedor = vendedorInfo ? vendedorInfo.usu_tel : null;
+    
+                    if (telefoneVendedor) {
+                        currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
+                        setTimeout(() => {
+                            whatsappService.enviarMensagem(telefoneVendedor, mensagemGeral)
+                                .then(() => console.log(`Mensagem de cancelamento enviada para vendedor ${telefoneVendedor}`))
+                                .catch(err => console.error('Erro ao enviar para vendedor:', err));
+                        }, currentDelay);
+                    } else {
+                        console.warn(`Não foi possível enviar mensagem para o vendedor. Telefone não encontrado para o ID: ${dadosDeletados.imp_vendedorcod}`);
+                    }
+    
+                    // 3. Enviar para Fernando
+                    const telefoneFernando = '5518981174107'; 
+                    currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
+                    setTimeout(() => {
+                        whatsappService.enviarMensagem(telefoneFernando, mensagemGeral)
+                            .then(() => console.log(`Mensagem de cancelamento enviada para Fernando ${telefoneFernando}`))
+                            .catch(err => console.error('Erro ao enviar para Fernando:', err));
+                    }, currentDelay);
+    
+                    // 4. Enviar para Felipe
+                    const telefoneFelipe = '5518981760014'; 
+                    currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
+                    setTimeout(() => {
+                        whatsappService.enviarMensagem(telefoneFelipe, mensagemGeral)
+                            .then(() => console.log(`Mensagem de cancelamento enviada para Felipe ${telefoneFelipe}`))
+                            .catch(err => console.error('Erro ao enviar para Felipe:', err));
+                    }, currentDelay);
+    
+                    // 5. Enviar para Claudemir
+                    const telefoneClaudemir = '5518981151418'; 
+                    currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
+                    setTimeout(() => {
+                        whatsappService.enviarMensagem(telefoneClaudemir, mensagemClaudemir)
+                            .then(() => console.log(`Mensagem de CANCELAMENTO DE IMPLANTAÇÃO enviada para Claudemir ${telefoneClaudemir}`))
+                            .catch(err => console.error('Erro ao enviar para Claudemir:', err));
+                    }, currentDelay);
+    
+                } catch (erro) {
+                    console.error('Erro geral ao tentar enviar mensagens adicionais de cancelamento:', erro);
+                }
+            })(); // Fim da IIFE
+    
+            // Resposta imediata ao cliente
+            res.send({ ok: true, msg: 'Implantação excluída e mensagens de cancelamento agendadas com sucesso!' });
+    
+        } catch (erro) {
+            console.error("Erro no processo de exclusão ou preparação de mensagem:", erro);
+            if (!res.headersSent) {
+                res.status(500).send({ erro: 'Erro ao deletar implantação ou agendar mensagem' });
+            }
+        }
+    }
       
       
 

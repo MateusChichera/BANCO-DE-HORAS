@@ -434,6 +434,7 @@ async listarUsuarios(usuid) {
         }
     }
     
+    
     // BUSCA AS HORAS COM DATAS DE INICIO E FIM ORDENADO
     async buscahoras(usu_id, dia, dia2) {
         let sql = "SELECT * FROM Horas WHERE usuid = ? AND dia BETWEEN ? AND ? ORDER BY dia";
@@ -493,7 +494,7 @@ async listarUsuarios(usuid) {
                 const resultados = await conexao.ExecutaComando(sql, [usuid]);
                 
                 if (resultados.length === 0) {
-                return reject(new Error('Usuário não encontrado'));
+                 throw new Error('Usuário não encontrado');
                 }
                 
                 return resultados[0];
@@ -554,7 +555,7 @@ async listarUsuarios(usuid) {
                 const sql = `DELETE FROM implantacoes WHERE idimplantacao = ?`;
                 return await conexao.ExecutaComando(sql, [id]);
             }
-  
+
             async buscaidImp(idimplantacao) {
     
                 let sql = "SELECT * FROM implantacoes WHERE idimplantacao = ? "
