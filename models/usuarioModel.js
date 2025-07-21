@@ -444,12 +444,33 @@ async listarUsuarios(usuid) {
         return rows;
     }
     // busca implantacoes
-    async buscaimplantacoes(usu_id,dia,dia2){
+   /* async buscaimplantacoes(usu_id,dia,dia2){
         let sql = "SELECT imp_nome,imp_cidade,imp_estado,imp_dia,imp_dia1,imp_tipo,imp_obs FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
     
         let rows = await conexao.ExecutaComando(sql, [usu_id, dia, dia2]);
         return rows;
-    }
+    }*/
+
+        async buscaimplantacoes(usu_id, dia, dia2) {
+            let sql;
+            let params;
+        
+            
+            const vendorCodes = [4, 7, 8];
+            if (usu_id == 4 || usu_id == 7 || usu_id == 8) {
+                
+                sql = "SELECT imp_nome, imp_cidade, imp_estado, imp_dia, imp_dia1, imp_tipo, imp_obs FROM implantacoes WHERE imp_vendedorcod = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
+                params = [usu_id, dia, dia2];
+            } else {
+                
+                sql = "SELECT imp_nome, imp_cidade, imp_estado, imp_dia, imp_dia1, imp_tipo, imp_obs FROM implantacoes WHERE usuid = ? AND imp_dia BETWEEN ? AND ? ORDER BY imp_dia";
+                params = [usu_id, dia, dia2];
+            }
+        
+            let rows = await conexao.ExecutaComando(sql, params);
+            return rows;
+        }
+
 
     async buscacalendario(dia, dia2) {
         let sql = `

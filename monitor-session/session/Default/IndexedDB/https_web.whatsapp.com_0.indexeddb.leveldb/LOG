@@ -1,17 +1,27 @@
-2025/07/03-09:55:55.519 196be0 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/07/03-09:55:55.520 196be0 Recovering log #550
-2025/07/03-09:55:55.542 196be0 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000550.log 
-2025/07/03-09:55:57.201 196bf8 Level-0 table #557: started
-2025/07/03-09:55:57.208 196bf8 Level-0 table #557: 296184 bytes OK
-2025/07/03-09:55:57.211 196bf8 Delete type=0 #550
-2025/07/03-09:55:57.211 196be1 Manual compaction at level-0 from '\x00\x9c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x9d\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/07/03-09:55:58.647 196be0 Compacting 1@1 + 3@2 files
-2025/07/03-09:55:58.716 196be0 Generated table #558@1: 73840 keys, 2231558 bytes
-2025/07/03-09:55:58.785 196be0 Generated table #559@1: 55742 keys, 2204906 bytes
-2025/07/03-09:55:58.799 196be0 Generated table #560@1: 19365 keys, 375517 bytes
-2025/07/03-09:55:58.799 196be0 Compacted 1@1 + 3@2 files => 4811981 bytes
-2025/07/03-09:55:58.803 196be0 compacted to: files[ 0 0 3 0 0 0 0 ]
-2025/07/03-09:55:58.804 196be0 Delete type=2 #553
-2025/07/03-09:55:58.804 196be0 Delete type=2 #554
-2025/07/03-09:55:58.804 196be0 Delete type=2 #552
-2025/07/03-09:55:58.805 196be0 Delete type=2 #557
+2025/07/21-10:30:00.849 22a872 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/07/21-10:30:00.851 22a872 Recovering log #6358
+2025/07/21-10:30:00.855 22a872 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/006358.log 
+2025/07/21-10:30:02.111 22a87b Level-0 table #6370: started
+2025/07/21-10:30:02.116 22a87b Level-0 table #6370: 195865 bytes OK
+2025/07/21-10:30:02.118 22a87b Delete type=0 #6358
+2025/07/21-10:30:02.118 22a872 Manual compaction at level-0 from ' ?\x03\x00\x00\x00' @ 72057594037927935 : 1 .. ' @\x03\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/07/21-10:30:03.236 22a874 Compacting 1@1 + 8@2 files
+2025/07/21-10:30:03.297 22a874 Generated table #6371@1: 85847 keys, 2236255 bytes
+2025/07/21-10:30:03.358 22a874 Generated table #6372@1: 94907 keys, 2247274 bytes
+2025/07/21-10:30:03.407 22a874 Generated table #6373@1: 94855 keys, 2246634 bytes
+2025/07/21-10:30:03.465 22a874 Generated table #6374@1: 100733 keys, 2254140 bytes
+2025/07/21-10:30:03.515 22a874 Generated table #6375@1: 101588 keys, 2254847 bytes
+2025/07/21-10:30:03.566 22a874 Generated table #6376@1: 83825 keys, 2278398 bytes
+2025/07/21-10:30:03.602 22a874 Generated table #6377@1: 34619 keys, 2219466 bytes
+2025/07/21-10:30:03.647 22a874 Generated table #6378@1: 80224 keys, 2138877 bytes
+2025/07/21-10:30:03.647 22a874 Compacted 1@1 + 8@2 files => 17875891 bytes
+2025/07/21-10:30:03.649 22a874 compacted to: files[ 0 0 8 0 0 0 0 ]
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6364
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6363
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6366
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6365
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6360
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6367
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6362
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6361
+2025/07/21-10:30:03.649 22a874 Delete type=2 #6370

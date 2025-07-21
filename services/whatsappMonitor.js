@@ -36,9 +36,9 @@ class WhatsAppMonitor {
       this.startMessageListener();
     });
 
-    this.client.on('disconnected', () => {
-      console.log('Monitor desconectado');
-      // Pode querer reinicializar o client aqui se quiser reconectar automaticamente
+    this.client.on('disconnected', async () => {
+      console.log('Monitor desconectado, tentando reiniciar...');
+      await this.restartClient();
     });
 
     this.client.initialize();
@@ -147,6 +147,32 @@ class WhatsAppMonitor {
       console.error(`❌ Erro ao marcar mensagem ${mensagemId} como visualizada:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Reinicia o cliente do WhatsApp destruindo a instância atual
+   * e criando uma nova, evitando múltiplos processos do Chromium.
+   */
+  async restartClient() {
+    try {
+      if (this.client) {
+        await this.client.destroy();
+      }
+    } catch (err) {
+      console.error('Erro ao destruir cliente:', err);
+    }
+
+    // Cria nova instância do Client
+    this.client = new Client({
+      authStrategy: new LocalAuth({ dataPath: './monitor-session' }),
+      puppeteer: {
+        headless: true,
+        executablePath: '/usr/bin/chromium-browser',
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      }
+    });
+
+    this.initialize();
   }
 
 }

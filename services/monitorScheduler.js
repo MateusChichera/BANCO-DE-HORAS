@@ -3,10 +3,10 @@ const whatsappMonitor = require('./whatsappMonitor');
 const cron = require('node-cron');
 
 // Verifica conexão a cada 30 minutos
-cron.schedule('*/30 * * * *', () => {
+cron.schedule('*/30 * * * *', async () => {
   if (!whatsappMonitor.client.connected) {
-    console.log('Reiniciando monitor...');
-    whatsappMonitor.client.initialize();
+    console.log('Reiniciando monitor (scheduler)...');
+    await whatsappMonitor.restartClient();
   }
 });
 
