@@ -1,27 +1,44 @@
-2025/07/21-10:30:00.849 22a872 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/07/21-10:30:00.851 22a872 Recovering log #6358
-2025/07/21-10:30:00.855 22a872 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/006358.log 
-2025/07/21-10:30:02.111 22a87b Level-0 table #6370: started
-2025/07/21-10:30:02.116 22a87b Level-0 table #6370: 195865 bytes OK
-2025/07/21-10:30:02.118 22a87b Delete type=0 #6358
-2025/07/21-10:30:02.118 22a872 Manual compaction at level-0 from ' ?\x03\x00\x00\x00' @ 72057594037927935 : 1 .. ' @\x03\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/07/21-10:30:03.236 22a874 Compacting 1@1 + 8@2 files
-2025/07/21-10:30:03.297 22a874 Generated table #6371@1: 85847 keys, 2236255 bytes
-2025/07/21-10:30:03.358 22a874 Generated table #6372@1: 94907 keys, 2247274 bytes
-2025/07/21-10:30:03.407 22a874 Generated table #6373@1: 94855 keys, 2246634 bytes
-2025/07/21-10:30:03.465 22a874 Generated table #6374@1: 100733 keys, 2254140 bytes
-2025/07/21-10:30:03.515 22a874 Generated table #6375@1: 101588 keys, 2254847 bytes
-2025/07/21-10:30:03.566 22a874 Generated table #6376@1: 83825 keys, 2278398 bytes
-2025/07/21-10:30:03.602 22a874 Generated table #6377@1: 34619 keys, 2219466 bytes
-2025/07/21-10:30:03.647 22a874 Generated table #6378@1: 80224 keys, 2138877 bytes
-2025/07/21-10:30:03.647 22a874 Compacted 1@1 + 8@2 files => 17875891 bytes
-2025/07/21-10:30:03.649 22a874 compacted to: files[ 0 0 8 0 0 0 0 ]
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6364
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6363
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6366
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6365
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6360
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6367
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6362
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6361
-2025/07/21-10:30:03.649 22a874 Delete type=2 #6370
+2025/08/08-14:00:00.827 2c918a Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-014925
+2025/08/08-14:00:00.830 2c918a Recovering log #19834
+2025/08/08-14:00:00.834 2c918a Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/019834.log 
+2025/08/08-14:00:02.091 2c918b Level-0 table #19851: started
+2025/08/08-14:00:02.096 2c918b Level-0 table #19851: 160638 bytes OK
+2025/08/08-14:00:02.101 2c918b Delete type=0 #19834
+2025/08/08-14:00:02.101 2c9193 Manual compaction at level-0 from ' \xac\x06\x00\x00\x00' @ 72057594037927935 : 1 .. ' \xad\x06\x00\x00\x00' @ 0 : 0; will stop at ' \xac\x06\x00\x00\x05' @ 13406726 : 1
+2025/08/08-14:00:02.101 2c9193 Compacting 1@0 + 0@1 files
+2025/08/08-14:00:02.106 2c9193 Generated table #19852@0: 3181 keys, 56863 bytes
+2025/08/08-14:00:02.108 2c9193 Generated table #19853@0: 495 keys, 18889 bytes
+2025/08/08-14:00:02.109 2c9193 Compacted 1@0 + 0@1 files => 75752 bytes
+2025/08/08-14:00:02.110 2c9193 compacted to: files[ 0 2 208 0 0 0 0 ]
+2025/08/08-14:00:02.113 2c9193 Delete type=2 #19851
+2025/08/08-14:00:02.113 2c9193 Manual compaction at level-0 from ' \xac\x06\x00\x00\x05' @ 13406726 : 1 .. ' \xad\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/08/08-14:00:03.227 2c918b Compacting 1@1 + 4@2 files
+2025/08/08-14:00:03.280 2c918b Generated table #19854@1: 39513 keys, 2356489 bytes
+2025/08/08-14:00:03.322 2c918b Generated table #19855@1: 26752 keys, 2178685 bytes
+2025/08/08-14:00:03.373 2c918b Generated table #19856@1: 88372 keys, 2235740 bytes
+2025/08/08-14:00:03.379 2c918b Generated table #19857@1: 8397 keys, 167321 bytes
+2025/08/08-14:00:03.379 2c918b Compacted 1@1 + 4@2 files => 6938235 bytes
+2025/08/08-14:00:03.380 2c918b compacted to: files[ 0 1 208 0 0 0 0 ]
+2025/08/08-14:00:03.383 2c918b Delete type=2 #19841
+2025/08/08-14:00:03.383 2c918b Delete type=2 #19840
+2025/08/08-14:00:03.383 2c918b Delete type=2 #19838
+2025/08/08-14:00:03.383 2c918b Delete type=2 #19839
+2025/08/08-14:00:03.383 2c918b Delete type=2 #19853
+2025/08/08-14:00:04.221 2c918a Compacting 1@1 + 7@2 files
+2025/08/08-14:00:04.281 2c918a Generated table #19858@1: 85642 keys, 2236658 bytes
+2025/08/08-14:00:04.351 2c918a Generated table #19859@1: 94907 keys, 2247302 bytes
+2025/08/08-14:00:04.398 2c918a Generated table #19860@1: 94861 keys, 2246809 bytes
+2025/08/08-14:00:04.445 2c918a Generated table #19861@1: 94950 keys, 2248268 bytes
+2025/08/08-14:00:04.491 2c918a Generated table #19862@1: 94915 keys, 2247652 bytes
+2025/08/08-14:00:04.538 2c918a Generated table #19863@1: 94925 keys, 2248489 bytes
+2025/08/08-14:00:04.559 2c918a Generated table #19864@1: 39992 keys, 947059 bytes
+2025/08/08-14:00:04.559 2c918a Compacted 1@1 + 7@2 files => 14422237 bytes
+2025/08/08-14:00:04.561 2c918a compacted to: files[ 0 0 208 0 0 0 0 ]
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19844
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19846
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19843
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19847
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19848
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19842
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19845
+2025/08/08-14:00:04.563 2c918a Delete type=2 #19852

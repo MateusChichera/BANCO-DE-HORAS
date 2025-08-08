@@ -1,3 +1,3 @@
-2025/07/21-10:30:00.342 22a897 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/07/21-10:30:00.347 22a897 Recovering log #316
-2025/07/21-10:30:00.347 22a897 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000316.log 
+2025/08/08-14:00:00.331 2c91af Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/08/08-14:00:00.340 2c91af Recovering log #696
+2025/08/08-14:00:00.341 2c91af Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000696.log 

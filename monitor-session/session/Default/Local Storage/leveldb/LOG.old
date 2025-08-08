@@ -1,3 +1,15 @@
-2025/07/21-10:00:00.341 22a5d5 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
-2025/07/21-10:00:00.345 22a5d5 Recovering log #316
-2025/07/21-10:00:00.346 22a5d5 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000316.log 
+2025/08/08-13:30:00.342 2c9001 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/MANIFEST-000001
+2025/08/08-13:30:00.348 2c9001 Recovering log #693
+2025/08/08-13:30:00.348 2c9001 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Local Storage/leveldb/000693.log 
+2025/08/08-13:40:07.282 2c9003 Level-0 table #697: started
+2025/08/08-13:40:07.285 2c9003 Level-0 table #697: 14334 bytes OK
+2025/08/08-13:40:07.287 2c9003 Delete type=0 #693
+2025/08/08-13:40:07.287 2c9001 Compacting 4@0 + 1@1 files
+2025/08/08-13:40:07.292 2c9001 Generated table #698@0: 6212 keys, 75719 bytes
+2025/08/08-13:40:07.292 2c9001 Compacted 4@0 + 1@1 files => 75719 bytes
+2025/08/08-13:40:07.293 2c9001 compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/08/08-13:40:07.293 2c9001 Delete type=2 #691
+2025/08/08-13:40:07.293 2c9001 Delete type=2 #685
+2025/08/08-13:40:07.293 2c9001 Delete type=2 #694
+2025/08/08-13:40:07.294 2c9001 Delete type=2 #697
+2025/08/08-13:40:07.294 2c9001 Delete type=2 #688
