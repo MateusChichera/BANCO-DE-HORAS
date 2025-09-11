@@ -1,3 +1,2 @@
-2025/07/07-14:28:14.386 1b10f5 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Sync Data/LevelDB/MANIFEST-000001
-2025/07/07-14:28:14.387 1b10f5 Recovering log #3
-2025/07/07-14:28:14.387 1b10f5 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Sync Data/LevelDB/000003.log 
+2025/09/10-21:11:16.347 3b61b4 Creating DB /home/ubuntu/Horas/.wwebjs_auth/session/Default/Sync Data/LevelDB since it was missing.
+2025/09/10-21:11:16.357 3b61b4 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Sync Data/LevelDB/MANIFEST-000001

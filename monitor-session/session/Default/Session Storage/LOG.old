@@ -1,3 +1,2 @@
-2025/08/08-13:30:00.749 2c9001 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Session Storage/MANIFEST-000001
-2025/08/08-13:30:00.750 2c9001 Recovering log #26
-2025/08/08-13:30:00.750 2c9001 Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Session Storage/000026.log 
+2025/09/10-21:09:57.135 3b5e2a Creating DB /home/ubuntu/Horas/monitor-session/session/Default/Session Storage since it was missing.
+2025/09/10-21:09:57.142 3b5e2a Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Session Storage/MANIFEST-000001

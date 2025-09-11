@@ -1,3 +1,2 @@
-2025/08/08-13:30:00.335 2c8fde Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Site Characteristics Database/MANIFEST-000001
-2025/08/08-13:30:00.335 2c8fde Recovering log #3
-2025/08/08-13:30:00.337 2c8fde Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Site Characteristics Database/000003.log 
+2025/09/10-21:09:56.999 3b5e15 Creating DB /home/ubuntu/Horas/monitor-session/session/Default/Site Characteristics Database since it was missing.
+2025/09/10-21:09:57.008 3b5e15 Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Site Characteristics Database/MANIFEST-000001

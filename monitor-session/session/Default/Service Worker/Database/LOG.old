@@ -1,3 +1,2 @@
-2025/08/08-13:30:00.333 2c8fdd Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Service Worker/Database/MANIFEST-000001
-2025/08/08-13:30:00.333 2c8fdd Recovering log #16
-2025/08/08-13:30:00.335 2c8fdd Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/Service Worker/Database/000016.log 
+2025/09/10-21:09:58.226 3b5e0d Creating DB /home/ubuntu/Horas/monitor-session/session/Default/Service Worker/Database since it was missing.
+2025/09/10-21:09:58.231 3b5e0d Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/Service Worker/Database/MANIFEST-000001

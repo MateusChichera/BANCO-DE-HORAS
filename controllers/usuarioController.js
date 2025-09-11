@@ -452,8 +452,8 @@ async buscarHoras(req, res) {
               const telefoneV = vendedo.usu_tel;
 
               console.log("Telefone do vendedor:", telefoneV);
-              const telefoneF = '5518981174107'; // Fernando
-              const telefoneT = '5518981760014'; //felipe
+              const telefoneF = '5518981174107'; // Fernando //
+              const telefoneT = '5518981760014'; //felipe //
         
               // função auxiliar para esperar um tempo
               const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -724,7 +724,7 @@ async implantacoesEmMassa(req, res) {
     }
 
     // Enviar para Felipe TELEFONE DO FELIPE
-    await enviarRelatorio('5518981760014');
+    await enviarRelatorio('5518981760014'); //
 
     // Retornar resultado
     const response = {
@@ -883,8 +883,8 @@ async implantacoesEmMassa(req, res) {
               const telefoneV = vendedo.usu_tel;
 
               console.log("Telefone do vendedor:", telefoneV);
-              const telefoneF = '5518981174107'; // Fernando
-              const telefoneT = '5518981760014'; // Telefone do felipe
+              const telefoneF = '5518981174107'; // Fernando //5518981174107
+              const telefoneT = '5518981760014'; // Telefone do felipe //5518981760014
         
               // função auxiliar para esperar um tempo
               const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -1045,7 +1045,7 @@ async implantacoesEmMassa(req, res) {
                     }
     
                     // 3. Enviar para Fernando
-                    const telefoneFernando = '5518981174107'; 
+                    const telefoneFernando = '5518981174107';  //5518981174107
                     currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
                     setTimeout(() => {
                         whatsappService.enviarMensagem(telefoneFernando, mensagemGeral)
@@ -1054,7 +1054,7 @@ async implantacoesEmMassa(req, res) {
                     }, currentDelay);
     
                     // 4. Enviar para Felipe
-                    const telefoneFelipe = '5518981760014'; 
+                    const telefoneFelipe = '5518981760014';  //5518981760014
                     currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
                     setTimeout(() => {
                         whatsappService.enviarMensagem(telefoneFelipe, mensagemGeral)
@@ -1063,7 +1063,7 @@ async implantacoesEmMassa(req, res) {
                     }, currentDelay);
     
                     // 5. Enviar para Claudemir
-                    const telefoneClaudemir = '5518981151418'; 
+                    const telefoneClaudemir = '5518981151418';  //5518981151418
                     currentDelay += Math.floor(Math.random() * DELAY_MAX_ADD) + DELAY_MIN;
                     setTimeout(() => {
                         whatsappService.enviarMensagem(telefoneClaudemir, mensagemClaudemir)

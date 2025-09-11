@@ -1,3 +1,2 @@
-2025/07/07-14:28:17.592 1b10fa Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/GCM Store/MANIFEST-000001
-2025/07/07-14:28:17.592 1b10fa Recovering log #3
-2025/07/07-14:28:17.592 1b10fa Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/GCM Store/000003.log 
+2025/09/10-21:11:25.231 3b61b2 Creating DB /home/ubuntu/Horas/.wwebjs_auth/session/Default/GCM Store since it was missing.
+2025/09/10-21:11:25.235 3b61b2 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/GCM Store/MANIFEST-000001

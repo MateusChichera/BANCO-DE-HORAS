@@ -1,3 +1,2 @@
-2025/07/07-14:28:14.897 1b1132 Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Session Storage/MANIFEST-000001
-2025/07/07-14:28:14.898 1b1132 Recovering log #3
-2025/07/07-14:28:14.900 1b1132 Reusing old log /home/ubuntu/Horas/.wwebjs_auth/session/Default/Session Storage/000003.log 
+2025/09/10-21:11:16.740 3b61fb Creating DB /home/ubuntu/Horas/.wwebjs_auth/session/Default/Session Storage since it was missing.
+2025/09/10-21:11:16.751 3b61fb Reusing MANIFEST /home/ubuntu/Horas/.wwebjs_auth/session/Default/Session Storage/MANIFEST-000001

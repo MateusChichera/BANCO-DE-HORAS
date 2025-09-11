@@ -1,3 +1,2 @@
-2025/08/08-13:30:00.413 2c8fde Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/metadata/MANIFEST-000001
-2025/08/08-13:30:00.413 2c8fde Recovering log #3
-2025/08/08-13:30:00.414 2c8fde Reusing old log /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/metadata/000003.log 
+2025/09/10-21:09:57.144 3b5e0e Creating DB /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/metadata since it was missing.
+2025/09/10-21:09:57.153 3b5e0e Reusing MANIFEST /home/ubuntu/Horas/monitor-session/session/Default/shared_proto_db/metadata/MANIFEST-000001
